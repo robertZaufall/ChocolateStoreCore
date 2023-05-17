@@ -49,12 +49,13 @@ namespace ChocolateStoreCoreTests
             logger.Should().NotBeNull();
             var logerType = logger.GetType();
             logerType.FullName.Should().Be("Serilog.Core.Logger");
-            logerType.GetInterfaces().ToList().Select(x => (Tuple<string, string>)new(x.Name, x.FullName)).ToList()
-                .Should().BeEquivalentTo(new List<(string, string)>
+            var test = logerType.GetInterfaces().ToList().Select(x => (Tuple<string, string>)new(x.Name, x.FullName)).ToList();
+            test.Should().BeEquivalentTo(new List<(string, string)>
                 {
                     ("ILogger", "Serilog.ILogger"),
                     ("ILogEventSink", "Serilog.Core.ILogEventSink"),
-                    ("IDisposable", "System.IDisposable")
+                    ("IDisposable", "System.IDisposable"),
+                    ("IAsyncDisposable", "System.IAsyncDisposable"),
                 });
         }
     }
