@@ -1,0 +1,89 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="CoverageHistory\**" />
+		<Compile Remove="coveragereport\**" />
+		<Compile Remove="Resources\nuspec\**" />
+		<Compile Remove="TestNuspec\**" />
+		<Compile Remove="TestResults\**" />
+		<EmbeddedResource Remove="CoverageHistory\**" />
+		<EmbeddedResource Remove="coveragereport\**" />
+		<EmbeddedResource Remove="Resources\nuspec\**" />
+		<EmbeddedResource Remove="TestNuspec\**" />
+		<EmbeddedResource Remove="TestResults\**" />
+		<None Remove="CoverageHistory\**" />
+		<None Remove="coveragereport\**" />
+		<None Remove="Resources\nuspec\**" />
+		<None Remove="TestNuspec\**" />
+		<None Remove="TestResults\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Resources\azcopy.8.1.0.nupkg" />
+		<None Remove="Resources\chocolateyInstall.ps1" />
+		<None Remove="Resources\metadata.xml" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\chocolateyInstall.ps1">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\metadata.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\azcopy.nuspec">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoFixture" Version="4.17.0" />
+		<PackageReference Include="AutoFixture.AutoMoq" Version="4.17.0" />
+		<PackageReference Include="FluentAssertions" Version="6.7.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="6.0.7" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+		<PackageReference Include="Moq" Version="4.18.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="NuGet.Packaging" Version="6.2.1" />
+		<PackageReference Include="NuGet.Versioning" Version="6.2.1" />
+		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
+		<PackageReference Include="xunit" Version="2.4.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="3.1.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ChocolateStoreCore\ChocolateStoreCore.csproj" />
+	</ItemGroup>
+
+</Project>
