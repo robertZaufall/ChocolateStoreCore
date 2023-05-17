@@ -26,7 +26,7 @@ Apache 2.0
 ```
 
 ### Syntax
-Run `ChocolateStore.exe` with existing `appsettings.json` configuration in same folder as the exe file and optional additional processing flags  
+Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in same folder as the exe file and optional additional processing flags  
 * `-p or --purge` purge only  
 * `-w or --whatif` no writing or deletion of files  
 
