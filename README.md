@@ -1,24 +1,37 @@
 ChocolateStoreCore
 ==================
-Based on an idea of the [ChocolateStore](https://github.com/BahKoo/ChocolateStore) application by [BahKoo](https://github.com/BahKoo)  
+*Based on the idea of the [ChocolateStore](https://github.com/BahKoo/ChocolateStore) application by [BahKoo](https://github.com/BahKoo)*  
   
 ### Summary
 Download, modify and cache chocolatey packages locally to be delivered through a local repository including binary downloads.  
 
-### LICENSE
+### License
 Apache 2.0
 
-### COMPILATION REQUIREMENTS
+### Compilation requirements
 * Visual Studio 2022
 * .NET 6.0
 
-### SYNTAX
-Run with `appsettings.json` configuration `ChocolateStore.exe` with additional processing flags  
-`-p or --purge` purge only  
-`-w or --whatif` no writing or deletion of files
+### Package dependencies
+```
+- CommandLineParser
+- Newtonsoft.Json
+- NuGet
+- Polly
+- Serilog
+- (Test) AutoFixture
+- (Test) FluentAssertions
+- (Test) Moq
+- (Test) xunit
+```
+
+### Syntax
+Run `ChocolateStore.exe` with existing `appsettings.json` configuration in same folder as the exe file and optional additional processing flags  
+* `-p or --purge` purge only  
+* `-w or --whatif` no writing or deletion of files  
 
 ### Configuration
-`appsettings.json` example:  
+#### `appsettings.json` example
 ```
 {
   "ChocolateyConfiguration": {
@@ -44,11 +57,21 @@ Run with `appsettings.json` configuration `ChocolateStore.exe` with additional p
 }
 ```
 
-| parameter          | description                                                                             |  
-| :---               | :---                                                                                    |  
-| `LocalRepoUrl`     | url of the local webserver / repository where the binaries are to be downloaded from    |  
-| `FolderPath`       | file location to cache the nupkg files and optional folders for download artefacts      |  
-| `DownloadListPath` | file location for the file containing the desired chocolatey ids (one line for each id) |  
+| parameter             | description |  
+| :---                  | :--- |  
+| `LocalRepoUrl`        | url of the local webserver / repository where the binaries are to be downloaded from |  
+| `FolderPath`          | file location to cache the nupkg files and optional folders for download artefacts |  
+| `DownloadListPath`    | file location for the file containing the desired chocolatey ids (one line for each id) |  
+| `HttpTimeout`         | [s] |  
+| `HttpTimeoutOverAll`  | [min] |  
+| `HttpHandlerLifetime` | [min] |  
+  
+#### `download.txt` example 
+```
+chrome
+nodejs
+sysinternals
+```
 
 ### ALTERNATIVE
 Chocolatey's (business edition) own feature ['Package Internalizer'](https://chocolatey.org/docs/features-automatically-recompile-packages).
