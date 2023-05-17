@@ -8,7 +8,7 @@
 dotnet tool install -g dotnet-reportgenerator-globaltool
 
 # Save currect directory into a variable
-$dir = pwd
+$dir = "$pwd\ChocolateStoreCoreTests"
 
 # Delete previous test run results (there's a bunch of subfolders named with guids)
 Remove-Item -Recurse -Force $dir/TestResults/
@@ -37,7 +37,7 @@ if (!(Test-Path -path $dir/CoverageHistory)) {
 $license = [System.Environment]::GetEnvironmentVariable('license', 'Machine')
 
 # Generate the Code Coverage HTML Report
-reportgenerator -reports:"$dir/TestResults/$cmdGuid/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html -historydir:$dir/CoverageHistory -license:"$license"
+reportgenerator -reports:"$dir/TestResults/$cmdGuid/coverage.cobertura.xml" -targetdir:"$dir/coveragereport" -reporttypes:Html -historydir:$dir/CoverageHistory -license:"$license"
 
 # Open the Code Coverage HTML Report (if running on a WorkStation)
 $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
