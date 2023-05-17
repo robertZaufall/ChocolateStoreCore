@@ -73,5 +73,9 @@ nodejs
 sysinternals
 ```
 
-### ALTERNATIVE
+### Output
+Example output:  
+![cmdline output](ChocolateStoreCore.png)
+
+### Alternative
 Chocolatey's (business edition) own feature ['Package Internalizer'](https://chocolatey.org/docs/features-automatically-recompile-packages).
