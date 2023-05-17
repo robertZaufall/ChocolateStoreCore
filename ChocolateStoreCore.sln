@@ -7,6 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocolateStoreCore", "Choco
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocolateStoreCoreTests", "ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj", "{E6336EC8-95F4-4D10-A243-87F2F8168367}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B41E431-B596-40C9-8805-64158D23E9B0}"
+	ProjectSection(SolutionItems) = preProject
+		codeCoverage.ps1 = codeCoverage.ps1
+		dependabot.ps1 = dependabot.ps1
+		.github\dependabot.yml = .github\dependabot.yml
+		sbom.ps1 = sbom.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,10 +29,6 @@ Global
 		{E6336EC8-95F4-4D10-A243-87F2F8168367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6336EC8-95F4-4D10-A243-87F2F8168367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6336EC8-95F4-4D10-A243-87F2F8168367}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CDC00E0-0F23-4631-81F6-1AA6DABE9A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CDC00E0-0F23-4631-81F6-1AA6DABE9A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CDC00E0-0F23-4631-81F6-1AA6DABE9A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CDC00E0-0F23-4631-81F6-1AA6DABE9A0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
