@@ -34,6 +34,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="_manifest\**" />
+	  <EmbeddedResource Remove="_manifest\**" />
+	  <None Remove="_manifest\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Remove="appsettings.json" />
 	</ItemGroup>
 
@@ -71,7 +77,6 @@
 
 	<ItemGroup>
 		<Folder Include="Properties\PublishProfiles\" />
-		<Folder Include="_manifest\" />
 	</ItemGroup>
 
 </Project>
