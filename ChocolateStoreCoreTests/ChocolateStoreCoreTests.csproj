@@ -7,14 +7,6 @@
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <Optimize>False</Optimize>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <Optimize>True</Optimize>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<Compile Remove="CoverageHistory\**" />
 		<Compile Remove="coveragereport\**" />
@@ -34,14 +26,167 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="ResourcesIntegration\chocolateyInstall_azure-cli.ps1" />
+		<None Remove="ResourcesIntegration\chocolateyInstall_cryptomator.ps1" />
+		<None Remove="ResourcesIntegration\chocolateyInstall_docker.ps1" />
+		<None Remove="ResourcesIntegration\chocolateyInstall_kubernetes-helm.ps1" />
+		<None Remove="ResourcesIntegration\chocolateyInstall_postman.ps1" />
+		<None Remove="ResourcesIntegration\ChocolateyInstall_vscode.install.ps1" />
+		<None Remove="ResourcesIntegration\download_1.cmd" />
+		<None Remove="ResourcesIntegration\download_1.txt" />
+		<None Remove="ResourcesIntegration\download_2.cmd" />
+		<None Remove="ResourcesIntegration\download_3.cmd" />
+		<None Remove="ResourcesIntegration\download_4.cmd" />
+		<None Remove="ResourcesIntegration\download_5.cmd" />
+		<None Remove="ResourcesIntegration\download_6.cmd" />
+		<None Remove="ResourcesIntegration\download_7.cmd" />
+		<None Remove="ResourcesIntegration\nupkg\autohotkey.1.1.34.03.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\autohotkey.install.1.1.34.03.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\azcopy.8.1.0.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\azcopy.8.1.0\MicrosoftAzureStorageAzCopy_netcore_x64.msi" />
+		<None Remove="ResourcesIntegration\nupkg\azure-cli.2.37.0.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\azure-cli.2.37.0\azure-cli-2.37.0.msi" />
+		<None Remove="ResourcesIntegration\nupkg\azure-cli.2.38.0.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\azure-cli.2.38.0\azure-cli-2.38.0.msi" />
+		<None Remove="ResourcesIntegration\nupkg\docker-desktop.4.10.0.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\docker-desktop.4.10.0\Docker Desktop Installer.exe" />
+		<None Remove="ResourcesIntegration\nupkg\docker-desktop.4.10.1.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\docker-desktop.4.10.1\Docker Desktop Installer.exe" />
+		<None Remove="ResourcesIntegration\nupkg\rclone.1.42.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\rclone.install.1.39.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\rclone.install.1.39\37e2c612-e7e6-11e7-9723-e970af5e8fb3" />
+		<None Remove="ResourcesIntegration\nupkg\rclone.install.1.39\3b4feadc-e7e6-11e7-9c3f-66e547344f33" />
+		<None Remove="ResourcesIntegration\nupkg\vscode.1.68.1.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\vscode.1.69.0.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\vscode.install.1.68.1.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\vscode.install.1.68.1\VSCodeSetup-ia32-1.68.1.exe" />
+		<None Remove="ResourcesIntegration\nupkg\vscode.install.1.68.1\VSCodeSetup-x64-1.68.1.exe" />
+		<None Remove="ResourcesIntegration\nupkg\vscode.install.1.69.0.nupkg" />
+		<None Remove="ResourcesIntegration\nupkg\vscode.install.1.69.0\VSCodeSetup-ia32-1.69.0.exe" />
+		<None Remove="ResourcesIntegration\nupkg\vscode.install.1.69.0\VSCodeSetup-x64-1.69.0.exe" />
 		<None Remove="Resources\azcopy.8.1.0.nupkg" />
 		<None Remove="Resources\chocolateyInstall.ps1" />
 		<None Remove="Resources\metadata.xml" />
+
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\chocolateyInstall_azure-cli.ps1">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\chocolateyInstall_cryptomator.ps1">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\chocolateyInstall_docker.ps1">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\chocolateyInstall_kubernetes-helm.ps1">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\chocolateyInstall_postman.ps1">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\ChocolateyInstall_vscode.install.ps1">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\download_1.cmd">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\download_1.txt">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\download_2.cmd">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\download_3.cmd">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\download_4.cmd">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\download_5.cmd">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\download_6.cmd">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\download_7.cmd">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\autohotkey.1.1.34.03.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\autohotkey.install.1.1.34.03.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\azcopy.8.1.0.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\azcopy.8.1.0\MicrosoftAzureStorageAzCopy_netcore_x64.msi">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\azure-cli.2.37.0.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\azure-cli.2.37.0\azure-cli-2.37.0.msi">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\azure-cli.2.38.0.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\azure-cli.2.38.0\azure-cli-2.38.0.msi">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\docker-desktop.4.10.0.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\docker-desktop.4.10.0\Docker Desktop Installer.exe">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\docker-desktop.4.10.1.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\docker-desktop.4.10.1\Docker Desktop Installer.exe">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\rclone.1.42.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\rclone.install.1.39.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\rclone.install.1.39\37e2c612-e7e6-11e7-9723-e970af5e8fb3">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\rclone.install.1.39\3b4feadc-e7e6-11e7-9c3f-66e547344f33">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\vscode.1.68.1.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\vscode.1.69.0.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\vscode.install.1.68.1.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\vscode.install.1.68.1\VSCodeSetup-ia32-1.68.1.exe">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\vscode.install.1.68.1\VSCodeSetup-x64-1.68.1.exe">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\vscode.install.1.69.0.nupkg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\vscode.install.1.69.0\VSCodeSetup-ia32-1.69.0.exe">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ResourcesIntegration\nupkg\vscode.install.1.69.0\VSCodeSetup-x64-1.69.0.exe">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Resources\chocolateyInstall.ps1">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -58,6 +203,7 @@
 		<PackageReference Include="AutoFixture" Version="4.18.0" />
 		<PackageReference Include="AutoFixture.AutoMoq" Version="4.18.0" />
 		<PackageReference Include="FluentAssertions" Version="6.11.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.16" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
@@ -75,7 +221,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="3.2.0">
+		<PackageReference Include="coverlet.collector" Version="6.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
