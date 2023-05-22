@@ -51,10 +51,8 @@ namespace ChocolateStoreCoreTestsIntegration
             // Arrange
             var settings = new Settings();
 
-            //var fixture = new Fixture().Customize(new AutoMoqCustomization());
-
             var fileHelper = new Mock<IFileHelper>(MockBehavior.Strict);
-            fileHelper.Setup(_ => _.FileCreate(It.IsAny<string>(), It.IsAny<Stream>())).Returns(true);
+            fileHelper.Setup(_ => _.FileCreate(It.IsAny<string>(), It.IsAny<Stream>())).Returns(true).Verifiable();
             
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock.Protected()
