@@ -14,7 +14,7 @@ namespace ChocolateStoreCoreTestsIntegration
     [ExcludeFromCodeCoverage]
     public class TestFixtureIntegration : IDisposable
     {
-        public readonly string ResourceDirName = "ResourcesIntegration";
+        public readonly string ResourceDirName = "Resources";
 
         public ISettings Settings;
         public IFileHelper FileHelper;
@@ -33,21 +33,19 @@ namespace ChocolateStoreCoreTestsIntegration
             FileHelper = new FileHelper();
         }
 
-        public IHttpHelper GetHttpHelper(HttpResponseMessage result) => new HttpHelper(Settings, GetHttpClientMock(result), null);
-        public IChocolateyHelper GetChocolateyHelper(HttpResponseMessage result) => new ChocolateyHelper(Settings, FileHelper, GetHttpHelper(result), null);
+        public IHttpHelper GetHttpHelper(Mock<HttpMessageHandler> handlerMock)
+           => new HttpHelper(Settings, GetHttpClientMock(handlerMock), null);
+
+        public IChocolateyHelper GetChocolateyHelper(Mock<HttpMessageHandler> handlerMock)
+            => new ChocolateyHelper(Settings, FileHelper, GetHttpHelper(handlerMock), null);
+
+        public IChocolateyHelper GetChocolateyHelper()
+            => new ChocolateyHelper(Settings, FileHelper, null, null);
 
         public HttpResponseMessage DummyResponse() => new HttpResponseMessage();
 
-        public IHttpClientFactory GetHttpClientMock(HttpResponseMessage result)
+        public IHttpClientFactory GetHttpClientMock(Mock<HttpMessageHandler> handlerMock)
         {
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(result)
-                .Verifiable();
-
             IServiceCollection services = new ServiceCollection();
 
             services.AddHttpClient("chocolatey", client =>
@@ -61,9 +59,7 @@ namespace ChocolateStoreCoreTestsIntegration
             .SetHandlerLifetime(TimeSpan.FromMinutes(Settings.HttpHandlerLifetime))
             .ConfigurePrimaryHttpMessageHandler(() => handlerMock.Object);
 
-            var httpClient = services
-                                .BuildServiceProvider()
-                                .GetRequiredService<IHttpClientFactory>();
+            var httpClient = services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>();
             return httpClient;
         }
 

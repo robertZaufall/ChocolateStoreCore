@@ -1,3 +1,4 @@
+using Moq.Protected;
 using System.Web;
 
 namespace ChocolateStoreCoreTestsIntegration
@@ -28,7 +29,7 @@ namespace ChocolateStoreCoreTestsIntegration
             string installScript = Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, $"chocolateyInstall_{id}.ps1");
             string originalContent = new StreamReader(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, installScript)).ReadToEnd();
 
-            var chocolateyHelper = _fixture.GetChocolateyHelper(_fixture.DummyResponse());
+            var chocolateyHelper = _fixture.GetChocolateyHelper(new Mock<HttpMessageHandler>());
 
             // Act
             (string content, var downloads, string fileType) = chocolateyHelper.ExtractAndRewriteUrls(originalContent, folder, repo, id, version);
@@ -67,7 +68,7 @@ namespace ChocolateStoreCoreTestsIntegration
             var downloadList = Path.Combine(tempPath, fileName);
             File.Copy(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, fileName), downloadList);
 
-            var chocolateyHelper = _fixture.GetChocolateyHelper(_fixture.DummyResponse());
+            var chocolateyHelper = _fixture.GetChocolateyHelper();
 
             // Act
             var files = chocolateyHelper.GetDownloadList(downloadList);
@@ -83,7 +84,14 @@ namespace ChocolateStoreCoreTestsIntegration
         public void GetLastVersion(string id, int countDependencies)
         {
             // Arrange
-            var chocolateyHelper = _fixture.GetChocolateyHelper(_fixture.DummyResponse());
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(_fixture.DummyResponse())
+                .Verifiable();
+
+            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
 
             // Act
             var result = chocolateyHelper.GetLastVersion(id);
@@ -104,7 +112,14 @@ namespace ChocolateStoreCoreTestsIntegration
         public void FlattenDependenciesSimple(string fileName, int expectedCount)
         {
             // Arrange
-            var chocolateyHelper = _fixture.GetChocolateyHelper(_fixture.DummyResponse());
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(_fixture.DummyResponse())
+                .Verifiable();
+
+            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
 
             var downloads = chocolateyHelper.GetDownloadList(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, fileName));
             var packages = downloads.Select(x => chocolateyHelper.GetLastVersion(x)).Where(x => x != null).ToList();
@@ -124,7 +139,14 @@ namespace ChocolateStoreCoreTestsIntegration
         public void FlattenDependencies(string fileName, int expectedCount)
         {
             // Arrange
-            var chocolateyHelper = _fixture.GetChocolateyHelper(_fixture.DummyResponse());
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(_fixture.DummyResponse())
+                .Verifiable();
+
+            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
 
             var downloads = chocolateyHelper.GetDownloadList(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, fileName));
             var packages = downloads.Select(x => chocolateyHelper.GetLastVersion(x)).Where(x => x != null).ToList();

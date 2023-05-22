@@ -1,3 +1,5 @@
+using Moq.Protected;
+
 namespace ChocolateStoreCoreTestsIntegration
 {
     [ExcludeFromCodeCoverage]
@@ -16,8 +18,15 @@ namespace ChocolateStoreCoreTestsIntegration
         public void GetMetadataForPackageId(string id, int countDependencies)
         {
             // Arrange
-            var chocolateyHelper = _fixture.GetChocolateyHelper(_fixture.DummyResponse());
-            var httpHelper = _fixture.GetHttpHelper(_fixture.DummyResponse());
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(_fixture.DummyResponse())
+                .Verifiable();
+
+            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
+            var httpHelper = _fixture.GetHttpHelper(handlerMock);
 
             // Act
             var content = httpHelper.GetMetadataForPackageId(id);
@@ -35,8 +44,15 @@ namespace ChocolateStoreCoreTestsIntegration
         public void DownloadFile()
         {
             // Arrange
-            var chocolateyHelper = _fixture.GetChocolateyHelper(_fixture.DummyResponse());
-            var httpHelper = _fixture.GetHttpHelper(_fixture.DummyResponse());
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(_fixture.DummyResponse())
+                .Verifiable();
+
+            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
+            var httpHelper = _fixture.GetHttpHelper(handlerMock);
 
             var tempPath = _fixture.GetTemp();
             var package = chocolateyHelper.GetLastVersion("vscode");
