@@ -1,16 +1,15 @@
 using ChocolateStoreCore;
 using ChocolateStoreCore.Models;
-using Moq.Protected;
 using System.Net;
 
-namespace ChocolateStoreCoreTestsIntegration
+namespace ChocolateyStoreCoreTestsE2E
 {
     [ExcludeFromCodeCoverage]
-    public class PackageCacherTestsIntegration : IClassFixture<TestFixture>
+    public class PackageCacherTests : IClassFixture<TestFixture>
     {
         readonly TestFixture _fixture;
 
-        public PackageCacherTestsIntegration(TestFixture fixture)
+        public PackageCacherTests(TestFixture fixture)
         {
             _fixture = fixture;
         }
@@ -20,18 +19,16 @@ namespace ChocolateStoreCoreTestsIntegration
         {
             // Arrange
             var tempPath = _fixture.GetTemp();
-            Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, "nupkg")).ToList().ForEach(x => { File.Copy(x, Path.Combine(tempPath, Path.GetFileName(x))); });
+            Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Resources", "nupkg")).ToList().ForEach(x => { File.Copy(x, Path.Combine(tempPath, Path.GetFileName(x))); });
 
             var dependenciesList = new List<ChocolateyPackage>();
             var dependencySpecialList = new List<Dependency>();
-
-            var chocolateyHelper = _fixture.GetChocolateyHelper();
 
             // Act
             var files = Directory.GetFiles(tempPath, "*.nupkg").ToList();
             files.ForEach(x => {
                 var stream = _fixture.FileHelper.GetStream(x);
-                dependenciesList.Add(chocolateyHelper.GetPackageWithDependenciesFromNupkgFile(stream)); 
+                dependenciesList.Add(_fixture.ChocolateyHelper.GetPackageWithDependenciesFromNupkgFile(stream));
             });
 
             dependenciesList.ForEach(x => x.Dependencies?.ToList()
@@ -53,11 +50,9 @@ namespace ChocolateStoreCoreTestsIntegration
         {
             // Arrange
             var tempPath = _fixture.GetTemp();
-            Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, "nupkg")).ToList().ForEach(x => { File.Copy(x, Path.Combine(tempPath, Path.GetFileName(x))); });
+            Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Resources", "nupkg")).ToList().ForEach(x => { File.Copy(x, Path.Combine(tempPath, Path.GetFileName(x))); });
 
-            var chocolateyHelper = _fixture.GetChocolateyHelper();
-
-            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, null, chocolateyHelper, null);
+            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, _fixture.HttpHelper, _fixture.ChocolateyHelper, null);
 
             // Act
             sut.Purge(tempPath);
@@ -74,13 +69,11 @@ namespace ChocolateStoreCoreTestsIntegration
         {
             // Arrange
             var tempPath = _fixture.GetTemp();
-            Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, "nupkg")).ToList().ForEach(x => { File.Copy(x, Path.Combine(tempPath, Path.GetFileName(x))); });
-            Directory.EnumerateDirectories(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, "nupkg")).ToList().ForEach(x => { Directory.CreateDirectory(Path.Combine(tempPath, Path.GetFileName(x))); });
-            Directory.EnumerateDirectories(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, "nupkg")).ToList().ForEach(x => { Directory.EnumerateFiles(x).ToList().ForEach(y => { File.Copy(y, Path.Combine(tempPath, Path.GetFileName(x), Path.GetFileName(y))); }); });
+            Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Resources", "nupkg")).ToList().ForEach(x => { File.Copy(x, Path.Combine(tempPath, Path.GetFileName(x))); });
+            Directory.EnumerateDirectories(Path.Combine(AppContext.BaseDirectory, "Resources", "nupkg")).ToList().ForEach(x => { Directory.CreateDirectory(Path.Combine(tempPath, Path.GetFileName(x))); });
+            Directory.EnumerateDirectories(Path.Combine(AppContext.BaseDirectory, "Resources", "nupkg")).ToList().ForEach(x => { Directory.EnumerateFiles(x).ToList().ForEach(y => { File.Copy(y, Path.Combine(tempPath, Path.GetFileName(x), Path.GetFileName(y))); }); });
 
-            var chocolateyHelper = _fixture.GetChocolateyHelper();
-
-            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, null, chocolateyHelper, null);
+            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, _fixture.HttpHelper, _fixture.ChocolateyHelper, null);
 
             // Act
             sut.Purge(tempPath);
@@ -106,13 +99,10 @@ namespace ChocolateStoreCoreTestsIntegration
         {
             // Arrange
             var tempPath = _fixture.GetTemp();
-            Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, "nupkg")).ToList().Where(x => Path.GetFileName(x).EndsWith(filePattern)).ToList().ForEach(x => { File.Copy(x, Path.Combine(tempPath, Path.GetFileName(x))); });
+            Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Resources", "nupkg")).ToList().Where(x => Path.GetFileName(x).EndsWith(filePattern)).ToList().ForEach(x => { File.Copy(x, Path.Combine(tempPath, Path.GetFileName(x))); });
+            var downloads = _fixture.ChocolateyHelper.GetDownloadList(Path.Combine(AppContext.BaseDirectory, "Resources", fileName));
 
-            var chocolateyHelper = _fixture.GetChocolateyHelper();
-
-            var downloads = chocolateyHelper.GetDownloadList(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, fileName));
-
-            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, null, chocolateyHelper, null);
+            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, _fixture.HttpHelper, _fixture.ChocolateyHelper, null);
 
             // Act
             var result = sut.GetMissingFromDownloadsAndDependencies(downloads, tempPath, true);
@@ -121,7 +111,7 @@ namespace ChocolateStoreCoreTestsIntegration
             result.Should().HaveCount(expectedCount);
         }
 
-        [Theory(Skip = "no http")]
+        [Theory]
         [InlineData("download_1.cmd", 0)]
         [InlineData("download_2.cmd", 0)]
         [InlineData("download_3.cmd", 0)]
@@ -129,18 +119,8 @@ namespace ChocolateStoreCoreTestsIntegration
         public void GetLastVersions(string fileName, int expectedCount)
         {
             // Arrange
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-
-            handlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(_fixture.DummyResponse())
-                .Verifiable();
-
-            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
-            var httpHelper = _fixture.GetHttpHelper(handlerMock);
-
-            var downloads = chocolateyHelper.GetDownloadList(Path.Combine(AppContext.BaseDirectory, _fixture.ResourceDirName, fileName));
-            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, httpHelper, chocolateyHelper, null);
+            var downloads = _fixture.ChocolateyHelper.GetDownloadList(Path.Combine(AppContext.BaseDirectory, "Resources", fileName));
+            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, _fixture.HttpHelper, _fixture.ChocolateyHelper, null);
 
             // Act
             var result = sut.GetLastVersions(downloads, false);
@@ -149,35 +129,36 @@ namespace ChocolateStoreCoreTestsIntegration
             result.Should().HaveCountGreaterThan(expectedCount);
         }
 
-        [Theory(Skip = "no http")]
+        [Theory]
         [InlineData("vscode.install")]
         [InlineData("rclone")]
         [InlineData("cryptomator")]
         [InlineData("minikube")]
-        [InlineData("wget")]
-        [InlineData("gradle")]
-        [InlineData("DotNet4.5")]
-        //[InlineData("docker-desktop")]
-        //[InlineData("azure-data-studio")]
-        [InlineData("rust")]
         public void CachePackage(string id)
         {
             // Arrange
             var tempPath = _fixture.GetTemp();
-
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-
-            handlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(_fixture.DummyResponse())
-                .Verifiable();
-
-            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
-            var httpHelper = _fixture.GetHttpHelper(handlerMock);
-
-            var package = chocolateyHelper.GetLastVersion(id);
+            var package = _fixture.ChocolateyHelper.GetLastVersion(id);
             var filePath = Path.Combine(tempPath, package.FileName);
-            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, httpHelper, chocolateyHelper, null);
+            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, _fixture.HttpHelper, _fixture.ChocolateyHelper, null);
+
+            // Act
+            var result = sut.CachePackage(package, tempPath);
+
+            // Assert
+            File.Exists(filePath).Should().BeTrue();
+            result.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("cryptomator")]
+        public void CheckInstallScript(string id)
+        {
+            // Arrange
+            var tempPath = _fixture.GetTemp();
+            var package = _fixture.ChocolateyHelper.GetLastVersion(id);
+            var filePath = Path.Combine(tempPath, package.FileName);
+            var sut = new PackageCacher(_fixture.Settings, _fixture.FileHelper, _fixture.HttpHelper, _fixture.ChocolateyHelper, null);
 
             // Act
             var result = sut.CachePackage(package, tempPath);

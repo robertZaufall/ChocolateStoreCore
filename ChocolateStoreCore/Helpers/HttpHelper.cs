@@ -1,15 +1,7 @@
 ﻿using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using NuGet.Versioning;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Xml.Linq;
 
 namespace ChocolateStoreCore.Helpers
 {
@@ -22,16 +14,17 @@ namespace ChocolateStoreCore.Helpers
         string CheckUrl(string url);
     }
 
-    [ExcludeFromCodeCoverage]
     public class HttpHelper : IHttpHelper
     {
         private readonly ISettings _settings;
         private readonly ILogger<HttpHelper> _logger;
+        private readonly IFileHelper _fileHelper;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public HttpHelper(ISettings settings, IHttpClientFactory httpClientFactory, ILogger<HttpHelper> logger)
+        public HttpHelper(ISettings settings, IFileHelper fileHelper, IHttpClientFactory httpClientFactory, ILogger<HttpHelper> logger)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _fileHelper = fileHelper;
             _logger = logger ?? new Logger<HttpHelper>(new NullLoggerFactory());
             _httpClientFactory = httpClientFactory;
         }
@@ -108,11 +101,8 @@ namespace ChocolateStoreCore.Helpers
                     var response = request.GetAsync(new Uri(url)).Result;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        var requestUri = response.RequestMessage?.RequestUri;
-                        using (var fs = File.Create(filePath))
-                        {
-                            response.Content.ReadAsStream().CopyTo(fs);
-                        }
+                        _fileHelper.FileCreate(filePath, response.Content.ReadAsStream());
+
                         _logger.LogInformation("Download from {url} done.", url);
                         return filePath;
                     }

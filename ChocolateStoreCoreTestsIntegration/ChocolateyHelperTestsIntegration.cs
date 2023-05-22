@@ -4,11 +4,11 @@ using System.Web;
 namespace ChocolateStoreCoreTestsIntegration
 {
     [ExcludeFromCodeCoverage]
-    public class ChocolateyHelperTestsIntegration : IClassFixture<TestFixtureIntegration>
+    public class ChocolateyHelperTestsIntegration : IClassFixture<TestFixture>
     {
-        readonly TestFixtureIntegration _fixture;
+        readonly TestFixture _fixture;
 
-        public ChocolateyHelperTestsIntegration(TestFixtureIntegration fixture)
+        public ChocolateyHelperTestsIntegration(TestFixture fixture)
         {
             _fixture = fixture;
         }

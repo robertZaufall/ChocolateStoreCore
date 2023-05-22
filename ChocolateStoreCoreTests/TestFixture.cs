@@ -16,7 +16,7 @@ namespace ChocolateStoreCoreTests
         public static IFixture GetFixture()
         {
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
-            fixture.Customizations.Add(new ChocolateyStoreSpecimenBuilder());
+            fixture.Customizations.Add(new ChocolateStoreSpecimenBuilder());
             return fixture;
         }
 

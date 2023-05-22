@@ -8,11 +8,13 @@ using ChocolateStoreCore;
 using Moq.Protected;
 using Moq;
 using System.Net;
+using AutoFixture.AutoMoq;
+using AutoFixture;
 
 namespace ChocolateStoreCoreTestsIntegration
 {
     [ExcludeFromCodeCoverage]
-    public class TestFixtureIntegration : IDisposable
+    public class TestFixture : IDisposable
     {
         public readonly string ResourceDirName = "Resources";
 
@@ -22,7 +24,8 @@ namespace ChocolateStoreCoreTestsIntegration
         //public IChocolateyHelper ChocolateyHelper;
         private readonly List<string> Paths = new();
 
-        public TestFixtureIntegration()
+
+        public TestFixture()
         {
             var configuration = (IConfiguration)new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -34,7 +37,7 @@ namespace ChocolateStoreCoreTestsIntegration
         }
 
         public IHttpHelper GetHttpHelper(Mock<HttpMessageHandler> handlerMock)
-           => new HttpHelper(Settings, GetHttpClientMock(handlerMock), null);
+           => new HttpHelper(Settings, FileHelper, GetHttpClientFactoryMock(handlerMock), null);
 
         public IChocolateyHelper GetChocolateyHelper(Mock<HttpMessageHandler> handlerMock)
             => new ChocolateyHelper(Settings, FileHelper, GetHttpHelper(handlerMock), null);
@@ -44,23 +47,11 @@ namespace ChocolateStoreCoreTestsIntegration
 
         public HttpResponseMessage DummyResponse() => new HttpResponseMessage();
 
-        public IHttpClientFactory GetHttpClientMock(Mock<HttpMessageHandler> handlerMock)
+        public IHttpClientFactory GetHttpClientFactoryMock(Mock<HttpMessageHandler> handlerMock)
         {
             IServiceCollection services = new ServiceCollection();
-
-            services.AddHttpClient("chocolatey", client =>
-            {
-                client.BaseAddress = new Uri(Settings.ApiUrl + Settings.ApiPath);
-                client.DefaultRequestHeaders.Add("User-Agent", "Chocolatey Core");
-                client.Timeout = TimeSpan.FromMinutes(Settings.HttpTimeoutOverAll);
-            })
-            .AddPolicyHandlerFromRegistry("regularTimeout")
-            .AddPolicyHandlerFromRegistry("waitAndRetryPolicy")
-            .SetHandlerLifetime(TimeSpan.FromMinutes(Settings.HttpHandlerLifetime))
-            .ConfigurePrimaryHttpMessageHandler(() => handlerMock.Object);
-
-            var httpClient = services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>();
-            return httpClient;
+            services.AddHttpClient("chocolatey").ConfigurePrimaryHttpMessageHandler(() => handlerMock.Object);
+            return services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>();
         }
 
         public string GetTemp()

@@ -3,7 +3,7 @@ using NuGet.Versioning;
 
 namespace ChocolateStoreCoreTests
 {
-    public class ChocolateyStoreSpecimenBuilder : ISpecimenBuilder
+    public class ChocolateStoreSpecimenBuilder : ISpecimenBuilder
     {
         private readonly Random rnd = new Random();
 

@@ -1,69 +1,77 @@
+using AutoFixture;
+using AutoFixture.AutoMoq;
+using Microsoft.Extensions.DependencyInjection;
 using Moq.Protected;
+using System.Xml.Linq;
 
 namespace ChocolateStoreCoreTestsIntegration
 {
     [ExcludeFromCodeCoverage]
-    public class HttpHelperTestsIntegration : IClassFixture<TestFixtureIntegration>
+    public class HttpHelperTestsIntegration : IClassFixture<TestFixture>
     {
-        readonly TestFixtureIntegration _fixture;
+        readonly string _name = "chocolatey";
+        readonly TestFixture _fixture;
 
-        public HttpHelperTestsIntegration(TestFixtureIntegration fixture)
+        public HttpHelperTestsIntegration(TestFixture fixture)
         {
             _fixture = fixture;
         }
 
-        [Theory(Skip = "no http")]
-        [InlineData("azcopy", 0)]
-        [InlineData("vscode", 1)]
-        public void GetMetadataForPackageId(string id, int countDependencies)
+
+        [Fact]
+        public void GetMetadataForPackageId()
         {
             // Arrange
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var settings = new Settings 
+            { 
+                ApiUrl = "https://abc.def.efg", 
+                ApiPath = "/xyz/v12",
+                ApiPackageRequest = "test1{0}test2",
+                ApiPackageRequestWithVersion = "test1{0}test2{1}test3"
+            };
 
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(_fixture.DummyResponse())
+                .ReturnsAsync(new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.OK, Content = new StringContent("ABC") })
                 .Verifiable();
 
-            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
-            var httpHelper = _fixture.GetHttpHelper(handlerMock);
+            var httpHelper = new HttpHelper(settings, null, _fixture.GetHttpClientFactoryMock(handlerMock), null);
 
             // Act
-            var content = httpHelper.GetMetadataForPackageId(id);
-            var result = chocolateyHelper.ParseMetadata(id, content);
+            var content = httpHelper.GetMetadataForPackageId("Test");
 
             // Assert
-            result.Should().NotBeNull();
-            result.Id.Should().Be(id);
-            result.Version.OriginalVersion.Should().NotBeEmpty();
-            if (countDependencies > 0)
-                result.Dependencies.Should().HaveCountGreaterThanOrEqualTo(countDependencies);
+            content.Should().Be("ABC");
         }
 
-        [Fact(Skip = "no http")]
+        [Fact]
         public void DownloadFile()
         {
             // Arrange
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var settings = new Settings();
 
+            //var fixture = new Fixture().Customize(new AutoMoqCustomization());
+
+            var fileHelper = new Mock<IFileHelper>(MockBehavior.Strict);
+            fileHelper.Setup(_ => _.FileCreate(It.IsAny<string>(), It.IsAny<Stream>())).Returns(true);
+            
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(_fixture.DummyResponse())
+                .ReturnsAsync(new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.OK, Content = new StringContent("ABC") })
                 .Verifiable();
+            var httpClientFactoryMock = _fixture.GetHttpClientFactoryMock(handlerMock);
 
-            var chocolateyHelper = _fixture.GetChocolateyHelper(handlerMock);
-            var httpHelper = _fixture.GetHttpHelper(handlerMock);
+            var sut = new HttpHelper(settings, fileHelper.Object, _fixture.GetHttpClientFactoryMock(handlerMock), null);
 
-            var tempPath = _fixture.GetTemp();
-            var package = chocolateyHelper.GetLastVersion("vscode");
-            var filePath = Path.Combine(tempPath, package.FileName);
+            var filePath = @"c:\Test";
 
             // Act
-            var result = httpHelper.DownloadFile(package.DownloadUrl, filePath);
+            var result = sut.DownloadFile("http://test", filePath);
 
             // Assert
-            result.Should().NotBeNull();
-            File.Exists(filePath).Should().BeTrue();
+            result.Should().Be(filePath);
         }
     }
 }

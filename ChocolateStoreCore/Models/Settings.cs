@@ -31,6 +31,10 @@ namespace ChocolateStoreCore.Models
 
     public class Settings : ISettings
     {
+        public Settings()
+        {
+        }
+
         [RequiresUnreferencedCode("Dynamic configuration binding.")]
         public Settings(IConfiguration config)
         {
