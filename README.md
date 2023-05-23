@@ -35,7 +35,7 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
 ```
 {
   "ChocolateyConfiguration": {
-    "LocalRepoUrl": "http://localhost:8080",
+    "LocalRepoUrl": "http://192.168.1.1:8080",
     "ApiUrl": "https://community.chocolatey.org",
     "ApiUserAgent": "User-Agent: ChocolateStoreCore",
     "ApiPath": "/api/v2",
@@ -45,8 +45,8 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
     "ApiFindAllNextRequest": "/FindPackagesById?id='{0}'&$skiptoken='{0}','{1}'",
     "ApiGetRequest": "/package/{0}/{1}",
     "OptionalRemoteDownloadUrl": "https://packages.chocolatey.org/{0}.{1}.nupkg",
-    "FolderPath": "c:\\ChocolateyStore_Packages",
-    "DownloadListPath": "c:\\ChocolateyStore_Packages\\download.txt",
+    "FolderPath": "c:\\deploy\\App_Data\\Packages",
+    "DownloadListPath": "c:\\ChocolateStoreCore\\download.txt",
     "HttpTimeout": "5",
     "HttpTimeoutOverAll": "10",
     "HttpRetries": "3",
@@ -76,6 +76,13 @@ sysinternals
 ### Output
 Example output:  
 ![cmdline output](ChocolateStoreCore.png)
+
+### Package installation  
+From webserver  
+```choco.exe Install firefox --source http://192.168.1.1:8080 -y```  
+
+From fileshare  
+```choco.exe Install firefox --source \\192.168.1.1\_deploy$\App_Data\Packages -y```  
 
 ### Alternative
 Chocolatey's (business edition) own feature ['Package Internalizer'](https://chocolatey.org/docs/features-automatically-recompile-packages).
