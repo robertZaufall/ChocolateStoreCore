@@ -37,7 +37,8 @@ if (!(Test-Path -path $dir/CoverageHistory)) {
 $license = [System.Environment]::GetEnvironmentVariable('license', 'Machine')
 
 # Generate the Code Coverage HTML Report
-reportgenerator -reports:"$dir/TestResults/$cmdGuid/coverage.cobertura.xml" -targetdir:"$dir/coveragereport" -reporttypes:Html -historydir:$dir/CoverageHistory -license:"$license"
+$reports = ("$dir\TestResults\$cmdGuid\coverage.cobertura.xml").Replace('\\', '\')
+reportgenerator -reports:"$reports" -targetdir:"$dir\coveragereport" -reporttypes:Html -historydir:$dir/CoverageHistory -license:"$license"
 
 # Open the Code Coverage HTML Report (if running on a WorkStation)
 $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
