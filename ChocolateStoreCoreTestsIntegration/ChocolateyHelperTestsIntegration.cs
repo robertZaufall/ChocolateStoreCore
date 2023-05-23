@@ -40,7 +40,7 @@ namespace ChocolateStoreCoreTestsIntegration
             downloads.ForEach(x =>
             {
                 string fileName = Path.GetFileName(x.Path);
-                content.ToLower().Should().Contain($"{repo.ToLower()}/{folderName.ToLower()}/{fileName.ToLower()}");
+                content.ToLower().Should().Contain($"{repo.ToLower()}/{folderName.ToLower()}/{HttpUtility.UrlPathEncode(fileName.ToLower())}");
                 x.Path.ToLower().Should().EndWith(expectedFileType.ToLower());
 
                 if (!x.Url.ToLower().EndsWith(fileType.ToLower()))
