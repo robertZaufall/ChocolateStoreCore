@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using NuGet.Frameworks;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
@@ -18,6 +19,13 @@ namespace ChocolateStoreCoreTests
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
             fixture.Customizations.Add(new ChocolateStoreSpecimenBuilder());
             return fixture;
+        }
+
+        public IHttpClientFactory GetHttpClientFactoryMock(Mock<HttpMessageHandler> handlerMock)
+        {
+            IServiceCollection services = new ServiceCollection();
+            services.AddHttpClient("chocolatey").ConfigurePrimaryHttpMessageHandler(() => handlerMock.Object);
+            return services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>();
         }
 
         public static Stream GetNupkg()
