@@ -68,7 +68,7 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
   
 #### `download.txt` example 
 ```
-chrome
+googlechrome
 nodejs
 sysinternals
 ```
