@@ -10,7 +10,7 @@ namespace ChocolateStoreCore.Helpers
 {
     public static class StringHelper
     {
-        private static readonly Regex RxFileTypePattern = new (@"(?<=filetype\s*=\s{1}['""])[\w{3}]*(?=['""])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RxFileTypePattern = new(@"(?<=filetype\s*=\s{1}['""])[\w{3}]*(?=['""])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         public static readonly Regex RxUrlPattern = new(@"(?<=['""])http[\S]*(?=['""])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static string GetFileTypen(string content)
@@ -19,16 +19,22 @@ namespace ChocolateStoreCore.Helpers
             return fileType;
         }
 
+        public static string ReplaceTokens(string input, string id, string version)
+        {
+            return input
+                   .Replace("$PackageVersion", version, StringComparison.OrdinalIgnoreCase)
+                   .Replace("$Version", version, StringComparison.OrdinalIgnoreCase)
+                   .Replace("$PackageName", id, StringComparison.OrdinalIgnoreCase)
+                   .Replace("${locale}", "en-US", StringComparison.OrdinalIgnoreCase)
+                   ;
+        }
+
         public static List<string> GetOriginalUrls(string content, string id, string version)
         {
             var downloads = new List<string>();
             var uris = Regex.Replace(content, StringHelper.RxUrlPattern.ToString(), new MatchEvaluator(m =>
             {
-                var url = m.Value
-                    .Replace("$PackageVersion", version, StringComparison.OrdinalIgnoreCase)
-                    .Replace("$Version", version, StringComparison.OrdinalIgnoreCase)
-                    .Replace("$PackageName", id, StringComparison.OrdinalIgnoreCase);
-
+                var url = ReplaceTokens(m.Value, id, version);
                 downloads.Add(url);
                 return url;
             }), RegexOptions.IgnoreCase);

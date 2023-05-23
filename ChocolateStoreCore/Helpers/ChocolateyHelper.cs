@@ -52,13 +52,8 @@ namespace ChocolateStoreCore.Helpers
             var originalUrls = StringHelper.GetOriginalUrls(content, id, version);
             var transformedContent = Regex.Replace(content, StringHelper.RxUrlPattern.ToString(), new MatchEvaluator(m =>
             {
-                var url = m.Value
-                    .Replace("$PackageVersion", version, StringComparison.OrdinalIgnoreCase)
-                    .Replace("$Version", version, StringComparison.OrdinalIgnoreCase)
-                    .Replace("$PackageName", id, StringComparison.OrdinalIgnoreCase);
-
+                var url = StringHelper.ReplaceTokens(m.Value, id, version);
                 var actualUrl = _httpHelper.CheckUrl(url);
-
                 var uri = new Uri(actualUrl ?? url);
                 var fileName = GetFileNameFromUrls(url, actualUrl);
                 var originalFileExtension = Path.GetExtension(fileName);
@@ -66,7 +61,7 @@ namespace ChocolateStoreCore.Helpers
                 if (string.IsNullOrWhiteSpace(originalFileExtension) && !string.IsNullOrWhiteSpace(fileType))
                     fileName = fileName + "." + fileType;
 
-                var transformedUrl = repo + @"/" + folderName + @"/" + fileName;
+                var transformedUrl = repo + @"/" + folderName + @"/" + HttpUtility.UrlPathEncode(fileName);
 
                 downloads.Add(new Download { Url = url, Path = Path.Combine(folder, fileName) });
 
