@@ -14,10 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		sbom.ps1 = sbom.ps1
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocolateStoreCoreTestsIntegration", "ChocolateStoreCoreTestsIntegration\ChocolateStoreCoreTestsIntegration.csproj", "{DD56FABD-FA6C-466D-B753-6F33AA9C2715}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocolateStoreCoreTestsE2E", "ChocolateStoreCoreTestsE2E\ChocolateStoreCoreTestsE2E.csproj", "{09C9EFEF-4E1C-43B8-B7FA-8240F5AEADD3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,14 +28,6 @@ Global
 		{E6336EC8-95F4-4D10-A243-87F2F8168367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6336EC8-95F4-4D10-A243-87F2F8168367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6336EC8-95F4-4D10-A243-87F2F8168367}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD56FABD-FA6C-466D-B753-6F33AA9C2715}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD56FABD-FA6C-466D-B753-6F33AA9C2715}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD56FABD-FA6C-466D-B753-6F33AA9C2715}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD56FABD-FA6C-466D-B753-6F33AA9C2715}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09C9EFEF-4E1C-43B8-B7FA-8240F5AEADD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09C9EFEF-4E1C-43B8-B7FA-8240F5AEADD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09C9EFEF-4E1C-43B8-B7FA-8240F5AEADD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09C9EFEF-4E1C-43B8-B7FA-8240F5AEADD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
