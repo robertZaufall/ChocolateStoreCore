@@ -1,5 +1,7 @@
 ﻿using ChocolateStoreCore.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
 using Moq.Protected;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,9 @@ namespace ChocolateStoreCoreTests
     public class HttpHelperTests : IClassFixture<TestFixture>
     {
         readonly TestFixture _fixture;
+        private readonly Mock<ISettings> _settingsMock = new Mock<ISettings>();
+        private readonly Mock<IFileHelper> _fileHelperMock = new Mock<IFileHelper>();
+        private readonly Mock<IHttpClientFactory> _httpClientFactoryMock = new Mock<IHttpClientFactory>();
 
         public HttpHelperTests(TestFixture fixture)
         {
@@ -107,5 +112,66 @@ namespace ChocolateStoreCoreTests
             // Assert
             result.Should().Be(filePath);
         }
+
+        [Fact]
+        public async Task CheckUrl_WhenStatusCodeIsOk_ShouldReturnRequestUri()
+        {
+            //Arrange
+            var url = "http://www.google.com";
+            var expectedValue = "http://www.google.com/";
+            var responseMessage = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            responseMessage.RequestMessage = new HttpRequestMessage();
+            responseMessage.RequestMessage.RequestUri = new System.Uri(expectedValue);
+
+            var fakeHandler = new Mock<HttpMessageHandler>();
+            fakeHandler.Protected()
+                       .Setup<Task<HttpResponseMessage>>(
+                          "SendAsync",
+                          ItExpr.IsAny<HttpRequestMessage>(),
+                          ItExpr.IsAny<CancellationToken>()
+                       )
+                       .ReturnsAsync(responseMessage);
+
+            var client = new HttpClient(fakeHandler.Object);
+            _httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(client);
+
+            var target = new HttpHelper(_settingsMock.Object, _fileHelperMock.Object, _httpClientFactoryMock.Object, new Logger<HttpHelper>(new NullLoggerFactory()));
+
+            //Act
+            var result = target.CheckUrl(url);
+
+            //Assert
+            Assert.Equal(expectedValue, result);
+        }
+
+        [Fact]
+        public async Task CheckUrl_WhenStatusCodeIsNotOk_ShouldReturnNull()
+        {
+            //Arrange
+            var url = "http://www.google.com";
+
+            var responseMessage = new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest);
+
+            var fakeHandler = new Mock<HttpMessageHandler>();
+            fakeHandler.Protected()
+                       .Setup<Task<HttpResponseMessage>>(
+                          "SendAsync",
+                          ItExpr.IsAny<HttpRequestMessage>(),
+                          ItExpr.IsAny<CancellationToken>()
+                       )
+                       .ReturnsAsync(responseMessage);
+
+            var client = new HttpClient(fakeHandler.Object);
+            _httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(client);
+
+            var target = new HttpHelper(_settingsMock.Object, _fileHelperMock.Object, _httpClientFactoryMock.Object, new Logger<HttpHelper>(new NullLoggerFactory()));
+
+            //Act
+            var result = target.CheckUrl(url);
+
+            //Assert
+            Assert.Null(result);
+        }
+
     }
 }

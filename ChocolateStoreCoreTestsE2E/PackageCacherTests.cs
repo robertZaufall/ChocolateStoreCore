@@ -134,6 +134,7 @@ namespace ChocolateyStoreCoreTestsE2E
         [InlineData("rclone")]
         [InlineData("cryptomator")]
         [InlineData("minikube")]
+        [InlineData("firefox")]
         public void CachePackage(string id)
         {
             // Arrange
