@@ -46,7 +46,7 @@ namespace ChocolateStoreCoreTests
             var download = downloads[0];
             string fileName = Path.GetFileName(download.Path);
             fileName.Should().Be(fileNameExpected);
-            content.ToLower().Should().Contain($"{repo.ToLower()}/{folderName.ToLower()}/{fileName.ToLower()}");
+            content.ToLower().Should().Contain($"{repo.ToLower()}/{folderName.ToLower()}/{System.Web.HttpUtility.UrlPathEncode(fileName.ToLower())}");
             download.Path.ToLower().Should().Be($"{folder.ToLower()}\\{fileName.ToLower()}");
         }
 
