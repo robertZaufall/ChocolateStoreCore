@@ -1,6 +1,0 @@
-autohotkey
-azcopy
-azure-cli
-docker-desktop
-rclone
-vscode
