@@ -59,9 +59,9 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
 
 | parameter             | description |  
 | :---                  | :--- |  
-| `LocalRepoUrl`        | url of the local webserver / repository where the binaries are to be downloaded from |  
-| `FolderPath`          | file location to cache the nupkg files and optional folders for download artefacts |  
-| `DownloadListPath`    | file location for the file containing the desired chocolatey ids (one line for each id) |  
+| `LocalRepoUrl`        | url of the local webserver where the binaries are to be downloaded from |  
+| `FolderPath`          | file location to cache the nupkg files and optional folders for download artefacts. a relative path is supported (e.g. ```.``` or ```.\\store```). the directory must exist |  
+| `DownloadListPath`    | file location for the file containing the desired chocolatey ids (one line for each id). a relative path is supported (e.g. ```.\\download.txt```). |  
 | `HttpTimeout`         | [s] |  
 | `HttpTimeoutOverAll`  | [min] |  
 | `HttpHandlerLifetime` | [min] |  
@@ -81,7 +81,7 @@ Example output:
 From webserver  
 ```choco.exe Install firefox --source http://192.168.1.1:8080 -y```  
 
-From fileshare  
+From fileshare (webserver is still needed for downloading the binaries!) 
 ```choco.exe Install firefox --source \\192.168.1.1\_deploy$\App_Data\Packages -y```  
 
 ### Alternative
