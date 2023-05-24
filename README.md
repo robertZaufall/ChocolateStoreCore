@@ -81,8 +81,10 @@ Example output:
 From webserver  
 ```choco.exe Install firefox --source http://192.168.1.1:8080 -y```  
 
-From fileshare (webserver is still needed for downloading the binaries!) 
+From fileshare (webserver is still needed for downloading the binaries!)  
 ```choco.exe Install firefox --source \\192.168.1.1\_deploy$\App_Data\Packages -y```  
+
+I can recommend ['civetweb'](https://github.com/civetweb/civetweb/releases) as a simple webserver to deliver the binaries.
 
 ### Alternative
 Chocolatey's (business edition) own feature ['Package Internalizer'](https://chocolatey.org/docs/features-automatically-recompile-packages).
