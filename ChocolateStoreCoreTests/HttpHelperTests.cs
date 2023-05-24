@@ -29,7 +29,7 @@ namespace ChocolateStoreCoreTests
         {
             // Arrange
             var id = "test";
-            var settings = new Settings { ApiPackageRequest = "test1{0}test2" };
+            var settings = new Settings("") { ApiPackageRequest = "test1{0}test2" };
 
             var sut = new HttpHelper(settings, null, null, null);
 
@@ -46,7 +46,7 @@ namespace ChocolateStoreCoreTests
             // Arrange
             var id = "test";
             var version = "version";
-            var settings = new Settings { ApiPackageRequestWithVersion = "test1{0}test2{1}test3" };
+            var settings = new Settings("") { ApiPackageRequestWithVersion = "test1{0}test2{1}test3" };
 
             var sut = new HttpHelper(settings, null, null, null);
 
@@ -61,7 +61,7 @@ namespace ChocolateStoreCoreTests
         public void GetMetadataForPackageId()
         {
             // Arrange
-            var settings = new Settings
+            var settings = new Settings("")
             {
                 ApiUrl = "https://abc.def.efg",
                 ApiPath = "/xyz/v12",
@@ -102,7 +102,7 @@ namespace ChocolateStoreCoreTests
                 .Verifiable();
             var httpClientFactoryMock = _fixture.GetHttpClientFactoryMock(handlerMock);
 
-            var sut = new HttpHelper(new Settings(), fileHelper.Object, _fixture.GetHttpClientFactoryMock(handlerMock), null);
+            var sut = new HttpHelper(new Settings(""), fileHelper.Object, _fixture.GetHttpClientFactoryMock(handlerMock), null);
 
             var filePath = @"1:\234";
 

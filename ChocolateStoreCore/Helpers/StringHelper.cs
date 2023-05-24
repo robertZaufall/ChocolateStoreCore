@@ -40,5 +40,14 @@ namespace ChocolateStoreCore.Helpers
             }), RegexOptions.IgnoreCase);
             return downloads;
         }
+
+        public static string GetPathWithLocal(string root, string path)
+        {
+            if (!string.IsNullOrEmpty(path) && path[..1] == ".")
+            {
+                return Path.Combine(root, path[1..].TrimStart('/', '\\'));
+            }
+            return path;
+        }
     }
 }

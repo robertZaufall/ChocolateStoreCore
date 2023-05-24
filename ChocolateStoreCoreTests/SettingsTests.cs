@@ -37,7 +37,7 @@ namespace ChocolateStoreCoreTests
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(myConfiguration).Build();
 
             // Act
-            var settings = new Settings(configuration);
+            var settings = new Settings(configuration, "");
 
             // Assert
             settings.Should().NotBeNull();

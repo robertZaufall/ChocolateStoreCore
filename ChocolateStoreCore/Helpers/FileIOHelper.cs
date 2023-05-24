@@ -27,7 +27,8 @@ namespace ChocolateStoreCore.Helpers
     [ExcludeFromCodeCoverage]
     public class FileHelper : IFileHelper
     {
-        public string GetApplicationRoot() => Path.GetDirectoryName(AppContext.BaseDirectory);
+        public static string GetApplicationRoot() => Path.GetDirectoryName(AppContext.BaseDirectory);
+        //public static string GetApplicationRoot() => Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
         public bool FileExists(string path) => File.Exists(path);
         public bool DirectoryExists(string path) => Directory.Exists(path);

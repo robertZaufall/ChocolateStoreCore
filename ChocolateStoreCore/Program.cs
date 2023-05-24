@@ -1,16 +1,12 @@
 ﻿using ChocolateStoreCore.Helpers;
 using ChocolateStoreCore.Models;
 using CommandLine;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ChocolateStoreCore
 {
@@ -18,7 +14,8 @@ namespace ChocolateStoreCore
     {
         static async Task Main(string[] args)
         {
-            ISettings settings = new Settings(Settings.GetConfiguration());
+            var root = FileHelper.GetApplicationRoot();
+            ISettings settings = new Settings(Settings.GetConfiguration(), root);
             var serviceProvider = ConfigureServices(settings).BuildServiceProvider();
 
             ArgsOptions options = null;

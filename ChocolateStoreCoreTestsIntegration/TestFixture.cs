@@ -27,12 +27,13 @@ namespace ChocolateStoreCoreTestsIntegration
 
         public TestFixture()
         {
+            string root = Directory.GetParent(AppContext.BaseDirectory).FullName;
             var configuration = (IConfiguration)new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .SetBasePath(root)
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
-            Settings = new Settings(ChocolateStoreCore.Models.Settings.GetConfiguration());
+            Settings = new Settings(ChocolateStoreCore.Models.Settings.GetConfiguration(), root);
             FileHelper = new FileHelper();
         }
 

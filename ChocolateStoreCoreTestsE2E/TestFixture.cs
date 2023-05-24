@@ -2,6 +2,7 @@ using ChocolateStoreCore.Helpers;
 using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 
 namespace ChocolateyStoreCoreTestsE2E
 {
@@ -16,12 +17,13 @@ namespace ChocolateyStoreCoreTestsE2E
 
         public TestFixture()
         {
+            string root = Directory.GetParent(AppContext.BaseDirectory).FullName;
             var configuration = (IConfiguration)new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .SetBasePath(root)
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
-            Settings = new Settings(ChocolateStoreCore.Models.Settings.GetConfiguration());
+            Settings = new Settings(ChocolateStoreCore.Models.Settings.GetConfiguration(), root);
             FileHelper = new FileHelper();
 
             IServiceCollection services = new ServiceCollection();

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ChocolateStoreCore.Helpers;
+using Microsoft.Extensions.Configuration;
 using Serilog.Events;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -31,15 +32,21 @@ namespace ChocolateStoreCore.Models
 
     public class Settings : ISettings
     {
-        public Settings()
+        private string _root;
+        private string _downloadListPath;
+        private string _folderPath;
+
+        public Settings(string root)
         {
+            _root = root;
         }
 
         [RequiresUnreferencedCode("Dynamic configuration binding.")]
-        public Settings(IConfiguration config)
+        public Settings(IConfiguration config, string root)
         {
             try
             {
+                _root = root;
                 config?.Bind("ChocolateyConfiguration", this);
             }
             catch (Exception ex)
@@ -52,7 +59,9 @@ namespace ChocolateStoreCore.Models
         {
             var parentDirectory = Directory.GetParent(AppContext.BaseDirectory);
             if (parentDirectory != null)
+            {
                 return new ConfigurationBuilder().SetBasePath(parentDirectory.FullName).AddJsonFile("appsettings.json", false).Build();
+            }
             return new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>()).Build();
         }
 
@@ -66,8 +75,16 @@ namespace ChocolateStoreCore.Models
         public string ApiFindAllNextRequest { get; set; }
         public string ApiGetRequest { get; set; }
         public string OptionalRemoteDownloadUrl { get; set; }
-        public string FolderPath { get; set; }
-        public string DownloadListPath { get; set; }
+        public string FolderPath
+        {
+            get { return StringHelper.GetPathWithLocal(_root, _folderPath); }
+            set { _folderPath = value; }
+        }
+        public string DownloadListPath
+        {
+            get { return StringHelper.GetPathWithLocal(_root, _downloadListPath); }
+            set { _downloadListPath = value; }
+        }
         public int HttpTimeout { get; set; }
         public int HttpTimeoutOverAll { get; set; }
         public int HttpRetries { get; set; }
