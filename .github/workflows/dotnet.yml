@@ -57,4 +57,5 @@ jobs:
         git add ChocolateStoreCore/version.txt
         git commit -m "Incremented build version"
         git push
-        
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
