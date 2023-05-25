@@ -33,22 +33,24 @@ jobs:
     - name: Restore dependencies
       run: |
         cd ${{ github.workspace }}\ChocolateStoreCore
-        dotnet restore ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj -f -r win-x86
+        dotnet restore ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj -r win-x86
               
     - name: Build
       run: |
         dotnet build ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj --configuration Release --no-restore
       
-    # - name: Restore dependencies
-    #   run: |
-    #     cd ${{ github.workspace }}\ChocolateStoreCoreTest\
-    #     dotnet restore -r win-x86
+    - name: Restore dependencies
+      run: |
+        cd ${{ github.workspace }}\ChocolateStoreCoreTests\
+        dotnet restore -r win-x86
       
-    # - name: Build
-    #   run: dotnet build --configuration Release --no-restore
+    - name: Build
+      run: |
+        dotnet build ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore
       
-    # - name: Test
-    #   run: dotnet test --configuration Release --no-restore
+    - name: Test
+      run: |
+        dotnet test ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore
 
     - name: Commit and push changes
       run: |
