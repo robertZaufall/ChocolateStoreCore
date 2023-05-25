@@ -3,12 +3,12 @@ name: Build and Test
 on:
   workflow_dispatch:
     
-  # push:
-  #   branches:
-  #   - main
-  # pull_request:
-  #   branches:
-  #   - main
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
 
 jobs:
   build:
@@ -30,21 +30,21 @@ jobs:
       run: |
         pwsh -File ${{ github.workspace }}\ChocolateStoreCore\version.ps1 -projectDir ${{ github.workspace }}\ChocolateStoreCore
 
-    - name: Restore dependencies
+    - name: Restore dependencies ChocolateStoreCore
       run: |
         cd ${{ github.workspace }}\ChocolateStoreCore
         dotnet restore ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj -r win-x86
               
-    - name: Build
+    - name: Build ChocolateStoreCore
       run: |
         dotnet build ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj --configuration Release --no-restore
       
-    - name: Restore dependencies
+    - name: Restore dependencies Tests
       run: |
         cd ${{ github.workspace }}\ChocolateStoreCoreTests\
         dotnet restore -r win-x86
       
-    - name: Build
+    - name: Build Tests
       run: |
         dotnet build ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore
       
