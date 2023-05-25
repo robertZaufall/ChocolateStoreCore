@@ -5,7 +5,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
-	</PropertyGroup>
+        <RuntimeIdentifier Condition="'$(Configuration)' == 'Release'">win-x86</RuntimeIdentifier>
+    </PropertyGroup>
 
 	<ItemGroup>
 		<Compile Remove="CoverageHistory\**" />
