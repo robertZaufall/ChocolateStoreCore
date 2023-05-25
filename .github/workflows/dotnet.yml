@@ -5,10 +5,13 @@ on:
     
   push:
     branches:
-    - main
+      - main
+    paths:
+      - 'ChocolateStoreCore\**'
+      - 'ChocolateStoreCoreTests\**'
   pull_request:
     branches:
-    - main
+      - main
 
 jobs:
   build:
@@ -60,7 +63,7 @@ jobs:
         git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
         git add ChocolateStoreCore/ChocolateStoreCore.csproj
         git add ChocolateStoreCore/version.txt
-        git commit -m "Incremented build version"
+        git commit -m "Incremented build version [skip actions]"
         git push origin_https HEAD:main
       env:
         GIT_PAT: ${{ secrets.GIT_PAT }}
