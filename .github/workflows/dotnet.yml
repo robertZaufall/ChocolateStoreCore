@@ -58,4 +58,4 @@ jobs:
         git commit -m "Incremented build version"
         git push
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+        GIT_PAT: ${{ secrets.GIT_PAT }}  
