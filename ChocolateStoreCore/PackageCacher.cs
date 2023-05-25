@@ -151,7 +151,7 @@ namespace ChocolateStoreCore
                 }
                 if (whatif)
                 {
-                    File.Copy(sourcePackagePath, targetPackagePath);
+                    _fileHelper.FileCopy(sourcePackagePath, targetPackagePath);
                 }
 
                 string folderName = package.FileName.Replace(".nupkg", "");

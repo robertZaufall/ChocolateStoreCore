@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -18,8 +18,8 @@
 		<Product>ChocolateStoreCore</Product>
 		<Description>Download, modify and cache chocolatey packages locally</Description>
 		<Version>1.0.4</Version>
-		<FileVersion>1.0.4.0</FileVersion>
-		<AssemblyVersion>1.0.4.0</AssemblyVersion>
+		<FileVersion>1.0.4.19</FileVersion>
+		<AssemblyVersion>1.0.4.19</AssemblyVersion>
 		<Authors>Robert Zaufall</Authors>
 		<Company>Robert Zaufall IT Consulting</Company>
 		<Copyright>(c)2023 by Robert Zaufall</Copyright>
@@ -82,5 +82,18 @@
 	<ItemGroup>
 		<Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="version.ps1">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </None>
+	  <None Update="version.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="powershell -File &quot;$(ProjectDir)version.ps1&quot; -projectDir $(projectDir)" />
+	</Target>
 
 </Project>
