@@ -53,6 +53,8 @@ jobs:
         cd ${{ github.workspace }}
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
+        git add ChocolateStoreCore/ChocolateStoreCore.csproj
+        git add ChocolateStoreCore/version.txt
         git commit -m "Incremented build version"
         git push
         
