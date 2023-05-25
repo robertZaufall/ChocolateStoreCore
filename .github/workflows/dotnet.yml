@@ -26,15 +26,16 @@ jobs:
         
     - name: Update Version
       run: |
-        pwsh -File ${{ github.workspace }}/ChocolateStoreCore/version.ps1 -projectDir ${{ github.workspace }}/ChocolateStoreCore
+        pwsh -File ${{ github.workspace }}\ChocolateStoreCore\version.ps1 -projectDir ${{ github.workspace }}\ChocolateStoreCore
 
     - name: Restore dependencies
       run: |
         cd ${{ github.workspace }}\ChocolateStoreCore
-        dotnet restore -r win-x86
+        dotnet restore ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj -f -r win-x86
               
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: |
+        dotnet build ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj --configuration Release --no-restore
       
     # - name: Restore dependencies
     #   run: |
@@ -49,6 +50,7 @@ jobs:
 
     - name: Commit and push changes
       run: |
+        cd ${{ github.workspace }}
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
         git commit -m "Incremented build version"
