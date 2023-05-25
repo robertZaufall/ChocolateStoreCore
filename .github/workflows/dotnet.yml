@@ -18,6 +18,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GIT_PAT }}
       
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
@@ -51,8 +53,12 @@ jobs:
     - name: Commit and push changes
       run: |
         cd ${{ github.workspace }}
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add .
-        git commit -m "updated build version"
-        git push
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
+        git add ChocolateStoreCore/ChocolateStoreCore.csproj
+        git add ChocolateStoreCore/version.txt
+        git commit -m "Incremented build version"
+        git push origin_https HEAD:main
+      env:
+        GIT_PAT: ${{ secrets.GIT_PAT }}
