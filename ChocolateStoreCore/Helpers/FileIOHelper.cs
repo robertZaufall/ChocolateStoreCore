@@ -22,6 +22,7 @@ namespace ChocolateStoreCore.Helpers
         bool UpdateContentInZip(string path, string fileName, string content);
         bool WriteDummyFile(string path);
         bool FileCreate(string path, Stream stream);
+        bool FileCopy(string sourcePath, string targetPath);
     }
 
     [ExcludeFromCodeCoverage]
@@ -103,6 +104,12 @@ namespace ChocolateStoreCore.Helpers
             {
                 stream.CopyTo(fs);
             }
+            return true;
+        }
+
+        public bool FileCopy(string sourcePath, string targetPath)
+        {
+            File.Copy(sourcePath, targetPath, true);
             return true;
         }
     }
