@@ -18,8 +18,8 @@
 		<Product>ChocolateStoreCore</Product>
 		<Description>Download, modify and cache chocolatey packages locally</Description>
 		<Version>1.0.4</Version>
-		<FileVersion>1.0.4.39</FileVersion>
-		<AssemblyVersion>1.0.4.39</AssemblyVersion>
+		<FileVersion>1.0.4.40</FileVersion>
+		<AssemblyVersion>1.0.4.40</AssemblyVersion>
 		<Authors>Robert Zaufall</Authors>
 		<Company>Robert Zaufall IT Consulting</Company>
 		<Copyright>(c)2023 by Robert Zaufall</Copyright>
