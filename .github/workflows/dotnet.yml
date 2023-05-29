@@ -52,9 +52,30 @@ jobs:
         dotnet build ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore
       
     - name: Test
+      id: test
       run: |
-        dotnet test ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore
+        $output = [string] (& dotnet test ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore --collect:"XPlat Code Coverage" 2>&1)
+        $i = $output.LastIndexOf("TestResults") + 11
+        $j = $output.LastIndexOf("coverage")
+        echo "::set-output name:cmdguid $output.SubString($i,$j - $i - 1)"
 
+    - name: Test coverage report generation preparation
+      run: |
+        if (!(Test-Path -path ${{ github.workspace }}\.github\Workflows\History)) 
+        { 
+          New-Item -ItemType directory -Force -Path ${{ github.workspace }}\.github\Workflows\History
+        }
+
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.21
+      with:
+        reports: ("${{ github.workspace }}\ChocolateStoreCoreTests\TestResults\${{ steps.test.outputs.cmdguid }}\coverage.cobertura.xml").Replace('\\', '\')
+        targetdir: ${{ github.workspace }}
+        reporttypes: HtmlSummary
+        historydir: ${{ github.workspace }}\.github\Workflows\History
+        title: 'ChocolateStoreCore Coverage Report'
+        license: ${{ secrets.REPORTGENERATOR_LICENSE }}
+    
     - name: Commit and push changes
       run: |
         cd ${{ github.workspace }}
@@ -63,6 +84,8 @@ jobs:
         git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
         git add ChocolateStoreCore/ChocolateStoreCore.csproj
         git add ChocolateStoreCore/version.txt
+        git add summary.html
+        git add ${{ github.workspace }}\.github\Workflows\History
         git commit -m "Incremented build version [skip actions]"
         git push origin_https HEAD:main
       env:
