@@ -67,7 +67,7 @@ jobs:
       with:
         reports: ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
         targetdir: ${{ github.workspace }}\.coverage
-        reporttypes: MarkdownSummary;MarkdownSummaryGithub;Badges
+        reporttypes: MarkdownSummaryGithub;Badges;HtmlInline
         historydir: ${{ github.workspace }}\.coverage\History
         title: 'ChocolateStoreCore Coverage Report'
         license: ${{ secrets.REPORTGENERATOR_LICENSE }}
