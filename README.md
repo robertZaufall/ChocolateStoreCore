@@ -75,7 +75,7 @@ sysinternals
 
 ### Output
 Example output:  
-![cmdline output](ChocolateStoreCore.png)
+![cmdline output](.github/ChocolateStoreCore.png)
 
 ### Package installation  
 From webserver  

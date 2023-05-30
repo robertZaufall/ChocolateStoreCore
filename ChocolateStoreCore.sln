@@ -9,14 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocolateStoreCoreTests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B41E431-B596-40C9-8805-64158D23E9B0}"
 	ProjectSection(SolutionItems) = preProject
+		.github\ChocolateStoreCore.png = .github\ChocolateStoreCore.png
 		codeCoverage.ps1 = codeCoverage.ps1
-		dependabot.ps1 = dependabot.ps1
+		.github\dependabot.ps1 = .github\dependabot.ps1
+		.github\dependabot.yml = .github\dependabot.yml
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		README.md = README.md
-		sbom.ps1 = sbom.ps1
-		summary.html = summary.html
-		Summary.md = Summary.md
-		SummaryGithub.md = SummaryGithub.md
+		.github\sbom.ps1 = .github\sbom.ps1
+		.coverage\summary.html = .coverage\summary.html
 	EndProjectSection
 EndProject
 Global
