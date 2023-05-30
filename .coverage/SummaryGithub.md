@@ -3,8 +3,8 @@
 
 |||
 |:---|:---|
-| Generated on: | 5/29/2023 - 10:05:06 AM |
-| Coverage date: | 5/29/2023 - 10:04:53 AM |
+| Generated on: | 5/30/2023 - 11:16:30 PM |
+| Coverage date: | 5/30/2023 - 11:16:12 PM |
 | Parser: | Cobertura |
 | Assemblies: | 1 |
 | Classes: | 14 |
@@ -20,7 +20,7 @@
 | **Method coverage:** | 90.2% (74 of 82) |
 | Covered methods: | 74 |
 | Total methods: | 82 |
-| Tag: | 21_5110754318 |
+| Tag: | 22_5127094191 |
 
 </details>
 
