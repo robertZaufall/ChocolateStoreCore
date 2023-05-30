@@ -1,9 +1,14 @@
 ChocolateStoreCore
 ==================
+
 *Based on the idea of the [ChocolateStore](https://github.com/BahKoo/ChocolateStore) application by [BahKoo](https://github.com/BahKoo)*  
   
 ### Summary
 Download, modify and cache chocolatey packages locally to be delivered through a local repository including binary downloads.  
+
+| Line | Branch | Method |  
+| --- | --- | --- |
+| ![](.coverage/badge_shieldsio_linecoverage_blue.svg) | ![](.coverage/badge_shieldsio_branchcoverage_blue.svg) | ![](.coverage/badge_shieldsio_methodcoverage_blue.svg) |
 
 ### License
 Apache 2.0
