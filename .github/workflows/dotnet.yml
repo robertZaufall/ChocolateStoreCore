@@ -80,7 +80,15 @@ jobs:
         git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
         git add ChocolateStoreCore/ChocolateStoreCore.csproj
         git add ChocolateStoreCore/version.txt
-        git add .coverage
+        git add .coverage/SummaryGithub.md
+        git add .coverage/summary.html
+        git add .coverage/badge_branchcoverage.svg
+        git add .coverage/badge_combined.svg
+        git add .coverage/badge_linecoverage.svg
+        git add .coverage/badge_methodcoverage.svg
+        git add .coverage/badge_shieldsio_branchcoverage_blue.svg
+        git add .coverage/badge_shieldsio_linecoverage_blue.svg
+        git add .coverage/badge_shieldsio_methodcoverage_blue.svg
         git add .coverage/History
         git commit -m "automated ci/cd task [skip actions]"
         git push origin_https HEAD:main
