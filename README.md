@@ -1,23 +1,23 @@
 ChocolateStoreCore
 ==================
 
+<sup>Line</sup> [![](.coverage/badge_shieldsio_linecoverage_blue.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html) &nbsp;&nbsp;&nbsp;&nbsp;
+<sup>Branch</sup> [![](.coverage/badge_shieldsio_branchcoverage_blue.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html) &nbsp;&nbsp;&nbsp;&nbsp;
+<sup>Method</sup> [![](.coverage/badge_shieldsio_methodcoverage_blue.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html)  
+
 *Based on the idea of the [ChocolateStore](https://github.com/BahKoo/ChocolateStore) application by [BahKoo](https://github.com/BahKoo)*  
   
-### Summary
+## Summary
 Download, modify and cache chocolatey packages locally to be delivered through a local repository including binary downloads.  
 
-| Line | Branch | Method |  
-| --- | --- | --- |
-| ![](.coverage/badge_shieldsio_linecoverage_blue.svg) | ![](.coverage/badge_shieldsio_branchcoverage_blue.svg) | ![](.coverage/badge_shieldsio_methodcoverage_blue.svg) |
-
-### License
+## License
 Apache 2.0
 
-### Compilation requirements
+## Compilation requirements
 * Visual Studio 2022
 * .NET 6.0
 
-### Package dependencies
+## Package dependencies
 ```
 - CommandLineParser
 - Newtonsoft.Json
@@ -30,12 +30,12 @@ Apache 2.0
 - (Test) xunit
 ```
 
-### Syntax
+## Syntax
 Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in same folder as the exe file and optional additional processing flags  
 * `-p or --purge` purge only  
 * `-w or --whatif` no writing or deletion of files  
 
-### Configuration
+## Configuration
 #### `appsettings.json` example
 ```
 {
@@ -78,11 +78,11 @@ nodejs
 sysinternals
 ```
 
-### Output
+## Output
 Example output:  
 ![cmdline output](.github/ChocolateStoreCore.png)
 
-### Package installation  
+## Package installation  
 From webserver  
 ```choco.exe Install firefox --source http://192.168.1.1:8080 -y```  
 
@@ -91,5 +91,5 @@ From fileshare (webserver is still needed for downloading the binaries!)
 
 I can recommend ['civetweb'](https://github.com/civetweb/civetweb/releases) as a simple webserver to deliver the binaries.
 
-### Alternative
+## Alternative
 Chocolatey's (business edition) own feature ['Package Internalizer'](https://chocolatey.org/docs/features-automatically-recompile-packages).
