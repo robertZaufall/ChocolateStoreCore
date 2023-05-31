@@ -11,6 +11,34 @@ ChocolateStoreCore
 ## Summary
 Download, modify and cache chocolatey packages locally to be delivered through a local repository including binary downloads.  
 
+```mermaid
+flowchart TD
+    A(ChocolateStoreCore.exe) --> A1[mode: RUN]
+    A1 --call--> A2[PURGE]
+    A2 --get--> B[Package ID]
+    B --download latest--> C[nupkg]
+    C --dependencies--> B
+    C --download--> D[Binaries]
+    C --replace URL--> E[chocolateyInstall.ps1]
+    D --save--> F[Package folder]
+    E --update--> G[nupkg]
+    F --> G2[File share]
+    G --> G2[File share]
+    AX(ChocolateStoreCore.exe -p) --> H[mode: PURGE]
+    H --inventory--> I[File share]
+    I --delete--> J[old nupkg]
+    I --delete--> K[old folder] 
+```  
+
+Usage  
+
+```mermaid
+flowchart LR
+    B[choco install xyz --source http://x.x.x.x <br/> or <br/> choco install xyz --source \\file_share] --local--> C[nupkg]
+    C -- powershell --> D[chocolateyInstall.ps1]
+    D -- download from<br/>local webserver --> E[Binaries]
+```  
+
 ## License
 Apache 2.0
 
