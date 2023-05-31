@@ -1,8 +1,9 @@
 ChocolateStoreCore
 ==================
 
-<sup>Line</sup> [![](.coverage/badge_shieldsio_linecoverage_blue.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html) &nbsp;&nbsp;&nbsp;&nbsp;
-<sup>Branch</sup> [![](.coverage/badge_shieldsio_branchcoverage_blue.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html) &nbsp;&nbsp;&nbsp;&nbsp;
+[![](.coverage/badge_combined.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html) &nbsp;
+<sup>Line</sup> [![](.coverage/badge_shieldsio_linecoverage_blue.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html) &nbsp;
+<sup>Branch</sup> [![](.coverage/badge_shieldsio_branchcoverage_blue.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html) &nbsp;
 <sup>Method</sup> [![](.coverage/badge_shieldsio_methodcoverage_blue.svg)](https://htmlpreview.github.io/?https://github.com/robertZaufall/ChocolateStoreCore/blob/main/.coverage/summary.html)  
 
 *Based on the idea of the [ChocolateStore](https://github.com/BahKoo/ChocolateStore) application by [BahKoo](https://github.com/BahKoo)*  
