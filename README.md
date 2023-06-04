@@ -23,7 +23,7 @@ Download, modify and cache chocolatey packages locally to be delivered through a
   }
 }%%
 flowchart TD
-    A(ChocolateStoreCore.exe) --> A1[mode: RUN]
+    A([ChocolateStoreCore.exe]) --> A1[mode: RUN]
     A1 --call--> A2[[PURGE]]
     A2 --get--> B[package ID]
     B --download latest--> C[/nupkg file/]
@@ -34,7 +34,7 @@ flowchart TD
     E --update--> G[/nupkg file/]
     F --> G2[/file share/]
     G --> G2[/file share/]
-    AX(ChocolateStoreCore.exe -p) --> H[mode: PURGE]
+    AX([ChocolateStoreCore.exe -p]) --> H[mode: PURGE]
     H --inventory--> I[/file share/]
     I --delete--> J[/old nupkg files/]
     I --delete--> K[/old folders/] 
