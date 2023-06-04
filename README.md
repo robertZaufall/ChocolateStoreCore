@@ -12,31 +12,53 @@ ChocolateStoreCore
 Download, modify and cache chocolatey packages locally to be delivered through a local repository including binary downloads.  
 
 ```mermaid
+%%{
+  init: {
+    "theme": "dark",
+    "fontFamily": "Trebuchet MS, Verdana, Arial, Sans-Serif",
+    "flowchart": {
+      "htmlLabels": true,
+      "curve": "linear"
+    }
+  }
+}%%
 flowchart TD
     A(ChocolateStoreCore.exe) --> A1[mode: RUN]
-    A1 --call--> A2[PURGE]
-    A2 --get--> B[Package ID]
-    B --download latest--> C[nupkg]
+    A1 --call--> A2[[PURGE]]
+    A2 --get--> B[package ID]
+    B --download latest--> C[/nupkg file/]
     C --dependencies--> B
-    C --download--> D[Binaries]
+    C --download--> D[/binaries/]
     C --replace URL--> E[chocolateyInstall.ps1]
-    D --save--> F[Package folder]
-    E --update--> G[nupkg]
-    F --> G2[File share]
-    G --> G2[File share]
+    D --save--> F[/folder/]
+    E --update--> G[/nupkg file/]
+    F --> G2[/file share/]
+    G --> G2[/file share/]
     AX(ChocolateStoreCore.exe -p) --> H[mode: PURGE]
-    H --inventory--> I[File share]
-    I --delete--> J[old nupkg]
-    I --delete--> K[old folder] 
+    H --inventory--> I[/file share/]
+    I --delete--> J[/old nupkg files/]
+    I --delete--> K[/old folders/] 
 ```  
 
 Usage  
 
 ```mermaid
+%%{
+  init: {
+    "theme": "dark",
+    "fontFamily": "Trebuchet MS, Verdana, Arial, Sans-Serif",
+    "flowchart": {
+      "htmlLabels": true,
+      "curve": "linear",
+      "diagramPadding": 120
+    }
+  }
+}%%
 flowchart LR
-    B[choco install xyz --source http://x.x.x.x <br/> or <br/> choco install xyz --source \\file_share] --local--> C[nupkg]
+    A([choco install xyz --source http://x.x.x.x]) --local--> C[/nupkg file/]
+    B([choco install xyz --source \\file_share]) --local--> C[/nupkg file/]
     C -- powershell --> D[chocolateyInstall.ps1]
-    D -- download from<br/>local webserver --> E[Binaries]
+    D -- download from<br/>local webserver --> E[/binaries/]
 ```  
 
 ## License
