@@ -18,18 +18,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - if: ${{ github.actor != 'dependabot[bot]' }}
-      name: Checkout code
+    - name: Checkout code
+      if: ${{ github.actor != 'dependabot[bot]' }}
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.GIT_PAT }}
       
-    - if: ${{ github.actor == 'dependabot[bot]' }}
-      name: Checkout code for dependabot
+    - name: Checkout code for dependabot
+      if: ${{ github.actor == 'dependabot[bot]' }}
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-      
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
@@ -61,16 +61,16 @@ jobs:
       run: |
         dotnet test ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore --collect:"XPlat Code Coverage"
 
-    - if: ${{ github.actor != 'dependabot[bot]' }}
-      name: Test coverage report generation preparation
+    - name: Test coverage report generation preparation
+      if: ${{ github.actor != 'dependabot[bot]' }}
       run: |
         if (!(Test-Path -path ${{ github.workspace }}\.coverage\History)) 
         { 
           New-Item -ItemType directory -Force -Path ${{ github.workspace }}\.coverage\History
         }
 
-    - if: ${{ github.actor != 'dependabot[bot]' }}
-      name: ReportGenerator
+    - name: ReportGenerator
+      if: ${{ github.actor != 'dependabot[bot]' }}
       uses: danielpalme/ReportGenerator-GitHub-Action@5.1.21
       with:
         reports: ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
@@ -79,9 +79,15 @@ jobs:
         historydir: ${{ github.workspace }}\.coverage\History
         title: 'ChocolateStoreCore Coverage Report'
         license: ${{ secrets.REPORTGENERATOR_LICENSE }}
-    
-    - if: ${{ github.actor != 'dependabot[bot]' }}
-      name: Commit and push changes
+
+    - name: Get the last commit SHA
+      id: git
+      run: |
+        echo "::set-output name=sha::$(git rev-parse HEAD)"
+        echo "GithubSHA: ${{ github.sha }}"
+      
+    - name: Commit and push changes
+      if: ${{ github.actor != 'dependabot[bot]' && github.sha == steps.git.outputs.sha }}
       run: |
         cd ${{ github.workspace }}
         git config --global user.name 'github-actions[bot]'
@@ -100,6 +106,6 @@ jobs:
         git add .coverage/badge_shieldsio_methodcoverage_blue.svg
         git add .coverage/History
         git commit -m "automated ci/cd task [skip actions]"
-        git push origin_https HEAD:main
+        git push origin_https
       env:
         GIT_PAT: ${{ secrets.GIT_PAT }}
