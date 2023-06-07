@@ -18,6 +18,8 @@ jobs:
     - name: Get SHA
       id: sha
       run: |
+        git rev-parse HEAD
+        echo "$(git rev-parse HEAD)"
         echo "last_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       
     - name: SHA
