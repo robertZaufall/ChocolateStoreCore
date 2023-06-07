@@ -81,12 +81,13 @@ jobs:
         license: ${{ secrets.REPORTGENERATOR_LICENSE }}
 
     - name: Get the last commit SHA
-      id: git
       run: |
-        echo "github.sha: ${{ github.sha }}"
-        echo "LAST_COMMIT_SHA: $(git rev-parse HEAD)"
         echo "LAST_COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
       
+    - name: SHA
+      run: |
+        echo "github.sha (${{ github.sha }}) == LAST_COMMIT_SHA (${{ env.LAST_COMMIT_SHA }}): ${{ github.sha == env.LAST_COMMIT_SHA }}"
+    
     - name: Commit and push changes
       if: ${{ github.actor != 'dependabot[bot]' && github.sha == env.LAST_COMMIT_SHA }}
       run: |
