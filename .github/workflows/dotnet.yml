@@ -83,7 +83,7 @@ jobs:
     - name: Get SHA
       id: sha
       run: |
-        echo "last_commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        echo "last_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       
     - name: SHA
       run: |
