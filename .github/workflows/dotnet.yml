@@ -89,8 +89,8 @@ jobs:
         git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
 
         git remote update
-        $Local = "${{ github.sha }}"; echo "Local: $Local"
-        $Remote = "$(git rev-parse @{u})" ; echo "Remote: $Remote"
+        $Local  = $(git rev-parse '@')    ; echo "Local:  $Local"
+        $Remote = $(git rev-parse '@{u}') ; echo "Remote: $Remote"
         
         if ($Local -ne $Remote) {
           echo "Check-in cancelled due to changes in the meantime."
