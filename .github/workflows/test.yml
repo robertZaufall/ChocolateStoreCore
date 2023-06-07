@@ -24,7 +24,7 @@ jobs:
         
         $last_commit="$(git rev-parse HEAD)"
         echo "$last_commit"
-        if ($last_commit -neq "${{ github.sha }}") {
+        if ($last_commit -ne "${{ github.sha }}") {
           echo "Check-in cancelled due to changes in the meantime."
           exit 0
         }
