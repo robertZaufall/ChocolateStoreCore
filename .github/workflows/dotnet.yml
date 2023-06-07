@@ -82,7 +82,8 @@ jobs:
 
     - name: Get SHA
       id: sha
-      run: echo "last_commit_sha=$(git rev-parse HEAD)" > $GITHUB_ENV
+      run: |
+        echo "last_commit_sha=$(git rev-parse HEAD)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       
     - name: SHA
       run: |
