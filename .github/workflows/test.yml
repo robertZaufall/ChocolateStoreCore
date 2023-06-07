@@ -1,0 +1,34 @@
+name: OnlyTesting
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+  
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GIT_PAT }}
+      
+    - name: Commit and push changes
+      run: |
+        cd ${{ github.workspace }}
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
+        git fetch
+        
+        $last_commit="$(git rev-parse HEAD)"
+        echo "$last_commit"
+        if ($last_commit -neq ${{ github.sha }}) {
+          echo "Check-in cancelled due to changes in the meantime."
+          exit 0
+        }
+        echo "Check-in might have been done."
+        
+      env:
+        GIT_PAT: ${{ secrets.GIT_PAT }}
