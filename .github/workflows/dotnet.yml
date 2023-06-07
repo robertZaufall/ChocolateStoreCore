@@ -80,16 +80,16 @@ jobs:
         title: 'ChocolateStoreCore Coverage Report'
         license: ${{ secrets.REPORTGENERATOR_LICENSE }}
 
-    - name: Get the last commit SHA
-      run: |
-        echo "LAST_COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+    - name: Get SHA
+      id: sha
+      run: echo "last_commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       
     - name: SHA
       run: |
-        echo "github.sha (${{ github.sha }}) == LAST_COMMIT_SHA (${{ env.LAST_COMMIT_SHA }}): ${{ github.sha == env.LAST_COMMIT_SHA }}"
+        echo "github.sha (${{ github.sha }}) == env.last_commit_sha (${{ env.last_commit_sha }}): ${{ github.sha == env.last_commit_sha }}"
     
     - name: Commit and push changes
-      if: ${{ github.actor != 'dependabot[bot]' && github.sha == env.LAST_COMMIT_SHA }}
+      if: ${{ github.actor != 'dependabot[bot]' && github.sha == env.last_commit_sha }}
       run: |
         cd ${{ github.workspace }}
         git config --global user.name 'github-actions[bot]'
