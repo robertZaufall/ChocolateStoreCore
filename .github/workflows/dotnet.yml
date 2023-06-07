@@ -90,8 +90,8 @@ jobs:
 
         git remote update
         $Upstream = "@{u}" ; echo "Upstream; $Upstream"
-        $Local = $(git rev-parse @); echo "Local: $Local"
-        $Remote = $(git rev-parse $Upstream) ; echo "Remote: $Remote"
+        $Local = "$(git rev-parse @)"; echo "Local: $Local"
+        $Remote = "$(git rev-parse $Upstream)" ; echo "Remote: $Remote"
         
         if ($Local -ne $Remote) {
           echo "Check-in cancelled due to changes in the meantime."
