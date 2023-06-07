@@ -1,0 +1,25 @@
+name: Build and Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+  
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      if: ${{ github.actor != 'dependabot[bot]' }}
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GIT_PAT }}
+      
+    - name: Get SHA
+      id: sha
+      run: |
+        echo "last_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      
+    - name: SHA
+      run: |
+        echo "github.sha (${{ github.sha }}) == steps.sha.outputs.last_commit (${{ steps.sha.outputs.last_commit }}): ${{ github.sha == steps.sha.outputs.last_commit }}"
