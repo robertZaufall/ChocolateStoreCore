@@ -4,14 +4,13 @@ on:
   workflow_dispatch:
     
   push:
-    branches:
-      - main
     paths:
       - 'ChocolateStoreCore\**'
       - 'ChocolateStoreCoreTests\**'
-  pull_request:
-    branches:
-      - main
+  pull_request_target:
+    paths:
+      - 'ChocolateStoreCore\**'
+      - 'ChocolateStoreCoreTests\**'
 
 jobs:
   build:
@@ -19,10 +18,17 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
+    - if: ${{ github.actor != 'dependabot[bot]' }}
+      name: Checkout code
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.GIT_PAT }}
+      
+    - if: ${{ github.actor == 'dependabot[bot]' }}
+      name: Checkout code for dependabot
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
@@ -55,14 +61,16 @@ jobs:
       run: |
         dotnet test ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore --collect:"XPlat Code Coverage"
 
-    - name: Test coverage report generation preparation
+    - if: ${{ github.actor != 'dependabot[bot]' }}
+      name: Test coverage report generation preparation
       run: |
         if (!(Test-Path -path ${{ github.workspace }}\.coverage\History)) 
         { 
           New-Item -ItemType directory -Force -Path ${{ github.workspace }}\.coverage\History
         }
 
-    - name: ReportGenerator
+    - if: ${{ github.actor != 'dependabot[bot]' }}
+      name: ReportGenerator
       uses: danielpalme/ReportGenerator-GitHub-Action@5.1.21
       with:
         reports: ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
@@ -72,7 +80,8 @@ jobs:
         title: 'ChocolateStoreCore Coverage Report'
         license: ${{ secrets.REPORTGENERATOR_LICENSE }}
     
-    - name: Commit and push changes
+    - if: ${{ github.actor != 'dependabot[bot]' }}
+      name: Commit and push changes
       run: |
         cd ${{ github.workspace }}
         git config --global user.name 'github-actions[bot]'
