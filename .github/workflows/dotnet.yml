@@ -87,11 +87,13 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
         git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
-        git fetch
+
+        git remote update
+        $Upstream = "@{u}" ; echo "Upstream; $Upstream"
+        $Local = $(git rev-parse @); echo "Local: $Local"
+        $Remote = $(git rev-parse $Upstream) ; echo "Remote: $Remote"
         
-        $last_commit="$(git rev-parse HEAD)"
-        echo "$last_commit"
-        if ($last_commit -ne "${{ github.sha }}") {
+        if ($Local -ne $Remote) {
           echo "Check-in cancelled due to changes in the meantime."
           exit 0
         }
