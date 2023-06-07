@@ -80,26 +80,22 @@ jobs:
         title: 'ChocolateStoreCore Coverage Report'
         license: ${{ secrets.REPORTGENERATOR_LICENSE }}
 
-    - name: Get SHA
+    - name: Commit and push changes
       if: ${{ github.actor != 'dependabot[bot]' }}
-      id: sha
       run: |
         cd ${{ github.workspace }}
         git config --global user.name 'github-actions[bot]'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
         git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
         git fetch
-        echo "last_commit=$(git rev-parse HEAD)" >> $ENV:GITHUB_OUTPUT
-      env:
-        GIT_PAT: ${{ secrets.GIT_PAT }}
         
-    - name: Commit and push changes
-      if: ${{ github.actor != 'dependabot[bot]' && github.sha == steps.sha.outputs.last_commit }}
-      run: |
-        cd ${{ github.workspace }}
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-        git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
+        $last_commit="$(git rev-parse HEAD)"
+        echo "$last_commit"
+        if ($last_commit -neq ${{ github.sha }}) {
+          echo "Check-in cancelled due to changes in the meantime."
+          exit 0
+        }
+
         git add ChocolateStoreCore/ChocolateStoreCore.csproj
         git add ChocolateStoreCore/version.txt
         git add .coverage/SummaryGithub.md
@@ -114,5 +110,6 @@ jobs:
         git add .coverage/History
         git commit -m "automated ci/cd task [skip actions]"
         git push origin_https
+        
       env:
         GIT_PAT: ${{ secrets.GIT_PAT }}
