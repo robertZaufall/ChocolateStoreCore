@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<coverage version="1.0" date="2023-06-07_11-45-14" tag="28_5199506600">
+  <assembly name="ChocolateStoreCore">
+    <class name="ChocolateStoreCore.App" coveredlines="32" coverablelines="35" totallines="78" coveredbranches="9" totalbranches="14" coveredcodeelements="3" totalcodeelements="3" />
+    <class name="ChocolateStoreCore.ArgsOptions" coveredlines="0" coverablelines="2" totallines="13" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="2" />
+    <class name="ChocolateStoreCore.Exceptions.DownloadException" coveredlines="0" coverablelines="6" totallines="21" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="3" />
+    <class name="ChocolateStoreCore.Helpers.ChocolateyHelper" coveredlines="189" coverablelines="196" totallines="317" coveredbranches="61" totalbranches="86" coveredcodeelements="12" totalcodeelements="12" />
+    <class name="ChocolateStoreCore.Helpers.HttpHelper" coveredlines="32" coverablelines="45" totallines="123" coveredbranches="9" totalbranches="14" coveredcodeelements="6" totalcodeelements="6" />
+    <class name="ChocolateStoreCore.Helpers.ServiceHelper" coveredlines="11" coverablelines="16" totallines="31" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="1" />
+    <class name="ChocolateStoreCore.Helpers.StringHelper" coveredlines="20" coverablelines="21" totallines="53" coveredbranches="5" totalbranches="8" coveredcodeelements="5" totalcodeelements="5" />
+    <class name="ChocolateStoreCore.Models.ChocolateyPackage" coveredlines="8" coverablelines="9" totallines="37" coveredbranches="3" totalbranches="4" coveredcodeelements="7" totalcodeelements="7" />
+    <class name="ChocolateStoreCore.Models.Dependency" coveredlines="3" coverablelines="3" totallines="18" coveredbranches="0" totalbranches="0" coveredcodeelements="3" totalcodeelements="3" />
+    <class name="ChocolateStoreCore.Models.Download" coveredlines="2" coverablelines="2" totallines="14" coveredbranches="0" totalbranches="0" coveredcodeelements="2" totalcodeelements="2" />
+    <class name="ChocolateStoreCore.Models.Settings" coveredlines="28" coverablelines="37" totallines="102" coveredbranches="2" totalbranches="4" coveredcodeelements="22" totalcodeelements="24" />
+    <class name="ChocolateStoreCore.Models.StorePackage" coveredlines="7" coverablelines="7" totallines="26" coveredbranches="0" totalbranches="0" coveredcodeelements="6" totalcodeelements="6" />
+    <class name="ChocolateStoreCore.PackageCacher" coveredlines="114" coverablelines="131" totallines="219" coveredbranches="62" totalbranches="80" coveredcodeelements="5" totalcodeelements="5" />
+    <class name="ChocolateStoreCore.Program" coveredlines="18" coverablelines="27" totallines="64" coveredbranches="0" totalbranches="8" coveredcodeelements="2" totalcodeelements="3" />
+  </assembly>
+</coverage>
