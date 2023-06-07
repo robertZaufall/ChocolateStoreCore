@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build, Test, Coverage
 
 on:
   workflow_dispatch:
@@ -7,6 +7,7 @@ on:
     paths:
       - 'ChocolateStoreCore\**'
       - 'ChocolateStoreCoreTests\**'
+      
   pull_request:
     paths:
       - 'ChocolateStoreCore\**'
@@ -64,14 +65,13 @@ jobs:
     - name: Test coverage report generation preparation
       if: ${{ github.actor != 'dependabot[bot]' }}
       run: |
-        if (!(Test-Path -path ${{ github.workspace }}\.coverage\History)) 
-        { 
+        if (!(Test-Path -path ${{ github.workspace }}\.coverage\History)) { 
           New-Item -ItemType directory -Force -Path ${{ github.workspace }}\.coverage\History
         }
 
     - name: ReportGenerator
       if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.21
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.22
       with:
         reports: ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
         targetdir: ${{ github.workspace }}\.coverage
@@ -109,8 +109,8 @@ jobs:
         git add .coverage/badge_shieldsio_linecoverage_blue.svg
         git add .coverage/badge_shieldsio_methodcoverage_blue.svg
         git add .coverage/History
+        
         git commit -m "automated ci/cd task [skip actions]"
         git push origin_https
-        
       env:
         GIT_PAT: ${{ secrets.GIT_PAT }}
