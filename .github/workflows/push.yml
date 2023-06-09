@@ -3,15 +3,6 @@ name: Build Test Coverage
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
-    paths:
-    - 'ChocolateStoreCore\**'
-    - 'ChocolateStoreCoreTests\**'
-  pull_request:
-    branches: [ "main" ]
-    paths:
-    - 'ChocolateStoreCore\**'
-    - 'ChocolateStoreCoreTests\**'
 
 jobs:
 
