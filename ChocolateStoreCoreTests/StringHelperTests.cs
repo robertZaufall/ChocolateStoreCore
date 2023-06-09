@@ -1,7 +1,3 @@
-using NuGet.Packaging;
-using NuGet.Versioning;
-using System.Text;
-
 namespace ChocolateStoreCoreTests
 {
     [ExcludeFromCodeCoverage]
