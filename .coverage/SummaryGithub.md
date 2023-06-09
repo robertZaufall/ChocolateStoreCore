@@ -3,8 +3,8 @@
 
 |||
 |:---|:---|
-| Generated on: | 6/9/2023 - 10:09:54 PM |
-| Coverage date: | 6/9/2023 - 10:09:36 PM |
+| Generated on: | 6/9/2023 - 10:22:52 PM |
+| Coverage date: | 6/9/2023 - 10:22:37 PM |
 | Parser: | Cobertura |
 | Assemblies: | 1 |
 | Classes: | 14 |
@@ -13,14 +13,14 @@
 | Covered lines: | 464 |
 | Uncovered lines: | 73 |
 | Coverable lines: | 537 |
-| Total lines: | 1116 |
+| Total lines: | 1111 |
 | **Branch coverage:** | 69.2% (151 of 218) |
 | Covered branches: | 151 |
 | Total branches: | 218 |
 | **Method coverage:** | 90.2% (74 of 82) |
 | Covered methods: | 74 |
 | Total methods: | 82 |
-| Tag: | 1_5226411615 |
+| Tag: | 4_5226482974 |
 
 </details>
 
