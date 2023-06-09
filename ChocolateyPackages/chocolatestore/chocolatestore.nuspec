@@ -18,6 +18,6 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
 	</description>
     <copyright>Robert Zaufall</copyright>
     <tags>chocolatey choco packages cache repository</tags>
-    <packageSourceUrl>https://github.com/robertZaufall/ChocolateyPackages</packageSourceUrl>
+    <packageSourceUrl>https://github.com/robertZaufall/ChocolateStoreCore/tree/main/ChocolateyPackages</packageSourceUrl>
   </metadata>
 </package>
