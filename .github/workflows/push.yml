@@ -3,6 +3,9 @@ name: Build Test Coverage
 on:
   workflow_dispatch:
   push:
+    paths:
+     - 'ChocolateStoreCore/**'
+     - 'ChocolateStoreCoreTests/**'
 
 jobs:
 
