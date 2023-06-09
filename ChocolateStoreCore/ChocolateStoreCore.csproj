@@ -18,8 +18,8 @@
 		<Product>ChocolateStoreCore</Product>
 		<Description>Download, modify and cache chocolatey packages locally</Description>
 		<Version>1.0.4</Version>
-		<FileVersion>1.0.4.50</FileVersion>
-		<AssemblyVersion>1.0.4.50</AssemblyVersion>
+		<FileVersion>1.0.4.53</FileVersion>
+		<AssemblyVersion>1.0.4.53</AssemblyVersion>
 		<Authors>Robert Zaufall</Authors>
 		<Company>Robert Zaufall IT Consulting</Company>
 		<Copyright>(c)2023 by Robert Zaufall</Copyright>
@@ -93,7 +93,7 @@
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-	  <Exec Command="powershell -File &quot;$(ProjectDir)version.ps1&quot; -projectDir $(projectDir)" />
+	  <Exec Command="powershell -File &quot;$(ProjectDir)..\version.ps1&quot; -projectDir $(projectDir)" />
 	</Target>
 
 </Project>
