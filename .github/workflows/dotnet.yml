@@ -4,14 +4,18 @@ on:
   workflow_dispatch:
     
   push:
+    branches:
+    - main
     paths:
-      - 'ChocolateStoreCore\**'
-      - 'ChocolateStoreCoreTests\**'
+    - 'ChocolateStoreCore\**'
+    - 'ChocolateStoreCoreTests\**'
       
   pull_request:
+    branches:
+    - main
     paths:
-      - 'ChocolateStoreCore\**'
-      - 'ChocolateStoreCoreTests\**'
+    - 'ChocolateStoreCore\**'
+    - 'ChocolateStoreCoreTests\**'
 
 jobs:
   build:
@@ -38,7 +42,7 @@ jobs:
         
     - name: Update Version
       run: |
-        pwsh -File ${{ github.workspace }}\ChocolateStoreCore\version.ps1 -projectDir ${{ github.workspace }}\ChocolateStoreCore
+        pwsh -File ${{ github.workspace }}\version.ps1 -projectDir ${{ github.workspace }}\ChocolateStoreCore
 
     - name: Restore dependencies ChocolateStoreCore
       run: |
@@ -98,7 +102,9 @@ jobs:
         }
 
         git add ChocolateStoreCore/ChocolateStoreCore.csproj
-        git add ChocolateStoreCore/version.txt
+        git add version.txt
+        git add ChocolateyPackages\chocolatestore\chocolatestore.nuspec
+        
         git add .coverage/SummaryGithub.md
         git add .coverage/summary.html
         git add .coverage/badge_branchcoverage.svg
