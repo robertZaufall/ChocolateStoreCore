@@ -1,6 +1,4 @@
-﻿using ChocolateStoreCore.Helpers;
-
-namespace ChocolateStoreCoreTests
+﻿namespace ChocolateStoreCoreTests
 {
     [ExcludeFromCodeCoverage]
     public class AppTests
