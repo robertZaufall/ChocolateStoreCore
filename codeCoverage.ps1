@@ -1,4 +1,5 @@
 ﻿dotnet tool install -g dotnet-reportgenerator-globaltool
+dotnet tool update  -g dotnet-reportgenerator-globaltool
 $dir = "$pwd\ChocolateStoreCoreTests"
 $license = [System.Environment]::GetEnvironmentVariable('license', 'Machine')
 
