@@ -9,16 +9,30 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocolateStoreCoreTests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B41E431-B596-40C9-8805-64158D23E9B0}"
 	ProjectSection(SolutionItems) = preProject
-		ChocolateyPackages\chocolatestore.cmd = ChocolateyPackages\chocolatestore.cmd
-		ChocolateyPackages\chocolatestore\chocolatestore.nuspec = ChocolateyPackages\chocolatestore\chocolatestore.nuspec
-		.github\ChocolateStoreCore.png = .github\ChocolateStoreCore.png
 		codeCoverage.ps1 = codeCoverage.ps1
 		.github\dependabot.ps1 = .github\dependabot.ps1
-		.github\dependabot.yml = .github\dependabot.yml
-		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
-		README.md = README.md
+		publish.ps1 = publish.ps1
 		.github\sbom.ps1 = .github\sbom.ps1
 		.coverage\summary.html = .coverage\summary.html
+		upload.ps1 = upload.ps1
+		version.ps1 = version.ps1
+		version.txt = version.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChocolateyPackage", "ChocolateyPackage", "{82B5080C-0156-40BD-8845-A0DCF0D66E8F}"
+	ProjectSection(SolutionItems) = preProject
+		ChocolateyPackages\chocolatestore.cmd = ChocolateyPackages\chocolatestore.cmd
+		ChocolateyPackages\chocolatestore\chocolatestore.nuspec = ChocolateyPackages\chocolatestore\chocolatestore.nuspec
+		ChocolateyPackages\chocolatestore\tools\chocolateyInstall.ps1 = ChocolateyPackages\chocolatestore\tools\chocolateyInstall.ps1
+		ChocolateyPackages\chocolatestore\tools\chocolateyUninstall.ps1 = ChocolateyPackages\chocolatestore\tools\chocolateyUninstall.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{80784CCF-603E-4C85-8641-F7CF216A060B}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ChocolateStoreCore.png = .github\ChocolateStoreCore.png
+		.github\dependabot.yml = .github\dependabot.yml
+		.github\workflows\push.yml = .github\workflows\push.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
@@ -38,6 +52,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82B5080C-0156-40BD-8845-A0DCF0D66E8F} = {0B41E431-B596-40C9-8805-64158D23E9B0}
+		{80784CCF-603E-4C85-8641-F7CF216A060B} = {0B41E431-B596-40C9-8805-64158D23E9B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59EC4D31-9D53-4F41-B626-A4B81F2B224B}
