@@ -33,7 +33,7 @@ jobs:
         
     - name: Update Version
       run: |
-        pwsh -File ${{ github.workspace }}\version.ps1 -projectDir ${{ github.workspace }}\ChocolateStoreCore
+        pwsh -File ${{ github.workspace }}\version.ps1 -dir ${{ github.workspace }}\ChocolateStoreCore
 
     - name: Restore dependencies ChocolateStoreCore
       run: |
@@ -60,12 +60,12 @@ jobs:
     - name: Publish
       if: ${{ github.actor != 'dependabot[bot]' }}
       run: |
-        pwsh -File ${{ github.workspace }}\publish.ps1 -projectDir ${{ github.workspace }}\ChocolateStoreCore
+        pwsh -File ${{ github.workspace }}\publish.ps1 -dir ${{ github.workspace }}\ChocolateStoreCore
 
     - name: Create chocolatey package
       if: ${{ github.actor != 'dependabot[bot]' }}
       run: |
-        pwsh -File ${{ github.workspace }}\package.ps1 -projectDir ${{ github.workspace }}\ChocolateStoreCore
+        pwsh -File ${{ github.workspace }}\package.ps1 -dir ${{ github.workspace }}\ChocolateStoreCore
 
     - name: Add artefacts
       if: ${{ github.actor != 'dependabot[bot]' }}
