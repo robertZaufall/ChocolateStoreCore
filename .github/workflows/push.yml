@@ -59,7 +59,7 @@ jobs:
 
     - name: Publish
       run: |
-        $root = "${{ github.workspace }"
+        $root = "${{ github.workspace }}"
         $dir = "$root\ChocolateStoreCore"
         $projectFile = "$dir\ChocolateStoreCore.csproj"
         $dirRelease = "$root\release"
