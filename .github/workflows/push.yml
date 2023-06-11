@@ -65,19 +65,38 @@ jobs:
         $dirRelease = "$root\release"
         $dirReleaseAssets = "$dirRelease\ChocolateStoreCore"
         $dirReleaseAssetsStore = "$dirReleaseAssets\store"
-        $dirPackage = "$root\ChocolateyPackages\chocolatestore"
-        $dirPackageNuspec = "$dirPackage\chocolatestore.nuspec"
-        $dirPackageBinaries = "$dirPackage\tools"
-        $installps1 = "$dirPackageBinaries\chocolateyInstall.ps1"
+        $dirPackageBinaries = "$root\ChocolateyPackages\chocolatestore\tools"
         $zip = 'ChocolateStoreCore.zip'
         If (Test-Path $dirRelease) { Remove-Item $dirRelease -Recurse -Force }
         
         dotnet publish $projectFile -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true /p:PublishDir="$dirReleaseAssets"
+
         New-Item -ItemType Directory -Path $dirReleaseAssetsStore
         New-Item -Path (Join-Path -Path $dirReleaseAssetsStore -ChildPath 'dummy.txt') -ItemType File
         Compress-Archive -Path "$dirReleaseAssets\*" -DestinationPath (Join-Path $dirRelease $zip)
+        If (Test-Path $dirReleaseAssets) { Remove-Item $dirReleaseAssets -Recurse -Force }
 
-    - name: Add artefact
+        Copy-Item (Join-Path $dirRelease $zip) -Destination (Join-Path $dirPackageBinaries $zip) -Force
+
+    - name: Create chocolatey package
+      run: |
+        $root = "${{ github.workspace }}"
+        $dirRelease = "$root\release"
+        $dirPackage = "$root\ChocolateyPackages\chocolatestore"
+        $dirPackageBinaries = "$dirPackage\tools"
+        $dirPackageNuspec = "$dirPackage\chocolatestore.nuspec"
+        $installps1 = "$dirPackageBinaries\chocolateyInstall.ps1"
+        $zip = 'ChocolateStoreCore.zip'
+
+        Copy-Item (Join-Path $dirRelease $zip) -Destination (Join-Path $dirPackageBinaries $zip) -Force
+        $hash = (Get-FileHash -Path (Join-Path $dirRelease $zip) -Algorithm SHA256).Hash
+        $content = Get-Content -Path $installps1
+        $newContent = $content -replace "(?<=checksum\s*=\s*')[^']*", $hash
+        $newContent | Set-Content -Path $installps1
+
+        choco pack $dirPackageNuspec --outdir $dirRelease
+
+    - name: Add artefacts
       uses: actions/upload-artifact@v3
       with:
         name: Assets
