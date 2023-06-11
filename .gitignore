@@ -237,3 +237,4 @@ $RECYCLE.BIN/
 /ChocolateStoreCoreTests/coveragereport
 /release
 /ChocolateyPackages/chocolatestore/tools/ChocolateStoreCore.zip
+/publish_old.ps1
