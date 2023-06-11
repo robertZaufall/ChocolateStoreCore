@@ -1,14 +1,14 @@
 $packageName  = 'chocolatestore'
 $toolsPath    = Split-Path $MyInvocation.MyCommand.Definition
 $fileFullPath = "$toolsPath\ChocolateStoreCore.zip"
-$destination  = Join-Path ${env:ProgramFiles(x86)} 'ChocolateStore'
+$destination  = Join-Path ${env:ProgramFiles} 'ChocolateStore'
 $exeName      = 'ChocolateStoreCore.exe'
 
 $packageArgs = @{
   packageName    = $packageName
   filefullpath   = $fileFullPath
   destination    = $destination
-  checksum       = '7508FEB84738B75D39FC6184AFC8A4FA54C5D7E3D4D13CD6238FF57B2598E8E6'
+  checksum       = '934269BEC3B97074E6B8E40D49E3C80CE70A8E1565FDA7256181575DB4EFB4B9'
   checksumType   = 'sha256'                
 }
 
