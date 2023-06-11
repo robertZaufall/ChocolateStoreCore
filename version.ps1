@@ -1,11 +1,11 @@
 param(
     [Parameter(Mandatory=$true)]
-    [string]$projectDir
+    [string]$dir
 )
 
-$csprojPath = "$projectDir\ChocolateStoreCore.csproj"
-$nuspecPath = "$projectDir\..\ChocolateyPackages\chocolatestore\chocolatestore.nuspec"
-$version = Get-Content "$projectDir\..\version.txt"
+$csprojPath = "$dir\ChocolateStoreCore.csproj"
+$nuspecPath = "$dir\..\ChocolateyPackages\chocolatestore\chocolatestore.nuspec"
+$version = Get-Content "$dir\..\version.txt"
 
 $versionParts = $version.Split('.')
 $buildNumber = [int]$versionParts[3]
@@ -14,7 +14,7 @@ $versionParts[3] = $buildNumber.ToString()
 $newVersion = [string]::Join('.', $versionParts)
 $versionWithoutBuildNumber = [string]::Join('.', $versionParts[0..2])
 
-Set-Content "$projectDir\..\version.txt" $newVersion
+Set-Content "$dir\..\version.txt" $newVersion
 
 $csprojContent = Get-Content $csprojPath
 $newCsprojContent = $newCsprojContent -replace '(<Version>)[0-9]+(\.[0-9]+){1,2}(</Version>)', "`${1}$versionWithoutBuildNumber`$3"

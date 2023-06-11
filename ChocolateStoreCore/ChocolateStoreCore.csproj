@@ -93,7 +93,7 @@
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-	  <Exec Command="powershell -File &quot;$(ProjectDir)..\version.ps1&quot; -projectDir $(projectDir)" />
+	  <Exec Command="powershell -File &quot;$(ProjectDir)..\version.ps1&quot; -dir $(projectDir)" />
 	</Target>
 
 </Project>
