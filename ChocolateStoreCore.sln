@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B41E431-B596-40C9-8805-64158D23E9B0}"
 	ProjectSection(SolutionItems) = preProject
 		codeCoverage.ps1 = codeCoverage.ps1
+		package.ps1 = package.ps1
 		publish.ps1 = publish.ps1
 		upload.ps1 = upload.ps1
 		version.ps1 = version.ps1

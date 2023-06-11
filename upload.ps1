@@ -1,5 +1,9 @@
-$dirPackageNuspec = "$pwd\ChocolateyPackages\chocolatestore\chocolatestore.nuspec"
-$dirRelease = "$pwd\release"
+param (
+    [string]$dir = "$pwd\ChocolateStoreCore"
+)
+
+$dirPackageNuspec = "$dir\..\ChocolateyPackages\chocolatestore\chocolatestore.nuspec"
+$dirRelease = "$dir\..\release"
 
 [xml]$nuspecContent = Get-Content $dirPackageNuspec
 $version = $nuspecContent.package.metadata.version.ToString()
