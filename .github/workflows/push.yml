@@ -51,11 +51,31 @@ jobs:
       
     - name: Build Tests
       run: |
-        dotnet build ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore
+        dotnet build "${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj" --configuration Release --no-restore
       
     - name: Test
       run: |
-        dotnet test ${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj --configuration Release --no-restore --collect:"XPlat Code Coverage"
+        dotnet test "${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj" --configuration Release --no-restore --collect:"XPlat Code Coverage"
+
+    - name: Publish
+      run: |
+        $root = "${{ github.workspace }"
+        $dir = "$root\ChocolateStoreCore"
+        $projectFile = "$dir\ChocolateStoreCore.csproj"
+        $dirRelease = "$root\release"
+        $dirReleaseAssets = "$dirRelease\ChocolateStoreCore"
+        $dirReleaseAssetsStore = "$dirReleaseAssets\store"
+        $dirPackage = "$root\ChocolateyPackages\chocolatestore"
+        $dirPackageNuspec = "$dirPackage\chocolatestore.nuspec"
+        $dirPackageBinaries = "$dirPackage\tools"
+        $installps1 = "$dirPackageBinaries\chocolateyInstall.ps1"
+        $zip = 'ChocolateStoreCore.zip'
+        If (Test-Path $dirRelease) { Remove-Item $dirRelease -Recurse -Force }
+        
+        dotnet publish $projectFile -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true /p:PublishDir="$dirReleaseAssets"
+        New-Item -ItemType Directory -Path $dirReleaseAssetsStore
+        New-Item -Path (Join-Path -Path $dirReleaseAssetsStore -ChildPath 'dummy.txt') -ItemType File
+        Compress-Archive -Path "$dirReleaseAssets\*" -DestinationPath (Join-Path $dirRelease $zip)
 
     - name: Test coverage report generation preparation
       if: ${{ github.actor != 'dependabot[bot]' }}
