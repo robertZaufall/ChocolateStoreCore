@@ -77,6 +77,12 @@ jobs:
         New-Item -Path (Join-Path -Path $dirReleaseAssetsStore -ChildPath 'dummy.txt') -ItemType File
         Compress-Archive -Path "$dirReleaseAssets\*" -DestinationPath (Join-Path $dirRelease $zip)
 
+    - name: Add artefact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Assets
+        path: "${{ github.workspace }}/release/*"
+
     - name: Test coverage report generation preparation
       if: ${{ github.actor != 'dependabot[bot]' }}
       run: |
