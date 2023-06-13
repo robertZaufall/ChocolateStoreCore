@@ -8,7 +8,7 @@ $packageArgs = @{
   packageName    = $packageName
   filefullpath   = $fileFullPath
   destination    = $destination
-  checksum       = '934269BEC3B97074E6B8E40D49E3C80CE70A8E1565FDA7256181575DB4EFB4B9'
+  checksum       = 'EA944B48B9E4AA251E9A9DB4DB21CCC149038B347959078CD9BEA64EB02D03BA'
   checksumType   = 'sha256'                
 }
 

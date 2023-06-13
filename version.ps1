@@ -1,6 +1,5 @@
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$dir
+    [string]$dir = "$pwd\ChocolateStoreCore"
 )
 
 $csprojPath = "$dir\ChocolateStoreCore.csproj"
@@ -17,8 +16,8 @@ $versionWithoutBuildNumber = [string]::Join('.', $versionParts[0..2])
 Set-Content "$dir\..\version.txt" $newVersion
 
 $csprojContent = Get-Content $csprojPath
-$newCsprojContent = $newCsprojContent -replace '(<Version>)[0-9]+(\.[0-9]+){1,2}(</Version>)', "`${1}$versionWithoutBuildNumber`$3"
 $newCsprojContent = $csprojContent -replace '(<FileVersion>)[0-9]+(\.[0-9]+){1,3}(</FileVersion>)', "`${1}$newVersion`$3"
+$newCsprojContent = $newCsprojContent -replace '(<Version>)[0-9]+(\.[0-9]+){1,2}(</Version>)', "`${1}$versionWithoutBuildNumber`$3"
 $newCsprojContent = $newCsprojContent -replace '(<AssemblyVersion>)[0-9]+(\.[0-9]+){1,3}(</AssemblyVersion>)', "`${1}$newVersion`$3"
 Set-Content $csprojPath $newCsprojContent
 
