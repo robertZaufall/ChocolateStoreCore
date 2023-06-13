@@ -2,22 +2,26 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>chocolatestore</id>
-    <version>1.0.4.65</version>
+    <version>1.0.5.9</version>
     <title>ChocolateStoreCore</title>
     <authors>Robert Zaufall</authors>
     <projectUrl>https://github.com/robertZaufall/ChocolateStoreCore/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://github.com/robertZaufall/ChocolateStoreCore/raw/main/LICENSE</licenseUrl>
-    <description># ChocolateStoreCore  
-## Summary
-Download, modify and cache chocolatey packages locally to be delivered through a local repository including binary downloads.  
-## Syntax
-Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in same folder as the exe file and optional additional processing flags  
-* `-p or --purge` purge only  
-* `-w or --whatif` no writing or deletion of files  
-	</description>
+    <description>
+            # ChocolateStoreCore
+            ## Summary
+            Download, modify and cache chocolatey packages locally to be delivered through a local repository including binary downloads.
+            ## Syntax
+            Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in same folder as the exe file and optional additional processing flags
+            * `-p or --purge` purge only
+            * `-w or --whatif` no writing or deletion of files
+        </description>
     <copyright>Robert Zaufall</copyright>
     <tags>chocolatey choco packages cache repository</tags>
     <packageSourceUrl>https://github.com/robertZaufall/ChocolateStoreCore/tree/main/ChocolateyPackages</packageSourceUrl>
+    <dependencies>
+      <dependency id="dotnet-6.0-runtime" version="6.0.16" />
+    </dependencies>
   </metadata>
 </package>
