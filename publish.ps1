@@ -10,7 +10,7 @@ $dirPackageBinaries = "$dir\..\ChocolateyPackages\chocolatestore\tools"
 $zip = 'ChocolateStoreCore.zip'
 If (Test-Path $dirRelease) { Remove-Item $dirRelease -Recurse -Force }
         
-dotnet publish $projectFile -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true /p:PublishDir="$dirReleaseAssets"
+dotnet publish $projectFile -c Release -r win-x64 --self-contained false /p:PublishSingleFile=true /p:PublishTrimmed=false /p:PublishDir="$dirReleaseAssets"
 
 New-Item -ItemType Directory -Path $dirReleaseAssetsStore
 New-Item -Path (Join-Path -Path $dirReleaseAssetsStore -ChildPath 'dummy.txt') -ItemType File
