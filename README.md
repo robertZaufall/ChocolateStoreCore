@@ -88,7 +88,7 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
 
 ## Configuration
 #### `appsettings.json` example
-```
+```json
 {
   "ChocolateyConfiguration": {
     "LocalRepoUrl": "http://192.168.1.1:8080",
