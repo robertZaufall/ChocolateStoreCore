@@ -2,7 +2,6 @@ param (
     [string]$dir = "$pwd\ChocolateStoreCore"
 )
 
-
 $dirPackageNuspec = "$dir\..\ChocolateyPackages\chocolatestore\chocolatestore.nuspec"
 $dirRelease = "$dir\..\release"
 

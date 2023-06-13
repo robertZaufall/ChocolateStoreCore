@@ -20,7 +20,3 @@ $newCsprojContent = $csprojContent -replace '(<FileVersion>)[0-9]+(\.[0-9]+){1,3
 $newCsprojContent = $newCsprojContent -replace '(<Version>)[0-9]+(\.[0-9]+){1,2}(</Version>)', "`${1}$versionWithoutBuildNumber`$3"
 $newCsprojContent = $newCsprojContent -replace '(<AssemblyVersion>)[0-9]+(\.[0-9]+){1,3}(</AssemblyVersion>)', "`${1}$newVersion`$3"
 Set-Content $csprojPath $newCsprojContent
-
-[xml]$nuspecContent = Get-Content $nuspecPath
-$nuspecContent.package.metadata.version = $newVersion
-$nuspecContent.Save($nuspecPath)
