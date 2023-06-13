@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<PublishTrimmed>true</PublishTrimmed>
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -18,8 +18,8 @@
 		<Product>ChocolateStoreCore</Product>
 		<Description>Download, modify and cache chocolatey packages locally</Description>
 		<Version>1.0.5</Version>
-		<FileVersion>1.0.5.11</FileVersion>
-		<AssemblyVersion>1.0.5.11</AssemblyVersion>
+		<FileVersion>1.0.5.18</FileVersion>
+		<AssemblyVersion>1.0.5.18</AssemblyVersion>
 		<Authors>Robert Zaufall</Authors>
 		<Company>Robert Zaufall IT Consulting</Company>
 		<Copyright>(c)2023 by Robert Zaufall</Copyright>
@@ -77,10 +77,6 @@
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
 
 	<ItemGroup>
