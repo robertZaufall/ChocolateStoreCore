@@ -107,7 +107,7 @@ namespace ChocolateStoreCoreTests
         }
 
         [Fact]
-        public async Task CheckUrl_WhenStatusCodeIsOk_ShouldReturnRequestUri()
+        public void CheckUrl_WhenStatusCodeIsOk_ShouldReturnRequestUri()
         {
             //Arrange
             var url = "http://www.google.com";
@@ -138,7 +138,7 @@ namespace ChocolateStoreCoreTests
         }
 
         [Fact]
-        public async Task CheckUrl_WhenStatusCodeIsNotOk_ShouldReturnNull()
+        public void CheckUrl_WhenStatusCodeIsNotOk_ShouldReturnNull()
         {
             //Arrange
             var url = "http://www.google.com";
