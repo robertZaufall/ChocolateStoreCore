@@ -14,7 +14,7 @@ namespace ChocolateStoreCoreTests
             // Arrange
 
             // Act
-            var downloads = StringHelper.GetOriginalUrls(originalUrl, id, version);
+            var downloads = StringHelper.GetOriginalUrls(originalUrl, id, version, "###");
 
             // Assert
             downloads.Should().NotBeNull();

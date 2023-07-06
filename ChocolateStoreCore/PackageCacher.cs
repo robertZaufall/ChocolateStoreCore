@@ -12,6 +12,7 @@ namespace ChocolateStoreCore
         List<ChocolateyPackage> GetLastVersions(List<string> downloads, bool flattenDependencies);
         List<ChocolateyPackage> GetMissingFromDownloadsAndDependencies(List<string> downloads, string path, bool localOnly);
         bool Purge(string path = null, bool whatif = false);
+        List<string> GetInventoryList(string path);
     }
 
     public class PackageCacher : IPackageCacher
@@ -30,6 +31,12 @@ namespace ChocolateStoreCore
             _fileHelper = fileHelper;
             _chocolateyHelper = chocolateyHelper;
             _logger = logger ?? new Logger<PackageCacher>(new NullLoggerFactory());
+        }
+
+        public List<string> GetInventoryList(string path)
+        {
+            var inventory = _chocolateyHelper.GetPackagesInventory(path);
+            return inventory?.Select(x => x.Id).ToList();
         }
 
         public bool Purge(string path = null, bool whatif = false)
@@ -136,9 +143,6 @@ namespace ChocolateStoreCore
             {
                 var sourcePackagePath = Path.Combine(sourcePath, package.FileName);
                 var targetPackagePath = Path.Combine(targetPath ?? sourcePath, package.FileName);
-
-                if (_fileHelper.FileExists(sourcePackagePath))
-                    return true;
 
                 if (!whatif && !_fileHelper.FileExists(sourcePackagePath))
                 {

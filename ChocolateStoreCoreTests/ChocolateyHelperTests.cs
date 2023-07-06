@@ -15,17 +15,17 @@ namespace ChocolateStoreCoreTests
         }
 
         [Theory]
-        [InlineData("https://desktop.docker.com/win/main/amd64/82475/Docker%20Desktop%20Installer.exe", "exe", "Docker Desktop Installer.exe", "bla", "123")]
-        [InlineData("https://desktop.docker.com/win/main/amd64/82475/Docker%20Desktop%20Installer", "EXE", "Docker Desktop Installer.exe", "bla", "123")]
-        [InlineData("https://desktop.docker.com/win/main/amd64/82475/Docker%20Desktop%20Installer", "", "Docker Desktop Installer", "bla", "123")]
-        [InlineData("https://desktop.docker.com/win/main/amd64/82475/Docker%20Desktop%20Installer", "", "Docker Desktop Installer", "", "")]
-        [InlineData("if (\"https://static.rust-lang.org/dist/2023-01-10/rust-mingw-1.66.1-i686-pc-windows-gnu.tar.gz\" -ne \"\") {", "gz", "rust-mingw-1.66.1-i686-pc-windows-gnu.tar.gz", "", "")]
-        public void ExtractAndRewriteUrls(string originalUrl, string originalFileType, string fileNameExpected, string id, string version)
+        [InlineData("https://desktop.docker.com/win/main/amd64/82475/Docker%20Desktop%20Installer.exe", "exe", "Docker Desktop Installer.exe", "bla", "123", @"http://xyz", 1)]
+        [InlineData("https://desktop.docker.com/win/main/amd64/82475/Docker%20Desktop%20Installer", "EXE", "Docker Desktop Installer.exe", "bla", "123", @"http://xyz", 1)]
+        [InlineData("https://desktop.docker.com/win/main/amd64/82475/Docker%20Desktop%20Installer", "", "Docker Desktop Installer", "bla", "123", @"http://xyz", 1)]
+        [InlineData("https://desktop.docker.com/win/main/amd64/82475/Docker%20Desktop%20Installer", "", "Docker Desktop Installer", "", "", @"http://xyz", 1)]
+        [InlineData("if (\"https://static.rust-lang.org/dist/2023-01-10/rust-mingw-1.66.1-i686-pc-windows-gnu.tar.gz\" -ne \"\") {", "gz", "rust-mingw-1.66.1-i686-pc-windows-gnu.tar.gz", "", "", @"http://xyz", 1)]
+        [InlineData("https://123.xyz/test.zip", "zip", "test.zip", "bla", "123", @"https://123.xyz", 0)]
+        public void ExtractAndRewriteUrls(string originalUrl, string originalFileType, string fileNameExpected, string id, string version, string repo, int cntDownloads)
         {
             // Arrange
             var fixture = TestFixture.GetFixture();
 
-            string repo = @"http://xyz";
             string folder = @"c:\folder";
             string folderName = Path.GetFileName(folder);
             var originalContent = new StringBuilder();
@@ -42,12 +42,21 @@ namespace ChocolateStoreCoreTests
 
             // Assert
             content.Should().NotBeNull();
-            downloads.Should().HaveCount(1);
-            var download = downloads[0];
-            string fileName = Path.GetFileName(download.Path);
-            fileName.Should().Be(fileNameExpected);
-            content.ToLower().Should().Contain($"{repo.ToLower()}/{folderName.ToLower()}/{System.Web.HttpUtility.UrlPathEncode(fileName.ToLower())}");
-            download.Path.ToLower().Should().Be($"{folder.ToLower()}\\{fileName.ToLower()}");
+            content.ToLower().Should().Contain($"{repo.ToLower()}");
+            downloads.Should().HaveCount(cntDownloads);
+            if (cntDownloads > 0)
+            {
+                var download = downloads[0];
+                string fileName = Path.GetFileName(download.Path);
+                fileName.Should().Be(fileNameExpected);
+                content.ToLower().Should().Contain($"{repo.ToLower()}/{folderName.ToLower()}/{System.Web.HttpUtility.UrlPathEncode(fileName.ToLower())}");
+                download.Path.ToLower().Should().Be($"{folder.ToLower()}\\{fileName.ToLower()}");
+            }
+            else
+            {
+                originalUrl.ToLower().Should().Contain($"{repo.ToLower()}");
+                content.ToLower().Should().Contain($"{originalUrl.ToLower()}");
+            }
         }
 
         [Theory]

@@ -44,6 +44,14 @@ namespace ChocolateStoreCore
             _logger.LogInformation("found {downloads_Count} packages.", downloads.Count);
 
             var neededPackages = _packageCacher.GetLastVersions(downloads, flattenDependencies: true);
+            
+            var existingIds = neededPackages.Select(x => x.Id).ToList();
+            var nupkgs = _chocolateyHelper.GetPackagesInventory(sourcePath);
+
+            neededPackages.AddRange(
+                nupkgs.Where(x => !existingIds.Contains(x.Id))
+                      .Select(x => new ChocolateyPackage { Id = x.Id, Version = x.Version }).ToList());
+
             neededPackages.ForEach(x =>
             {
                 _ = _packageCacher.CachePackage(x, sourcePath, targetPath, whatif);

@@ -29,14 +29,12 @@ namespace ChocolateStoreCore.Helpers
 
     public class ChocolateyHelper : IChocolateyHelper
     {
-        private readonly ISettings _settings;
         private readonly ILogger<ChocolateyHelper> _logger;
         private readonly IFileHelper _fileHelper;
         private readonly IHttpHelper _httpHelper;
 
-        public ChocolateyHelper(ISettings config, IFileHelper fileHelper, IHttpHelper httpHelper, ILogger<ChocolateyHelper> logger)
+        public ChocolateyHelper(IFileHelper fileHelper, IHttpHelper httpHelper, ILogger<ChocolateyHelper> logger)
         {
-            _settings = config ?? throw new ArgumentNullException(nameof(config));
             _logger = logger ?? new Logger<ChocolateyHelper>(new NullLoggerFactory());
             _fileHelper = fileHelper;
             _httpHelper = httpHelper;
@@ -49,23 +47,26 @@ namespace ChocolateStoreCore.Helpers
 
             var fileType = StringHelper.GetFileTypen(content);
 
-            var originalUrls = StringHelper.GetOriginalUrls(content, id, version);
+            var originalUrls = StringHelper.GetOriginalUrls(content, id, version, notToReplaceUrl: repo);
             var transformedContent = Regex.Replace(content, StringHelper.RxUrlPattern.ToString(), new MatchEvaluator(m =>
             {
-                var url = StringHelper.ReplaceTokens(m.Value, id, version);
-                var actualUrl = _httpHelper.CheckUrl(url);
-                var uri = new Uri(actualUrl ?? url);
-                var fileName = GetFileNameFromUrls(url, actualUrl);
-                var originalFileExtension = Path.GetExtension(fileName);
+                if (string.IsNullOrEmpty(repo) || !m.Value.StartsWith(repo))
+                {
+                    var url = StringHelper.ReplaceTokens(m.Value, id, version);
+                    var actualUrl = _httpHelper.CheckUrl(url);
+                    var uri = new Uri(actualUrl ?? url);
+                    var fileName = GetFileNameFromUrls(url, actualUrl);
+                    var originalFileExtension = Path.GetExtension(fileName);
 
-                if (string.IsNullOrWhiteSpace(originalFileExtension) && !string.IsNullOrWhiteSpace(fileType))
-                    fileName = fileName + "." + fileType;
+                    if (string.IsNullOrWhiteSpace(originalFileExtension) && !string.IsNullOrWhiteSpace(fileType))
+                        fileName = fileName + "." + fileType;
 
-                var transformedUrl = repo + @"/" + folderName + @"/" + HttpUtility.UrlPathEncode(fileName);
+                    var transformedUrl = repo + @"/" + folderName + @"/" + HttpUtility.UrlPathEncode(fileName);
 
-                downloads.Add(new Download { Url = url, Path = Path.Combine(folder, fileName) });
-
-                return transformedUrl;
+                    downloads.Add(new Download { Url = url, Path = Path.Combine(folder, fileName) });
+                    return transformedUrl;
+                }
+                return m.Value;
             }), RegexOptions.IgnoreCase);
             return (transformedContent, downloads, fileType);
         }
@@ -275,41 +276,49 @@ namespace ChocolateStoreCore.Helpers
                 XNamespace ns = "http://www.w3.org/2005/Atom";
 
                 var id = xml.Descendants(ns + "entry").Select(x => (string)x.Element(ns + "title")).FirstOrDefault();
-                var version = xml.Descendants(m + "properties").Select(x => (string)x.Element(d + "Version")).FirstOrDefault();
-                var downloadUrl = xml.Descendants(ns + "entry").Select(x => x.Element(ns + "content")).Select(x => x?.Attribute("src")?.Value).FirstOrDefault();
-                var xDependencies = xml.Descendants(m + "properties").Select(x => (string)x.Element(d + "Dependencies")).FirstOrDefault();
-                List<Dependency> dependencies = xDependencies?
-                    .Split("|")
-                    .ToList()
-                    .Where(x => !string.IsNullOrWhiteSpace(x))
-                    .Select(y =>
-                    {
-                        var depId = y?.Split(":")[0];
-                        var parsed = VersionRange.TryParse(y?.Split(":")[1], out var depVersionRange);
-                        var depVersion = parsed ? (
-                            depVersionRange.HasLowerBound ?
-                                depVersionRange.MinVersion.OriginalVersion :
-                                depVersionRange.MaxVersion.OriginalVersion) :
-                            null;
-                        return new Dependency
-                        {
-                            Id = depId,
-                            OriginalVersion = depVersion,
-                            Version = (depVersion == null ? null : new NuGetVersion(depVersion)),
-                        };
-                    }).ToList();
 
-                return new ChocolateyPackage
+                if (id != null)
                 {
-                    Id = id,
-                    Version = new NuGetVersion(version),
-                    Dependencies = dependencies,
-                    DownloadUrl = downloadUrl,
-                };
+                    var version = xml.Descendants(m + "properties").Select(x => (string)x.Element(d + "Version")).FirstOrDefault();
+                    var downloadUrl = xml.Descendants(ns + "entry").Select(x => x.Element(ns + "content")).Select(x => x?.Attribute("src")?.Value).FirstOrDefault();
+                    var xDependencies = xml.Descendants(m + "properties").Select(x => (string)x.Element(d + "Dependencies")).FirstOrDefault();
+                    List<Dependency> dependencies = xDependencies?
+                        .Split("|")
+                        .ToList()
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
+                        .Select(y =>
+                        {
+                            var depId = y?.Split(":")[0];
+                            var parsed = VersionRange.TryParse(y?.Split(":")[1], out var depVersionRange);
+                            var depVersion = parsed ? (
+                                depVersionRange.HasLowerBound ?
+                                    depVersionRange.MinVersion.OriginalVersion :
+                                    depVersionRange.MaxVersion.OriginalVersion) :
+                                null;
+                            return new Dependency
+                            {
+                                Id = depId,
+                                OriginalVersion = depVersion,
+                                Version = (depVersion == null ? null : new NuGetVersion(depVersion)),
+                            };
+                        }).ToList();
+
+                    return new ChocolateyPackage
+                    {
+                        Id = id,
+                        Version = new NuGetVersion(version),
+                        Dependencies = dependencies,
+                        DownloadUrl = downloadUrl,
+                    };
+                }
+                else
+                {
+                    return new ChocolateyPackage { Id = originalId };
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error parsing metadata for {originalId}", originalId);
+                _logger.LogError(ex, "Error parsing metadata for '{originalId}'", originalId);
                 return null;
             }
         }

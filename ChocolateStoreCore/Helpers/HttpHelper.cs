@@ -51,7 +51,7 @@ namespace ChocolateStoreCore.Helpers
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         var content = new StreamReader(response.Content.ReadAsStreamAsync().Result).ReadToEnd();
-                        _logger.LogInformation("Download metadata for {packageId} done.", packageId);
+                        _logger.LogInformation("Download metadata for '{packageId}' done.", packageId);
                         return content;
                     }
                 }
@@ -59,7 +59,7 @@ namespace ChocolateStoreCore.Helpers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to get metadata for {packageId}", packageId);
+                _logger.LogError(ex, "Failed to get metadata for '{packageId}'", packageId);
                 return null;
             }
         }

@@ -29,13 +29,16 @@ namespace ChocolateStoreCore.Helpers
                    ;
         }
 
-        public static List<string> GetOriginalUrls(string content, string id, string version)
+        public static List<string> GetOriginalUrls(string content, string id, string version, string notToReplaceUrl)
         {
             var downloads = new List<string>();
             var uris = Regex.Replace(content, StringHelper.RxUrlPattern.ToString(), new MatchEvaluator(m =>
             {
                 var url = ReplaceTokens(m.Value, id, version);
-                downloads.Add(url);
+                if (string.IsNullOrEmpty(notToReplaceUrl) || !url.StartsWith(notToReplaceUrl))
+                {
+                    downloads.Add(url);
+                }
                 return url;
             }), RegexOptions.IgnoreCase);
             return downloads;
