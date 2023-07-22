@@ -42,5 +42,7 @@ jobs:
         path: "${{ github.workspace }}/release/*.nupkg"
 
     - name: Chocolatey
+      env:
+        CHOCOLATEY_API_KEY: ${{secrets.CHOCOLATEY_API_KEY}}  
       run: |
         pwsh -File ${{ github.workspace }}\upload.ps1 -dir ${{ github.workspace }}\ChocolateStoreCore
