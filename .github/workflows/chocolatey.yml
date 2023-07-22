@@ -1,0 +1,46 @@
+name: Build Test Coverage
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+  
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+        
+    - name: Restore dependencies ChocolateStoreCore
+      run: |
+        cd ${{ github.workspace }}\ChocolateStoreCore
+        dotnet restore ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj -r win-x86
+              
+    - name: Build ChocolateStoreCore
+      run: |
+        dotnet build ${{ github.workspace }}\ChocolateStoreCore\ChocolateStoreCore.csproj --configuration Release --no-restore
+      
+    - name: Publish
+      run: |
+        pwsh -File ${{ github.workspace }}\publish.ps1 -dir ${{ github.workspace }}\ChocolateStoreCore
+
+    - name: Create chocolatey package
+      run: |
+        pwsh -File ${{ github.workspace }}\package.ps1 -dir ${{ github.workspace }}\ChocolateStoreCore
+
+    - name: Add artefacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Assets
+        path: "${{ github.workspace }}/release/*.nupkg"
+
+    - name: Chocolatey
+      run: |
+        pwsh -File ${{ github.workspace }}\upload.ps1 -dir ${{ github.workspace }}\ChocolateStoreCore
