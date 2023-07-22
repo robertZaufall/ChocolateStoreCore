@@ -9,8 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocolateStoreCoreTests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B41E431-B596-40C9-8805-64158D23E9B0}"
 	ProjectSection(SolutionItems) = preProject
-		package.ps1 = package.ps1
 		coverage.ps1 = coverage.ps1
+		package.ps1 = package.ps1
 		publish.ps1 = publish.ps1
 		upload.ps1 = upload.ps1
 		version.ps1 = version.ps1
@@ -28,12 +28,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{80784CCF-603E-4C85-8641-F7CF216A060B}"
 	ProjectSection(SolutionItems) = preProject
 		.github\ChocolateStoreCore.png = .github\ChocolateStoreCore.png
+		.github\workflows\chocolatey.yml = .github\workflows\chocolatey.yml
 		.github\dependabot.ps1 = .github\dependabot.ps1
 		.github\dependabot.yml = .github\dependabot.yml
 		.github\workflows\push.yml = .github\workflows\push.yml
 		README.md = README.md
 		.github\sbom.ps1 = .github\sbom.ps1
 		.coverage\summary.html = .coverage\summary.html
+		.github\workflows\test.yml = .github\workflows\test.yml
 	EndProjectSection
 EndProject
 Global
