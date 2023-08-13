@@ -81,16 +81,27 @@ jobs:
           New-Item -ItemType directory -Force -Path ${{ github.workspace }}\.coverage\History
         }
 
-    - name: ReportGenerator
-      if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.22
-      with:
-        reports: ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
-        targetdir: ${{ github.workspace }}\.coverage
-        reporttypes: MarkdownSummaryGithub;Badges;HtmlSummary
-        historydir: ${{ github.workspace }}\.coverage\History
-        title: 'ChocolateStoreCore Coverage Report'
-        license: ${{ secrets.REPORTGENERATOR_LICENSE }}
+    #- name: ReportGenerator
+    #  if: ${{ github.actor != 'dependabot[bot]' }}
+    #  uses: danielpalme/ReportGenerator-GitHub-Action@5.1.24
+    #  with:
+    #    reports: ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
+    #    targetdir: ${{ github.workspace }}\.coverage
+    #    reporttypes: MarkdownSummaryGithub;Badges;HtmlSummary
+    #    historydir: ${{ github.workspace }}\.coverage\History
+    #    title: 'ChocolateStoreCore Coverage Report'
+    #    license: ${{ secrets.REPORTGENERATOR_LICENSE }}
+
+    - name: ReportGenerator New
+      run: |
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        $reports = ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
+        $targetdir = ${{ github.workspace }}\.coverage
+        $reporttypes = 'MarkdownSummaryGithub;Badges;HtmlSummary'
+        $historydir = $targetdir\History
+        $title: = 'ChocolateStoreCore Coverage Report'
+        $license = ${{ secrets.REPORTGENERATOR_LICENSE }}
+        reportgenerator -reports:$reports -targetdir:targetdir -reporttypes:$reporttypes -historydir:$historydir -license:$license
 
     - name: Commit and push changes
       if: ${{ github.actor != 'dependabot[bot]' }}
