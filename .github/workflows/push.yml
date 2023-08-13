@@ -98,7 +98,7 @@ jobs:
         $reports = ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
         $targetdir = ${{ github.workspace }}\.coverage
         $reporttypes = 'MarkdownSummaryGithub;Badges;HtmlSummary'
-        $historydir = $targetdir\History
+        $historydir = ${{ github.workspace }}\.coverage\History
         $title: = 'ChocolateStoreCore Coverage Report'
         $license = ${{ secrets.REPORTGENERATOR_LICENSE }}
         reportgenerator -reports:$reports -targetdir:targetdir -reporttypes:$reporttypes -historydir:$historydir -license:$license
