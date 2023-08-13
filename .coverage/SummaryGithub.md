@@ -3,45 +3,45 @@
 
 |||
 |:---|:---|
-| Generated on: | 8/13/2023 - 9:12:20 PM |
-| Coverage date: | 8/13/2023 - 9:12:12 PM |
+| Generated on: | 8/13/2023 - 9:30:19 PM |
+| Coverage date: | 8/13/2023 - 9:30:03 PM |
 | Parser: | Cobertura |
 | Assemblies: | 1 |
 | Classes: | 14 |
 | Files: | 14 |
-| **Line coverage:** | 0% (0 of 549) |
-| Covered lines: | 0 |
-| Uncovered lines: | 549 |
+| **Line coverage:** | 86.3% (474 of 549) |
+| Covered lines: | 474 |
+| Uncovered lines: | 75 |
 | Coverable lines: | 549 |
 | Total lines: | 1135 |
-| **Branch coverage:** | 0% (0 of 226) |
-| Covered branches: | 0 |
+| **Branch coverage:** | 71.6% (162 of 226) |
+| Covered branches: | 162 |
 | Total branches: | 226 |
-| **Method coverage:** | 0% (0 of 83) |
-| Covered methods: | 0 |
+| **Method coverage:** | 89.1% (74 of 83) |
+| Covered methods: | 74 |
 | Total methods: | 83 |
 
 </details>
 
 ## Coverage
-<details><summary>ChocolateStoreCore - 0%</summary>
+<details><summary>ChocolateStoreCore - 86.3%</summary>
 
 |**Name**|**Line**|**Branch**|**Method**|
 |:---|---:|---:|---:|
-|**ChocolateStoreCore**|**0%**|**0%**|**0%**|
-|ChocolateStoreCore.App|0%|0%|0%|
+|**ChocolateStoreCore**|**86.3%**|**71.6%**|**89.1%**|
+|ChocolateStoreCore.App|90%|64.2%|100%|
 |ChocolateStoreCore.ArgsOptions|0%||0%|
 |ChocolateStoreCore.Exceptions.DownloadException|0%||0%|
-|ChocolateStoreCore.Helpers.ChocolateyHelper|0%|0%|0%|
-|ChocolateStoreCore.Helpers.HttpHelper|0%|0%|0%|
-|ChocolateStoreCore.Helpers.ServiceHelper|0%||0%|
-|ChocolateStoreCore.Helpers.StringHelper|0%|0%|0%|
-|ChocolateStoreCore.Models.ChocolateyPackage|0%|0%|0%|
-|ChocolateStoreCore.Models.Dependency|0%||0%|
-|ChocolateStoreCore.Models.Download|0%||0%|
-|ChocolateStoreCore.Models.Settings|0%|0%|0%|
-|ChocolateStoreCore.Models.StorePackage|0%||0%|
-|ChocolateStoreCore.PackageCacher|0%|0%|0%|
-|ChocolateStoreCore.Program|0%|0%|0%|
+|ChocolateStoreCore.Helpers.ChocolateyHelper|96%|72.2%|100%|
+|ChocolateStoreCore.Helpers.HttpHelper|71.1%|64.2%|100%|
+|ChocolateStoreCore.Helpers.ServiceHelper|68.7%||100%|
+|ChocolateStoreCore.Helpers.StringHelper|95.8%|75%|100%|
+|ChocolateStoreCore.Models.ChocolateyPackage|88.8%|75%|100%|
+|ChocolateStoreCore.Models.Dependency|100%||100%|
+|ChocolateStoreCore.Models.Download|100%||100%|
+|ChocolateStoreCore.Models.Settings|75.6%|50%|91.6%|
+|ChocolateStoreCore.Models.StorePackage|100%||100%|
+|ChocolateStoreCore.PackageCacher|87%|81.2%|83.3%|
+|ChocolateStoreCore.Program|66.6%|0%|66.6%|
 
 </details>
