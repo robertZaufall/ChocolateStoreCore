@@ -83,7 +83,7 @@ jobs:
 
     - name: ReportGenerator
       if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.24
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.23
       with:
         reports: ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
         targetdir: ${{ github.workspace }}\.coverage
