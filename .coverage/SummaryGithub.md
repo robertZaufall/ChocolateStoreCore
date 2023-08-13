@@ -1,10 +1,10 @@
-# Summary - ChocolateStoreCore Coverage Report
+# Summary
 <details open><summary>Summary</summary>
 
 |||
 |:---|:---|
-| Generated on: | 8/13/2023 - 12:22:18 AM |
-| Coverage date: | 8/13/2023 - 12:21:36 AM |
+| Generated on: | 8/13/2023 - 9:12:20 PM |
+| Coverage date: | 8/13/2023 - 9:12:12 PM |
 | Parser: | Cobertura |
 | Assemblies: | 1 |
 | Classes: | 14 |
@@ -20,7 +20,6 @@
 | **Method coverage:** | 0% (0 of 83) |
 | Covered methods: | 0 |
 | Total methods: | 83 |
-| Tag: | 41_5844204687 |
 
 </details>
 
