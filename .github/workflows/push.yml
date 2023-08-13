@@ -57,6 +57,17 @@ jobs:
       run: |
         dotnet test "${{ github.workspace }}\ChocolateStoreCoreTests\ChocolateStoreCoreTests.csproj" --configuration Release --no-restore --collect:"XPlat Code Coverage"
 
+    - name: ReportGenerator New
+      run: |
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        $reports = ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
+        $targetdir = ${{ github.workspace }}\.coverage
+        $reporttypes = 'MarkdownSummaryGithub;Badges;HtmlSummary'
+        $historydir = ${{ github.workspace }}\.coverage\History
+        $title = 'ChocolateStoreCore Coverage Report'
+        $license = ${{ secrets.REPORTGENERATOR_LICENSE }}
+        reportgenerator -reports:$reports -targetdir:targetdir -reporttypes:$reporttypes -historydir:$historydir -license:$license
+
     - name: Publish
       if: ${{ github.actor != 'dependabot[bot]' }}
       run: |
@@ -91,17 +102,6 @@ jobs:
     #    historydir: ${{ github.workspace }}\.coverage\History
     #    title: 'ChocolateStoreCore Coverage Report'
     #    license: ${{ secrets.REPORTGENERATOR_LICENSE }}
-
-    - name: ReportGenerator New
-      run: |
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        $reports = ${{ github.workspace }}\ChocolateStoreCoreTests\**\coverage.cobertura.xml
-        $targetdir = ${{ github.workspace }}\.coverage
-        $reporttypes = 'MarkdownSummaryGithub;Badges;HtmlSummary'
-        $historydir = ${{ github.workspace }}\.coverage\History
-        $title: = 'ChocolateStoreCore Coverage Report'
-        $license = ${{ secrets.REPORTGENERATOR_LICENSE }}
-        reportgenerator -reports:$reports -targetdir:targetdir -reporttypes:$reporttypes -historydir:$historydir -license:$license
 
     - name: Commit and push changes
       if: ${{ github.actor != 'dependabot[bot]' }}
