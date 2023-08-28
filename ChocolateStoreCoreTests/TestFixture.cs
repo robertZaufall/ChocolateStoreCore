@@ -28,24 +28,10 @@ namespace ChocolateStoreCoreTests
             return services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>();
         }
 
-        public static Stream GetNupkg()
+        public static string ReadFile(string source = "chocolateyInstall.ps1")
         {
-            PackageBuilder builder = new PackageBuilder();
-
-            var path = Path.Combine(AppContext.BaseDirectory, "resources");
-
-            builder.PopulateFiles(path, new[] { new ManifestFile { Source = "chocolateyInstall.ps1", Target = "tools" } });
-            builder.Populate(new ManifestMetadata()
-            {
-                Id = "test",
-                Version = new NuGet.Versioning.NuGetVersion("1.0.0"),
-                Title = "test title",
-                Authors = new List<string> { "test author" },
-                Description = "test description",
-            });
-            MemoryStream stream = new MemoryStream();
-            builder.Save(stream);
-            return stream;
+            var path = Path.Combine(AppContext.BaseDirectory, "resources", source);
+            return File.ReadAllText(path);
         }
 
         public static MemoryStream GetNupkgWithDependencies()

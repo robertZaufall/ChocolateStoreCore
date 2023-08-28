@@ -40,12 +40,14 @@ namespace ChocolateStoreCore.Helpers
             _httpHelper = httpHelper;
         }
 
-        public (string, List<Download>, string) ExtractAndRewriteUrls(string content, string folder, string repo, string id, string version)
+        public (string, List<Download>, string) ExtractAndRewriteUrls(string contentOriginal, string folder, string repo, string id, string version)
         {
             var downloads = new List<Download>();
             var folderName = Path.GetFileName(folder);
 
-            var fileType = StringHelper.GetFileTypen(content);
+            var content = StringHelper.ReplaceTokensByVariables(contentOriginal);
+
+            var fileType = StringHelper.GetFileType(content);
 
             var originalUrls = StringHelper.GetOriginalUrls(content, id, version, notToReplaceUrl: repo);
             var transformedContent = Regex.Replace(content, StringHelper.RxUrlPattern.ToString(), new MatchEvaluator(m =>

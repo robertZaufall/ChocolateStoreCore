@@ -1,3 +1,6 @@
+using System.IO;
+using System.Text.RegularExpressions;
+
 namespace ChocolateStoreCoreTests
 {
     [ExcludeFromCodeCoverage]
@@ -21,6 +24,62 @@ namespace ChocolateStoreCoreTests
             downloads.Should().HaveCount(1);
             var download = downloads[0];
             download.Should().Be(urlExpected);
+        }
+
+        [Fact]
+        public void ReplaceTokensByVariables_Gradle()
+        {
+            // Arrange
+            string input = 
+@"$packageName = 'gradle'
+$version = '8.3'
+$checksum = 'BB09982FDF52718E4C7B25023D10DF6D35A5FFF969860BDF5A5BD27A3AB27A9E'
+$url = ""https://services.gradle.org/distributions/gradle-$version-all.zip""
+$installDir = Split-Path -parent $MyInvocation.MyCommand.Definition
+
+Install-ChocolateyZipPackage $packageName $url $installDir -Checksum $checksum -ChecksumType 'sha256'
+
+$gradle_home = Join-Path $installDir ""$packageName-$version""
+$gradle_bat = Join-Path $gradle_home 'bin/gradle.bat'
+
+Install-ChocolateyEnvironmentVariable ""GRADLE_HOME"" $gradle_home 'Machine'
+Install-BinFile -Name 'gradle' -Path $gradle_bat
+";
+
+            string expected = 
+@"$packageName = 'gradle'
+$version = '8.3'
+$checksum = 'BB09982FDF52718E4C7B25023D10DF6D35A5FFF969860BDF5A5BD27A3AB27A9E'
+$url = ""https://services.gradle.org/distributions/gradle-8.3-all.zip""
+$installDir = Split-Path -parent $MyInvocation.MyCommand.Definition
+Install-ChocolateyZipPackage $packageName $url $installDir -Checksum $checksum -ChecksumType 'sha256'
+$gradle_home = Join-Path $installDir ""$packageName-$version""
+$gradle_bat = Join-Path $gradle_home 'bin/gradle.bat'
+Install-ChocolateyEnvironmentVariable ""GRADLE_HOME"" $gradle_home 'Machine'
+Install-BinFile -Name 'gradle' -Path $gradle_bat
+";
+
+            // Act
+            var result = StringHelper.ReplaceTokensByVariables(input);
+
+            // Assert
+            result.Should().NotBeNullOrWhiteSpace();
+            result.Should().Contain("$url = \"https://services.gradle.org/distributions/gradle-8.3-all.zip\"");
+            result.Should().Be(expected);
+        }
+
+        [Fact]
+        public void ReplaceTokensByVariables_Firefox()
+        {
+            // Arrange
+            var input = TestFixture.ReadFile("chocolateyInstall_firefox.ps1");
+
+            // Act
+            var result = StringHelper.ReplaceTokensByVariables(input);
+
+            // Assert
+            result.Should().NotBeNullOrWhiteSpace();
+            Regex.Replace(result, @"\s+", "").Should().Be(Regex.Replace(input, @"\s+", ""));
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using static NuGet.Packaging.PackagingConstants;
 
@@ -13,7 +14,7 @@ namespace ChocolateStoreCore.Helpers
         private static readonly Regex RxFileTypePattern = new(@"(?<=filetype\s*=\s{1}['""])[\w{3}]*(?=['""])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         public static readonly Regex RxUrlPattern = new(@"(?<=['""])http[\S]*(?=['""])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static string GetFileTypen(string content)
+        public static string GetFileType(string content)
         {
             var fileType = RxFileTypePattern.Match(content)?.Value?.ToLower();
             return fileType;
@@ -27,6 +28,42 @@ namespace ChocolateStoreCore.Helpers
                    .Replace("$PackageName", id, StringComparison.OrdinalIgnoreCase)
                    .Replace("${locale}", "en-US", StringComparison.OrdinalIgnoreCase)
                    ;
+        }
+
+        public static string ReplaceTokensByVariables(string input)
+        {
+            StringBuilder updatedFileContent = new StringBuilder();
+            Dictionary<string, string> variables = new Dictionary<string, string>();
+            string varPattern = @"^\$(\w+)\s*=\s*(.*)$";
+            string urlPattern = @"https?://\S+";
+
+            foreach (string line in input.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string updatedLine = line;
+                Match varMatch = Regex.Match(line, varPattern);
+
+                if (varMatch.Success)
+                {
+                    string variableName = varMatch.Groups[1].Value;
+                    string variableValue = varMatch.Groups[2].Value.Trim('\'', '"');
+
+                    variables[variableName] = variableValue;
+
+                    if (Regex.IsMatch(variableValue, urlPattern))
+                    {
+                         foreach (var kvp in variables)
+                        {
+                            variableValue = variableValue.Replace("$" + kvp.Key, kvp.Value);
+                        }
+
+                        updatedLine = $"${variableName} = \"{variableValue}\"";
+                    }
+                }
+
+                updatedFileContent.AppendLine(updatedLine);
+            }
+
+            return updatedFileContent.ToString();
         }
 
         public static List<string> GetOriginalUrls(string content, string id, string version, string notToReplaceUrl)
