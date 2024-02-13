@@ -66,7 +66,7 @@ Apache 2.0
 
 ## Compilation requirements
 * Visual Studio 2022
-* .NET 7.0
+* .NET 8.0
 
 ## Package dependencies
 ```

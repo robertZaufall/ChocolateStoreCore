@@ -19,7 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChocolateyPackage", "ChocolateyPackage", "{82B5080C-0156-40BD-8845-A0DCF0D66E8F}"
 	ProjectSection(SolutionItems) = preProject
-		ChocolateyPackages\chocolatestore.cmd = ChocolateyPackages\chocolatestore.cmd
 		ChocolateyPackages\chocolatestore\chocolatestore.nuspec = ChocolateyPackages\chocolatestore\chocolatestore.nuspec
 		ChocolateyPackages\chocolatestore\tools\chocolateyInstall.ps1 = ChocolateyPackages\chocolatestore\tools\chocolateyInstall.ps1
 		ChocolateyPackages\chocolatestore\tools\chocolateyUninstall.ps1 = ChocolateyPackages\chocolatestore\tools\chocolateyUninstall.ps1

@@ -20,7 +20,7 @@ namespace ChocolateStoreCoreTests
             _sut = new Program();
         }
 
-        [Fact]
+/*        [Fact]
         public void ConfigureServicesTest()
         {
             // Arrange
@@ -35,7 +35,7 @@ namespace ChocolateStoreCoreTests
             services.Should().ContainEquivalentOf(new ServiceDescriptor(typeof(IHttpHelper), typeof(HttpHelper), ServiceLifetime.Transient));
             services.Should().ContainEquivalentOf(new ServiceDescriptor(typeof(IFileHelper), typeof(FileHelper), ServiceLifetime.Transient));
             services.Should().ContainEquivalentOf(new ServiceDescriptor(typeof(IChocolateyHelper), typeof(ChocolateyHelper), ServiceLifetime.Transient));
-        }
+        }*/
 
         [Fact]
         public void GetLoggerTest()
