@@ -3,6 +3,7 @@ using ChocolateStoreCore.Helpers;
 using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Globalization;
 
 namespace ChocolateStoreCore
 {
@@ -132,7 +133,7 @@ namespace ChocolateStoreCore
         {
             var chocolateyPackages = downloads.Select(x =>
             {
-                return _chocolateyHelper.GetLastVersion(x);
+                return _chocolateyHelper.GetLastVersion(x.ToLower(CultureInfo.InvariantCulture));
             }).Where(x => x != null).ToList();
             return !flattenDependencies ? chocolateyPackages : _chocolateyHelper.FlattenDependencies(chocolateyPackages);
         }

@@ -1,6 +1,7 @@
 ﻿using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Globalization;
 using System.Net;
 
 namespace ChocolateStoreCore.Helpers
@@ -41,7 +42,7 @@ namespace ChocolateStoreCore.Helpers
 
         public string GetMetadataForPackageId(string packageId)
         {
-            var url = new Uri(new Uri(_settings.ApiUrl), _settings.ApiPath + GetPackageIdInfoTemplate(packageId));
+            var url = new Uri(new Uri(_settings.ApiUrl), _settings.ApiPath + GetPackageIdInfoTemplate(packageId.ToLower(CultureInfo.InvariantCulture)));
 
             try
             {
