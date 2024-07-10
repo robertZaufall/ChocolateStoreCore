@@ -89,5 +89,23 @@ namespace ChocolateStoreCore.Helpers
             }
             return path;
         }
+
+        public static string GetPackageIdFromString(string packageId)
+        {
+            if (packageId.Contains(' '))
+            {
+                return packageId.ToLowerInvariant().Substring(0, packageId.IndexOf(' '));
+            }
+            return packageId;
+        }
+
+        public static string GetVersionFromString(string packageId)
+        {
+            if (packageId.Contains(' '))
+            {
+                return packageId.ToLowerInvariant().Substring(packageId.IndexOf(' ') + 1, packageId.Length - packageId.IndexOf(' ') - 1);
+            }
+            return String.Empty;
+        }
     }
 }

@@ -22,7 +22,7 @@
             var fixture = TestFixture.GetFixture();
             
             var chocolateyHelper = fixture.Freeze<Mock<IChocolateyHelper>>();
-            chocolateyHelper.Setup(_ => _.GetDownloadList(It.IsAny<string>())).Returns(new List<string> { "a", "b" });
+            chocolateyHelper.Setup(_ => _.GetDownloadList(It.IsAny<string>())).Returns(new List<string> { "a", "b", "c 1.0.0" });
             chocolateyHelper.Setup(_ => _.FlattenDependencies(It.IsAny<List<ChocolateyPackage>>())).Returns(new List<ChocolateyPackage> { new ChocolateyPackage() }).Verifiable();
 
             var packageCacher = fixture.Freeze<Mock<IPackageCacher>>();

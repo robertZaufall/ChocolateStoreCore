@@ -40,9 +40,15 @@ namespace ChocolateStoreCore.Helpers
             return String.Format(_settings.ApiPackageRequestWithVersion, packageId, version);
         }
 
-        public string GetMetadataForPackageId(string packageId)
+        public string GetMetadataForPackageId(string downloadItem)
         {
-            var url = new Uri(new Uri(_settings.ApiUrl), _settings.ApiPath + GetPackageIdInfoTemplate(packageId.ToLower(CultureInfo.InvariantCulture)));
+            var id = StringHelper.GetPackageIdFromString(downloadItem);
+            var version = StringHelper.GetVersionFromString(downloadItem);
+
+            var url = new Uri(
+                new Uri(_settings.ApiUrl), 
+                _settings.ApiPath + (version == "" ? GetPackageIdInfoTemplate(id) : GetPackageIdInfoTemplate(id, version))
+            );
 
             try
             {
@@ -52,7 +58,7 @@ namespace ChocolateStoreCore.Helpers
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         var content = new StreamReader(response.Content.ReadAsStreamAsync().Result).ReadToEnd();
-                        _logger.LogInformation("Download metadata for '{packageId}' done.", packageId);
+                        _logger.LogInformation("Download metadata for '{downloadItem}' done.", id);
                         return content;
                     }
                 }
@@ -60,7 +66,7 @@ namespace ChocolateStoreCore.Helpers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to get metadata for '{packageId}'", packageId);
+                _logger.LogError(ex, "Failed to get metadata for '{downloadItem}'", id);
                 return null;
             }
         }
@@ -72,7 +78,7 @@ namespace ChocolateStoreCore.Helpers
                 using (var request = _httpClientFactory.CreateClient("chocolatey"))
                 {
                     HttpRequestMessage reqMessage = new(HttpMethod.Head, url);
-                 
+
                     var response = request.SendAsync(reqMessage).Result;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {

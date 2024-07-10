@@ -81,5 +81,44 @@ Install-BinFile -Name 'gradle' -Path $gradle_bat
             result.Should().NotBeNullOrWhiteSpace();
             Regex.Replace(result, @"\s+", "").Should().Be(Regex.Replace(input, @"\s+", ""));
         }
+
+        [Theory]
+        [InlineData("a", "a")]
+        [InlineData("a ", "a")]
+        [InlineData("a b", "a")]
+        [InlineData("a b b", "a")]
+        [InlineData("", "")]
+        [InlineData("abcdefghijk", "abcdefghijk")]
+        [InlineData("test 1.0.0", "test")]
+        public void GetPackageId_From_PackageId (string packageId, string id)
+        {
+            // Arrange
+
+            // Act
+            var resultId = StringHelper.GetPackageIdFromString(packageId);
+
+            // Assert
+            resultId.Should().NotBeNull();
+            resultId.Should().Be(id);
+        }
+
+        [Theory]
+        [InlineData("a", "")]
+        [InlineData("a ", "")]
+        [InlineData("a b", "b")]
+        [InlineData("a b b", "b b")]
+        [InlineData("", "")]
+        [InlineData("test 1.0.0", "1.0.0")]
+        public void GetVersion_From_PackageId(string packageId, string id)
+        {
+            // Arrange
+
+            // Act
+            var resultId = StringHelper.GetVersionFromString(packageId);
+
+            // Assert
+            resultId.Should().NotBeNull();
+            resultId.Should().Be(id);
+        }
     }
 }

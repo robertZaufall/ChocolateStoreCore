@@ -133,7 +133,7 @@ namespace ChocolateStoreCore
         {
             var chocolateyPackages = downloads.Select(x =>
             {
-                return _chocolateyHelper.GetLastVersion(x.ToLower(CultureInfo.InvariantCulture));
+                return _chocolateyHelper.GetLastVersion(x.ToLowerInvariant());
             }).Where(x => x != null).ToList();
             return !flattenDependencies ? chocolateyPackages : _chocolateyHelper.FlattenDependencies(chocolateyPackages);
         }
