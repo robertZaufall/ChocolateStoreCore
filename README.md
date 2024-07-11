@@ -127,6 +127,7 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
 googlechrome
 nodejs
 sysinternals
+firefox 127.0.2
 ```
 
 ## Output
