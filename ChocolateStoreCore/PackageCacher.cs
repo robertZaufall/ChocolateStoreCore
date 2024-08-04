@@ -140,6 +140,7 @@ namespace ChocolateStoreCore
 
         public bool CachePackage(ChocolateyPackage package, string sourcePath, string targetPath = null, bool whatif = false)
         {
+            bool waitAfterDownload = false;
             try
             {
                 var sourcePackagePath = Path.Combine(sourcePath, package.FileName);
@@ -148,6 +149,10 @@ namespace ChocolateStoreCore
                 if (!whatif && !_fileHelper.FileExists(sourcePackagePath))
                 {
                     _httpHelper.DownloadFile(package.DownloadUrl, targetPackagePath);
+
+                    _logger.LogInformation($"Download done {package.FileName}.");
+                    if (_settings.HttpDelay > 0)
+                        waitAfterDownload = true;
                 }
                 if (whatif)
                 {
@@ -205,6 +210,12 @@ namespace ChocolateStoreCore
                     }
 
                     return false;
+                }
+
+                if (waitAfterDownload)
+                {
+                    _logger.LogWarning($"Delayed processing after package download ({package.FileName}) for {_settings.HttpDelay} seconds.");
+                    Thread.Sleep(TimeSpan.FromSeconds(_settings.HttpDelay));
                 }
 
                 return true;

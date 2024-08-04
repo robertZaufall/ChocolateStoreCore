@@ -30,6 +30,7 @@ namespace ChocolateStoreCoreTests
                 {"ChocolateyConfiguration:HttpTimeout", "13"},
                 {"ChocolateyConfiguration:HttpRetries", "14"},
                 {"ChocolateyConfiguration:HttpRetrySleep", "18"},
+                {"ChocolateyConfiguration:HttpDelay", "21"},
                 {"ChocolateyConfiguration:HttpHandlerLifetime", "15"},
                 {"ChocolateyConfiguration:LogFile", "16"},
                 {"ChocolateyConfiguration:HttpTimeoutOverAll", "17"},
@@ -59,6 +60,7 @@ namespace ChocolateStoreCoreTests
             settings.HttpTimeout.Should().Be(13);
             settings.HttpRetries.Should().Be(14);
             settings.HttpRetrySleep.Should().Be(18);
+            settings.HttpDelay.Should().Be(21);
             settings.HttpHandlerLifetime.Should().Be(15);
             settings.LogFile.Should().Be("16");
             settings.HttpTimeoutOverAll.Should().Be(17);
@@ -78,6 +80,7 @@ namespace ChocolateStoreCoreTests
             // Assert
             settings.Should().NotBeNull();
             settings.HttpRetrySleep.Should().Be(30);
+            settings.HttpDelay.Should().Be(0);
             settings.FolderDelimiter.Should().Be(".");
         }
     }

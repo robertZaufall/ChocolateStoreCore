@@ -25,6 +25,7 @@ namespace ChocolateStoreCore.Models
         int HttpTimeoutOverAll { get; set; }
         int HttpRetries { get; set; }
         int HttpRetrySleep { get; set; }
+        int HttpDelay { get; set; }
         int HttpHandlerLifetime { get; set; }
         string LogFile { get; set; }
         string LogLevel { get; set; }
@@ -91,6 +92,7 @@ namespace ChocolateStoreCore.Models
         public int HttpTimeoutOverAll { get; set; }
         public int HttpRetries { get; set; }
         public int HttpRetrySleep { get; set; } = 30;
+        public int HttpDelay { get; set; } = 0;
         public int HttpHandlerLifetime { get; set; }
         public string LogFile { get; set; }
         public string LogLevel { get; set; }
