@@ -14,7 +14,7 @@ namespace ChocolateStoreCore.Helpers
             registry.Add("regularTimeout", Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(settings.HttpTimeout)));
             registry.Add("waitAndRetryPolicy", Policy
                 .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
-                .WaitAndRetryAsync(settings.HttpRetries, retryAttempt => TimeSpan.FromSeconds(retryAttempt)));
+                .WaitAndRetryAsync(settings.HttpRetries, retryAttempt => TimeSpan.FromSeconds(settings.HttpRetrySleep)));
 
             services.AddHttpClient(name, client =>
             {

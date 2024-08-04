@@ -8,6 +8,7 @@ namespace ChocolateStoreCoreTests
     public class ChocolateyHelperTests : IClassFixture<TestFixture>
     {
         readonly TestFixture _fixture;
+        private readonly Mock<ISettings> _settingsMock = new Mock<ISettings>();
 
         public ChocolateyHelperTests(TestFixture fixture)
         {

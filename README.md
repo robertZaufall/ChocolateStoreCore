@@ -106,9 +106,11 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
     "HttpTimeout": "5",
     "HttpTimeoutOverAll": "10",
     "HttpRetries": "3",
+    "HttpRetrySleep": "30",
     "HttpHandlerLifetime": "10",
     "LogFile": "log.txt",
-    "LogLevel": "Warning"
+    "LogLevel": "Warning",
+    "FolderDelimiter": "."
   }
 }
 ```
@@ -121,6 +123,7 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
 | `HttpTimeout`         | [s] |  
 | `HttpTimeoutOverAll`  | [min] |  
 | `HttpHandlerLifetime` | [min] |  
+| `HttpRetrySleep`      | [s] |  
   
 #### `download.txt` example 
 ```

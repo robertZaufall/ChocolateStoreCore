@@ -29,12 +29,14 @@ namespace ChocolateStoreCore.Helpers
 
     public class ChocolateyHelper : IChocolateyHelper
     {
+        private readonly ISettings _settings;
         private readonly ILogger<ChocolateyHelper> _logger;
         private readonly IFileHelper _fileHelper;
         private readonly IHttpHelper _httpHelper;
 
-        public ChocolateyHelper(IFileHelper fileHelper, IHttpHelper httpHelper, ILogger<ChocolateyHelper> logger)
+        public ChocolateyHelper(ISettings settings, IFileHelper fileHelper, IHttpHelper httpHelper, ILogger<ChocolateyHelper> logger)
         {
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _logger = logger ?? new Logger<ChocolateyHelper>(new NullLoggerFactory());
             _fileHelper = fileHelper;
             _httpHelper = httpHelper;
@@ -183,7 +185,7 @@ namespace ChocolateStoreCore.Helpers
                         var directoryName = Path.GetDirectoryName(package.Path);
                         if (directoryName != null)
                         {
-                            var tempPath = Path.Combine(directoryName, $"{package.Id}.{package.Version.OriginalVersion}");
+                            var tempPath = Path.Combine(directoryName, $"{package.Id}{_settings.FolderDelimiter}{package.Version.OriginalVersion}");
                             if (_fileHelper.DirectoryExists(tempPath))
                             {
                                 package.Folder = tempPath;

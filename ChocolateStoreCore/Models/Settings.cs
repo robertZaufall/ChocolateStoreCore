@@ -24,9 +24,11 @@ namespace ChocolateStoreCore.Models
         int HttpTimeout { get; set; }
         int HttpTimeoutOverAll { get; set; }
         int HttpRetries { get; set; }
+        int HttpRetrySleep { get; set; }
         int HttpHandlerLifetime { get; set; }
         string LogFile { get; set; }
         string LogLevel { get; set; }
+        string FolderDelimiter { get; set; }
         LogEventLevel GetLogLevel();
     }
 
@@ -88,9 +90,11 @@ namespace ChocolateStoreCore.Models
         public int HttpTimeout { get; set; }
         public int HttpTimeoutOverAll { get; set; }
         public int HttpRetries { get; set; }
+        public int HttpRetrySleep { get; set; } = 30;
         public int HttpHandlerLifetime { get; set; }
         public string LogFile { get; set; }
         public string LogLevel { get; set; }
+        public string FolderDelimiter { get; set; } = ".";
 
         public LogEventLevel GetLogLevel()
         {

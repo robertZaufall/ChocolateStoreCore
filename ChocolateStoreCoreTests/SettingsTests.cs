@@ -29,9 +29,12 @@ namespace ChocolateStoreCoreTests
                 {"ChocolateyConfiguration:DownloadListPath", "12"},
                 {"ChocolateyConfiguration:HttpTimeout", "13"},
                 {"ChocolateyConfiguration:HttpRetries", "14"},
+                {"ChocolateyConfiguration:HttpRetrySleep", "18"},
                 {"ChocolateyConfiguration:HttpHandlerLifetime", "15"},
                 {"ChocolateyConfiguration:LogFile", "16"},
-                {"ChocolateyConfiguration:HttpTimeoutOverAll", "17"}
+                {"ChocolateyConfiguration:HttpTimeoutOverAll", "17"},
+                {"ChocolateyConfiguration:LogLevel", "19"},
+                {"ChocolateyConfiguration:FolderDelimiter", "20"}
             };
 
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(myConfiguration).Build();
@@ -55,9 +58,27 @@ namespace ChocolateStoreCoreTests
             settings.DownloadListPath.Should().Be("12");
             settings.HttpTimeout.Should().Be(13);
             settings.HttpRetries.Should().Be(14);
+            settings.HttpRetrySleep.Should().Be(18);
             settings.HttpHandlerLifetime.Should().Be(15);
             settings.LogFile.Should().Be("16");
             settings.HttpTimeoutOverAll.Should().Be(17);
+            settings.LogLevel.Should().Be("19");
+            settings.FolderDelimiter.Should().Be("20");
+        }
+
+        [Fact]
+        public void InstantiationDefaultsTest()
+        {
+            // Arrange
+            var configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
+
+            // Act
+            var settings = new Settings(configuration, "");
+
+            // Assert
+            settings.Should().NotBeNull();
+            settings.HttpRetrySleep.Should().Be(30);
+            settings.FolderDelimiter.Should().Be(".");
         }
     }
 }

@@ -154,7 +154,7 @@ namespace ChocolateStoreCore
                     _fileHelper.FileCopy(sourcePackagePath, targetPackagePath);
                 }
 
-                string folderName = package.FileName.Replace(".nupkg", "");
+                string folderName = $"{package.Id}{_settings.FolderDelimiter}{package.Version.Version}";
                 string folder = Path.Combine(targetPath ?? sourcePath, folderName);
 
                 try
