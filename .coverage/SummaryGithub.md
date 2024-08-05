@@ -3,32 +3,32 @@
 
 |||
 |:---|:---|
-| Generated on: | 8/4/2024 - 7:02:52 PM |
-| Coverage date: | 8/4/2024 - 7:02:48 PM |
+| Generated on: | 8/4/2024 - 7:37:19 PM |
+| Coverage date: | 8/4/2024 - 7:37:15 PM |
 | Parser: | Cobertura |
 | Assemblies: | 1 |
 | Classes: | 14 |
 | Files: | 14 |
-| **Line coverage:** | 83.3% (484 of 581) |
-| Covered lines: | 484 |
-| Uncovered lines: | 97 |
-| Coverable lines: | 581 |
-| Total lines: | 1206 |
-| **Branch coverage:** | 72.7% (176 of 242) |
-| Covered branches: | 176 |
-| Total branches: | 242 |
-| **Method coverage:** | 87.5% (77 of 88) |
-| Covered methods: | 77 |
-| Total methods: | 88 |
+| **Line coverage:** | 83% (489 of 589) |
+| Covered lines: | 489 |
+| Uncovered lines: | 100 |
+| Coverable lines: | 589 |
+| Total lines: | 1219 |
+| **Branch coverage:** | 72.3% (178 of 246) |
+| Covered branches: | 178 |
+| Total branches: | 246 |
+| **Method coverage:** | 87.6% (78 of 89) |
+| Covered methods: | 78 |
+| Total methods: | 89 |
 
 </details>
 
 ## Coverage
-<details><summary>ChocolateStoreCore - 83.3%</summary>
+<details><summary>ChocolateStoreCore - 83%</summary>
 
 |**Name**|**Line**|**Branch**|**Method**|
 |:---|---:|---:|---:|
-|**ChocolateStoreCore**|**83.3%**|**72.7%**|**87.5%**|
+|**ChocolateStoreCore**|**83%**|**72.3%**|**87.6%**|
 |ChocolateStoreCore.App|90%|64.2%|100%|
 |ChocolateStoreCore.ArgsOptions|0%||0%|
 |ChocolateStoreCore.Exceptions.DownloadException|0%||0%|
@@ -39,9 +39,9 @@
 |ChocolateStoreCore.Models.ChocolateyPackage|88.8%|75%|100%|
 |ChocolateStoreCore.Models.Dependency|100%||100%|
 |ChocolateStoreCore.Models.Download|100%||100%|
-|ChocolateStoreCore.Models.Settings|76.9%|50%|92.3%|
+|ChocolateStoreCore.Models.Settings|77.5%|50%|92.5%|
 |ChocolateStoreCore.Models.StorePackage|100%||100%|
-|ChocolateStoreCore.PackageCacher|87%|81.2%|83.3%|
+|ChocolateStoreCore.PackageCacher|85.5%|79.7%|83.3%|
 |ChocolateStoreCore.Program|25.9%|0%|33.3%|
 
 </details>
