@@ -35,7 +35,8 @@ namespace ChocolateStoreCoreTests
                 {"ChocolateyConfiguration:LogFile", "16"},
                 {"ChocolateyConfiguration:HttpTimeoutOverAll", "17"},
                 {"ChocolateyConfiguration:LogLevel", "19"},
-                {"ChocolateyConfiguration:FolderDelimiter", "20"}
+                {"ChocolateyConfiguration:FolderDelimiter", "20"},
+                {"ChocolateyConfiguration:InstallFilesPattern", "22"},
             };
 
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(myConfiguration).Build();
@@ -66,6 +67,7 @@ namespace ChocolateStoreCoreTests
             settings.HttpTimeoutOverAll.Should().Be(17);
             settings.LogLevel.Should().Be("19");
             settings.FolderDelimiter.Should().Be("20");
+            settings.InstallFilesPattern.Should().Be("22");
         }
 
         [Fact]
@@ -82,6 +84,7 @@ namespace ChocolateStoreCoreTests
             settings.HttpRetrySleep.Should().Be(30);
             settings.HttpDelay.Should().Be(0);
             settings.FolderDelimiter.Should().Be(".");
+            settings.InstallFilesPattern.Should().Be("tools/(ChocolateyInstall\\.ps|data\\.ps)");
         }
     }
 }

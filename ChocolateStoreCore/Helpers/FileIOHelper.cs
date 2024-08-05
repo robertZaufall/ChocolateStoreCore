@@ -18,7 +18,7 @@ namespace ChocolateStoreCore.Helpers
         List<string> GetDirectoryNames(string path);
         List<string> GetNupkgFiles(string path);
         MemoryStream GetStream(string path);
-        string GetContentFromZip(string path, string fileName);
+        Dictionary<string, string> GetContentFromZip(string path, string fileName);
         bool UpdateContentInZip(string path, string fileName, string content);
         bool WriteDummyFile(string path);
         bool FileCreate(string path, Stream stream);
@@ -53,19 +53,23 @@ namespace ChocolateStoreCore.Helpers
         {
             return new MemoryStream(File.ReadAllBytes(path));
         }
-        public string GetContentFromZip(string path, string fileName)
+        public Dictionary<string, string> GetContentFromZip(string path, string filePattern)
         {
+            var contents = new Dictionary<string, string>();
             using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Read))
             {
-                var entry = archive.Entries.Where(x => x.FullName.Equals(fileName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                if (entry != null)
+                var regex = new System.Text.RegularExpressions.Regex(filePattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                var entries = archive.Entries.Where(x => regex.IsMatch(x.FullName)).ToList();
+
+                foreach (var entry in entries)
                 {
                     using var reader = new StreamReader(entry.Open());
-                    return reader.ReadToEnd();
+                    contents.Add(entry.FullName, reader.ReadToEnd());
                 }
             }
-            return null;
+            return contents;
         }
+
         public bool UpdateContentInZip(string path, string fileName, string content)
         {
             using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Update))

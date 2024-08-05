@@ -112,6 +112,7 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
     "LogFile": "log.txt",
     "LogLevel": "Warning",
     "FolderDelimiter": "."
+    "InstallFilesPattern": "tools/(ChocolateyInstall\\.ps|data\\.ps)"
   }
 }
 ```
@@ -126,6 +127,7 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
 | `HttpHandlerLifetime` | [min] |  
 | `HttpRetrySleep`      | [s] - Time to wait for retry (default: 30s) |
 | `HttpDelay`           | [s] - Time to wait after package download (default: 0s) |
+| `InstallFilesPattern` | RegEx pattern for files to be patched. Default: ChocolateyInstall.ps, Data.ps |
   
 #### `download.txt` example 
 ```

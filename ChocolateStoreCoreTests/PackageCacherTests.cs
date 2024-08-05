@@ -144,7 +144,7 @@ namespace ChocolateStoreCoreTests
             var download2 = fixture.Create<Download>();
             var downloadPath = fixture.Create<string>();
             var downloads = new List<Download>{ download1, download2 };
-            var installFileContent = fixture.Create<string>();
+            var installFilesContent = fixture.Create<Dictionary<string, string>>();
             string path = fixture.Create<string>();
 
             var chocolateyHelper = fixture.Freeze<Mock<IChocolateyHelper>>();
@@ -160,7 +160,7 @@ namespace ChocolateStoreCoreTests
             fileHelper.Setup(_ => _.FileExists(download1.Path)).Returns(true);
             fileHelper.Setup(_ => _.FileExists(download2.Path)).Returns(true);
             fileHelper.Setup(_ => _.FileExists(downloadPath)).Returns(true);
-            fileHelper.Setup(_ => _.GetContentFromZip(It.IsAny<string>(), It.IsAny<string>())).Returns(installFileContent);
+            fileHelper.Setup(_ => _.GetContentFromZip(It.IsAny<string>(), It.IsAny<string>())).Returns(installFilesContent);
             fileHelper.Setup(_ => _.UpdateContentInZip(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             fileHelper.Setup(_ => _.DirectoryExists(It.IsAny<string>())).Returns(false);
             fileHelper.Setup(_ => _.DirectoryCreateDirectory(It.IsAny<string>())).Returns(true);
@@ -214,7 +214,7 @@ namespace ChocolateStoreCoreTests
             var download2 = fixture.Create<Download>();
             var downloadPath = fixture.Create<string>();
             var downloads = new List<Download> { download1, download2 };
-            var installFileContent = fixture.Create<string>();
+            var installFilesContent = fixture.Create<Dictionary<string, string>>();
 
             string sourcePath = fixture.Create<string>();
             string targetPath = fixture.Create<string>();
@@ -233,7 +233,7 @@ namespace ChocolateStoreCoreTests
             fileHelper.Setup(_ => _.FileExists(download1.Path)).Returns(true);
             fileHelper.Setup(_ => _.FileExists(download2.Path)).Returns(true);
             fileHelper.Setup(_ => _.FileExists(downloadPath)).Returns(true);
-            fileHelper.Setup(_ => _.GetContentFromZip(It.IsAny<string>(), It.IsAny<string>())).Returns(installFileContent);
+            fileHelper.Setup(_ => _.GetContentFromZip(It.IsAny<string>(), It.IsAny<string>())).Returns(installFilesContent);
             fileHelper.Setup(_ => _.UpdateContentInZip(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             fileHelper.Setup(_ => _.DirectoryExists(It.IsAny<string>())).Returns(false);
             fileHelper.Setup(_ => _.DirectoryCreateDirectory(It.IsAny<string>())).Returns(true);

@@ -18,7 +18,6 @@ namespace ChocolateStoreCore
 
     public class PackageCacher : IPackageCacher
     {
-        private const string INSTALL_FILE = "tools/chocolateyInstall.ps1";
         private readonly ISettings _settings;
         private readonly ILogger<PackageCacher> _logger;
         private readonly IFileHelper _fileHelper;
@@ -164,33 +163,37 @@ namespace ChocolateStoreCore
 
                 try
                 {
-                    var content = _fileHelper.GetContentFromZip(targetPackagePath, INSTALL_FILE);
+                    var filesWithContent = _fileHelper.GetContentFromZip(targetPackagePath, _settings.InstallFilesPattern);
 
-                    if (!string.IsNullOrWhiteSpace(content))
+                    foreach (var fileWithContent in filesWithContent)
                     {
-                        (var contentNew, var downloads, _) = _chocolateyHelper.ExtractAndRewriteUrls(content, folder, _settings.LocalRepoUrl, package.Id, package.Version.OriginalVersion);
-
-                        if (!string.IsNullOrWhiteSpace(contentNew) && downloads.Count > 0 && !_fileHelper.DirectoryExists(folder))
+                        var content = fileWithContent.Value;
+                        if (!string.IsNullOrWhiteSpace(content))
                         {
-                            if (_fileHelper.DirectoryCreateDirectory(folder))
+                            (var contentNew, var downloads, _) = _chocolateyHelper.ExtractAndRewriteUrls(content, folder, _settings.LocalRepoUrl, package.Id, package.Version.OriginalVersion);
+
+                            if (!string.IsNullOrWhiteSpace(contentNew) && downloads.Count > 0 && !_fileHelper.DirectoryExists(folder))
                             {
-                                downloads.ForEach(x =>
+                                if (_fileHelper.DirectoryCreateDirectory(folder))
                                 {
-                                    _logger.LogWarning("Downloading {x_Url}", x.Url);
-                                    if (!whatif && !_fileHelper.FileExists(x.Path))
+                                    downloads.ForEach(x =>
                                     {
-                                        var returnPath = _httpHelper.DownloadFile(x.Url, x.Path);
-                                        if (returnPath == null || !_fileHelper.FileExists(returnPath))
+                                        _logger.LogWarning("Downloading {x_Url}", x.Url);
+                                        if (!whatif && !_fileHelper.FileExists(x.Path))
                                         {
-                                            throw new DownloadException(string.Format("Download not successful: {0}", x.Url));
+                                            var returnPath = _httpHelper.DownloadFile(x.Url, x.Path);
+                                            if (returnPath == null || !_fileHelper.FileExists(returnPath))
+                                            {
+                                                throw new DownloadException(string.Format("Download not successful: {0}", x.Url));
+                                            }
                                         }
-                                    }
-                                    if (whatif)
-                                    {
-                                        _fileHelper.WriteDummyFile(x.Path);
-                                    }
-                                });
-                                return _fileHelper.UpdateContentInZip(targetPackagePath, INSTALL_FILE, contentNew);
+                                        if (whatif)
+                                        {
+                                            _fileHelper.WriteDummyFile(x.Path);
+                                        }
+                                    });
+                                    return _fileHelper.UpdateContentInZip(targetPackagePath, fileWithContent.Key, contentNew);
+                                }
                             }
                         }
                     }

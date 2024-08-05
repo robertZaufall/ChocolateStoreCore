@@ -30,6 +30,7 @@ namespace ChocolateStoreCore.Models
         string LogFile { get; set; }
         string LogLevel { get; set; }
         string FolderDelimiter { get; set; }
+        string InstallFilesPattern { get; set; }
         LogEventLevel GetLogLevel();
     }
 
@@ -97,6 +98,7 @@ namespace ChocolateStoreCore.Models
         public string LogFile { get; set; }
         public string LogLevel { get; set; }
         public string FolderDelimiter { get; set; } = ".";
+        public string InstallFilesPattern { get; set; } = "tools/(ChocolateyInstall\\.ps|data\\.ps)";
 
         public LogEventLevel GetLogLevel()
         {
