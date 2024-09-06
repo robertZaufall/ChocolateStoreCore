@@ -3,10 +3,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NuGet.Packaging;
 using NuGet.Versioning;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
@@ -21,6 +17,7 @@ namespace ChocolateStoreCore.Helpers
         ChocolateyPackage GetLastVersion(string id);
         List<Dependency> GetPackageDependenciesFromNuspec(NuspecReader nusprecReader);
         List<StorePackage> GetPackagesInventory(string path);
+        List<StorePackage> GetDirectoriesOnlyInventory(string path, string delimiter);
         ChocolateyPackage GetPackageWithDependenciesFromNupkgFile(MemoryStream stream);
         StorePackage ParseNupkg(MemoryStream stream);
         ChocolateyPackage ParseMetadata(string originalId, string content);
@@ -198,6 +195,37 @@ namespace ChocolateStoreCore.Helpers
             }).ToList();
 
             return nupkgs;
+        }
+
+        public List<StorePackage> GetDirectoriesOnlyInventory(string path, string delimiter = "-")
+        {
+            var result = new List<StorePackage>();
+
+            var folders = _fileHelper.GetDirectoryNames(path);
+
+            Regex regex = new Regex(@"^(.*?)" + delimiter + @"(\d+\.\d+\.\d+(?:\.\d+)?(?:-win32-x64)?)$");
+
+            foreach (var str in folders)
+            {
+                Match match = regex.Match(str);
+                if (match.Success)
+                {
+                    string version = match.Groups[2].Value;
+                    if (NuGetVersion.TryParse(version.Replace("-win32-x64", ""), out var nugetVersion))
+                    {
+                        var storePackage = new StorePackage
+                        {
+                            Id = match.Groups[1].Value,
+                            Version = nugetVersion,
+                            FileName = str,
+                            Folder = Path.Combine(path, str),
+                        };
+                        result.Add(storePackage);
+                    }
+                }
+            }
+
+            return result;
         }
 
         public List<ChocolateyPackage> FlattenDependencies(List<ChocolateyPackage> chocolateyPackages)

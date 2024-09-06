@@ -25,6 +25,10 @@ namespace ChocolateStoreCore
             {
                 await serviceProvider.GetService<IApp>().Purge(options?.WhatIf ?? false);
             }
+            else if (options != null && options.PurgeVsCode)
+            {
+                await serviceProvider.GetService<IApp>().PurgeVsCode(options.Path, options?.WhatIf ?? false);
+            }
             else
             {
                 await serviceProvider.GetService<IApp>().Run(options?.WhatIf ?? false);

@@ -3,7 +3,6 @@ using ChocolateStoreCore.Helpers;
 using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using System.Globalization;
 
 namespace ChocolateStoreCore
 {
@@ -12,6 +11,7 @@ namespace ChocolateStoreCore
         bool CachePackage(ChocolateyPackage package, string sourcePath, string targetPath = null, bool whatif = false);
         List<ChocolateyPackage> GetLastVersions(List<string> downloads, bool flattenDependencies);
         List<ChocolateyPackage> GetMissingFromDownloadsAndDependencies(List<string> downloads, string path, bool localOnly);
+        bool PurgeVsCodeExtensionsFolders(string path = null, bool whatif = false);
         bool Purge(string path = null, bool whatif = false);
         List<string> GetInventoryList(string path);
     }
@@ -41,11 +41,34 @@ namespace ChocolateStoreCore
 
         public bool Purge(string path = null, bool whatif = false)
         {
-            var packageFolders = _fileHelper.GetDirectoryNames(path);
-            var nupkgs = _chocolateyHelper.GetPackagesInventory(path);
-            _logger.LogInformation("Found {packageFolders_Count} package folders and {nupkgs_Count} nupkgs files.", packageFolders?.Count, nupkgs?.Count);
+            var folders = _fileHelper.GetDirectoryNames(path);
+            var inventory = _chocolateyHelper.GetPackagesInventory(path);
+            _logger.LogInformation("Found {folders_Count} package folders and {inventory_Count} nupkgs files.", folders?.Count, inventory?.Count);
 
-            var nupkgsToPurge = nupkgs?.GroupBy(
+            DoPurge(inventory, whatif);
+
+            if (_settings.AdditionalPurgeOfFolders)
+            {
+                var foldersToPurge = _chocolateyHelper.GetDirectoriesOnlyInventory(path, _settings.FolderDelimiter);
+                _logger.LogInformation("Found {foldersToPurge_Count} folders for additional purging.", foldersToPurge?.Count);
+
+                DoPurge(foldersToPurge, whatif);
+            }
+            
+            return true;
+        }
+
+        public bool PurgeVsCodeExtensionsFolders(string path = null, bool whatif = false)
+        {
+            var inventory = _chocolateyHelper.GetDirectoriesOnlyInventory(path, "-");
+            _logger.LogInformation("Found {inventory_Count} VSCode extension folders.", inventory?.Count);
+
+            return DoPurge(inventory, whatif);
+        }
+
+        private bool DoPurge(List<StorePackage> inventory, bool whatif = false)
+        {
+            var toPurge = inventory?.GroupBy(
                 x => x.Id,
                 x => x.Version,
                 (baseid, versions) => new
@@ -53,17 +76,22 @@ namespace ChocolateStoreCore
                     Key = baseid,
                     Max = versions.Max(),
                     Count = versions.Count(),
-                    Versions = versions.Where(x => x != versions.Max()).ToList()
-                })
-                .ToList()
-                .Where(x => x.Count > 1).OrderBy(x => x.Count).ToList();
-            _logger.LogWarning("Grouped nupkgs for purging to {nupkgsToPurge_Count} groups.", nupkgsToPurge?.Count);
+                    Versions = versions
+                        .Where(x =>
+                            x != versions.Max() ||
+                            x == versions.Max() && versions.Count(v => v == x) >= 2 && x.OriginalVersion?.Length == versions.Min(v => v.OriginalVersion?.Length)
+                        ).ToList()
+                }).ToList();
 
-            nupkgsToPurge?.ForEach(x => x.Versions.ForEach(y =>
+            var toReallyPurge = toPurge?.Where(x => x.Count > 1).OrderBy(x => x.Count).ToList();
+
+            _logger.LogWarning("{toReallyPurge_Count} groups for purging.", toReallyPurge?.Count);
+
+            toPurge?.ForEach(x => x.Versions.ForEach(y =>
             {
                 _logger.LogInformation("Processing {x_Key}, {y_Version}", x.Key, y.Version);
 
-                var todo = nupkgs?.Where(a => a.Id == x.Key && a.Version == y)
+                var todo = inventory?.Where(a => a.Id == x.Key && a.Version == y)
                     .Select(a => new { a.Path, a.Folder })
                     .FirstOrDefault();
 
@@ -76,7 +104,7 @@ namespace ChocolateStoreCore
                             _fileHelper.DirectoryDelete(todo.Folder);
                     }
 
-                    if (_fileHelper.FileExists(todo.Path))
+                    if (!string.IsNullOrWhiteSpace(todo.Path) && _fileHelper.FileExists(todo.Path))
                     {
                         _logger.LogWarning("Deleting file {todo_Path}", todo.Path);
                         if (!whatif)
@@ -106,23 +134,15 @@ namespace ChocolateStoreCore
             dependenciesList.ForEach(x => x.Dependencies?.ForEach(z =>
             {
                 if (nupkgs != null && !nupkgs.Exists(a => a.Id == z.Id))
-                {
                     if (!missingChocolateyPackages.Exists(a => a.Id == z.Id))
-                    {
                         missingChocolateyPackages.Add(new ChocolateyPackage { Id = z.Id });
-                    }
-                }
             }));
 
             downloads.ForEach(x =>
             {
                 if (nupkgs != null && !nupkgs.Exists(a => a.Id == x))
-                {
                     if (!missingChocolateyPackages.Exists(b => b.Id == x))
-                    {
                         missingChocolateyPackages.Add(new ChocolateyPackage { Id = x });
-                    }
-                }
             });
 
             return missingChocolateyPackages;
@@ -183,14 +203,10 @@ namespace ChocolateStoreCore
                                         {
                                             var returnPath = _httpHelper.DownloadFile(x.Url, x.Path);
                                             if (returnPath == null || !_fileHelper.FileExists(returnPath))
-                                            {
                                                 throw new DownloadException(string.Format("Download not successful: {0}", x.Url));
-                                            }
                                         }
                                         if (whatif)
-                                        {
                                             _fileHelper.WriteDummyFile(x.Path);
-                                        }
                                     });
                                     return _fileHelper.UpdateContentInZip(targetPackagePath, fileWithContent.Key, contentNew);
                                 }

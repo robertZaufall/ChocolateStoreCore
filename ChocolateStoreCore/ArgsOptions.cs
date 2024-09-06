@@ -9,5 +9,11 @@ namespace ChocolateStoreCore
 
         [Option('p', "purge", Required = false, HelpText = "Only execute purge operation.")]
         public bool Purge { get; set; }
+
+        [Option('v', "purgevscode", Required = false, HelpText = "Only execute purge operation on VSCode extension folders.")]
+        public bool PurgeVsCode { get; set; }
+
+        [Option('d', "path", Required = false, HelpText = "Only execute purge operation on VSCode extension folders.")]
+        public string Path { get; set; }
     }
 }

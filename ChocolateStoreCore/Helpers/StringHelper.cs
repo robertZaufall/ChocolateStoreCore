@@ -1,11 +1,5 @@
-﻿using ChocolateStoreCore.Models;
-using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using static NuGet.Packaging.PackagingConstants;
 
 namespace ChocolateStoreCore.Helpers
 {

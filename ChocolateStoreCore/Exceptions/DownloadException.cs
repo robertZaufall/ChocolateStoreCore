@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ChocolateStoreCore.Exceptions
+﻿namespace ChocolateStoreCore.Exceptions
 {
     public class DownloadException : Exception
     {

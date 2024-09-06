@@ -1,9 +1,7 @@
 ﻿using ChocolateStoreCore.Helpers;
 using Microsoft.Extensions.Configuration;
 using Serilog.Events;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 
 namespace ChocolateStoreCore.Models
 {
@@ -31,6 +29,9 @@ namespace ChocolateStoreCore.Models
         string LogLevel { get; set; }
         string FolderDelimiter { get; set; }
         string InstallFilesPattern { get; set; }
+        bool AdditionalPurgeOfFolders { get; set; }
+        string GetAbsolutePath(string path);
+        string GetRoot();
         LogEventLevel GetLogLevel();
     }
 
@@ -99,6 +100,10 @@ namespace ChocolateStoreCore.Models
         public string LogLevel { get; set; }
         public string FolderDelimiter { get; set; } = ".";
         public string InstallFilesPattern { get; set; } = "tools/(ChocolateyInstall\\.ps|data\\.ps)";
+        public bool AdditionalPurgeOfFolders { get; set; } = false;
+
+        public string GetAbsolutePath(string path) => StringHelper.GetPathWithLocal(_root, path);
+        public string GetRoot() => _root;
 
         public LogEventLevel GetLogLevel()
         {

@@ -1,8 +1,6 @@
 ﻿using ChocolateStoreCore.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
-using System;
-using System.Net.Http;
 
 namespace ChocolateStoreCore.Helpers
 {

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
-using System.Linq;
 
 namespace ChocolateStoreCore.Helpers
 {
@@ -37,13 +33,19 @@ namespace ChocolateStoreCore.Helpers
         public bool DirectoryDelete(string path)
         {
             if (Directory.Exists(path))
+            {
+                RemoveReadOnlyAttribute(path);
                 Directory.Delete(path, true);
+            }
             return true;
         }
         public bool FileDelete(string path)
         {
             if (File.Exists(path))
+            {
+                RemoveReadOnlyAttribute(path);
                 File.Delete(path);
+            }
             return true;
         }
         public List<string> GetListFromStream(string path) => new StreamReader(path).ReadToEnd().Split("\r\n").ToList();
@@ -78,9 +80,9 @@ namespace ChocolateStoreCore.Helpers
                 if (entry != null)
                 {
                     entry.Delete();
-                    
+
                     var newEntry = archive.CreateEntry(fileName, CompressionLevel.Optimal);
-                    
+
                     using (StreamWriter writer = new StreamWriter(newEntry.Open()))
                     {
                         writer.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -116,5 +118,36 @@ namespace ChocolateStoreCore.Helpers
             File.Copy(sourcePath, targetPath, true);
             return true;
         }
+
+        private void RemoveReadOnlyAttribute(string path)
+        {
+            if (File.Exists(path))
+            {
+                FileInfo fileInfo = new FileInfo(path);
+                if (fileInfo.IsReadOnly)
+                {
+                    fileInfo.IsReadOnly = false;
+                }
+            }
+            else if (Directory.Exists(path))
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                foreach (FileInfo file in directoryInfo.GetFiles("*", SearchOption.AllDirectories))
+                {
+                    if (file.IsReadOnly)
+                    {
+                        file.IsReadOnly = false;
+                    }
+                }
+                foreach (DirectoryInfo dir in directoryInfo.GetDirectories("*", SearchOption.AllDirectories))
+                {
+                    if ((dir.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                    {
+                        dir.Attributes &= ~FileAttributes.ReadOnly;
+                    }
+                }
+            }
+        }
+
     }
 }

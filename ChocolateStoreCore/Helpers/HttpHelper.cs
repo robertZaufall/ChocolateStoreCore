@@ -1,7 +1,6 @@
 ﻿using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using System.Globalization;
 using System.Net;
 
 namespace ChocolateStoreCore.Helpers

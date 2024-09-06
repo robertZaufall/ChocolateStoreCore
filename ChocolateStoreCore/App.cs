@@ -2,8 +2,6 @@
 using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using System;
-using System.Threading.Tasks;
 
 namespace ChocolateStoreCore
 {
@@ -11,6 +9,7 @@ namespace ChocolateStoreCore
     {
         Task<int> Run(bool whatif);
         Task<int> Purge(bool whatif);
+        Task<int> PurgeVsCode(string path, bool whatif);
     }
 
     public class App : IApp
@@ -79,6 +78,25 @@ namespace ChocolateStoreCore
 
             await Task.CompletedTask;
             _logger.LogWarning("Purging {path} done.", sourcePath);
+
+            return 0;
+        }
+
+        public async Task<int> PurgeVsCode(string path = null, bool whatif = false)
+        {
+            string extPath = path;
+            if (!_fileHelper.DirectoryExists(extPath))
+                extPath = _settings.GetAbsolutePath(path);
+            if (!_fileHelper.DirectoryExists(extPath))
+                extPath = _settings.GetAbsolutePath(".\\extensions");
+            if (!_fileHelper.DirectoryExists(extPath))
+                extPath = _settings.GetRoot();
+
+            _logger.LogWarning("Start purging directories {extPath}...", extPath);
+            _packageCacher.PurgeVsCodeExtensionsFolders(extPath, whatif);
+
+            await Task.CompletedTask;
+            _logger.LogWarning("Purging directories {extPath} done.", extPath);
 
             return 0;
         }

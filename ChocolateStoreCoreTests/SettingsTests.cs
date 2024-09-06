@@ -37,6 +37,7 @@ namespace ChocolateStoreCoreTests
                 {"ChocolateyConfiguration:LogLevel", "19"},
                 {"ChocolateyConfiguration:FolderDelimiter", "20"},
                 {"ChocolateyConfiguration:InstallFilesPattern", "22"},
+                {"ChocolateyConfiguration:AdditionalPurgeOfFolders", "true"},
             };
 
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(myConfiguration).Build();
@@ -68,6 +69,7 @@ namespace ChocolateStoreCoreTests
             settings.LogLevel.Should().Be("19");
             settings.FolderDelimiter.Should().Be("20");
             settings.InstallFilesPattern.Should().Be("22");
+            settings.AdditionalPurgeOfFolders.Should().BeTrue();
         }
 
         [Fact]

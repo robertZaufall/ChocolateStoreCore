@@ -85,6 +85,8 @@ Apache 2.0
 Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in same folder as the exe file and optional additional processing flags  
 * `-p or --purge` purge only  
 * `-w or --whatif` no writing or deletion of files  
+* `-v or --purgevscode` special mode to purge vscode extensions  
+* `-d or --path` path to vscode extensions (only used with `-v`)  
 
 ## Configuration
 #### `appsettings.json` example
@@ -107,27 +109,29 @@ Run `ChocolateStoreCore.exe` with existing `appsettings.json` configuration in s
     "HttpTimeoutOverAll": "10",
     "HttpRetries": "3",
     "HttpRetrySleep": "30",
-    "HttpDelay": "0",
+    "HttpDelay": "5",
     "HttpHandlerLifetime": "10",
     "LogFile": "log.txt",
     "LogLevel": "Warning",
     "FolderDelimiter": "."
-    "InstallFilesPattern": "tools/(ChocolateyInstall\\.ps|data\\.ps)"
+    "InstallFilesPattern": "tools/(ChocolateyInstall\\.ps|data\\.ps)",
+    "AdditionalPurgeOfFolders": "false"
   }
 }
 ```
 
-| parameter             | description |  
-| :---                  | :--- |  
-| `LocalRepoUrl`        | url of the local webserver where the binaries are to be downloaded from |  
-| `FolderPath`          | file location to cache the nupkg files and optional folders for download artefacts. a relative path is supported (e.g. ```.``` or ```.\\store```). the directory must exist |  
-| `DownloadListPath`    | file location for the file containing the desired chocolatey ids (one line for each id). a relative path is supported (e.g. ```.\\download.txt```). |  
-| `HttpTimeout`         | [s] |  
-| `HttpTimeoutOverAll`  | [min] |  
-| `HttpHandlerLifetime` | [min] |  
-| `HttpRetrySleep`      | [s] - Time to wait for retry (default: 30s) |
-| `HttpDelay`           | [s] - Time to wait after package download (default: 0s) |
-| `InstallFilesPattern` | RegEx pattern for files to be patched. Default: ChocolateyInstall.ps, Data.ps |
+| parameter                  | description |  
+| :---                       | :--- |  
+| `LocalRepoUrl`             | url of the local webserver where the binaries are to be downloaded from |  
+| `FolderPath`               | file location to cache the nupkg files and optional folders for download artefacts. a relative path is supported (e.g. ```.``` or ```.\\store```). the directory must exist |  
+| `DownloadListPath`         | file location for the file containing the desired chocolatey ids (one line for each id). a relative path is supported (e.g. ```.\\download.txt```). |  
+| `HttpTimeout`              | [s] |  
+| `HttpTimeoutOverAll`       | [min] |  
+| `HttpHandlerLifetime`      | [min] |  
+| `HttpRetrySleep`           | [s] - Time to wait for retry (default: 30s) |
+| `HttpDelay`                | [s] - Time to wait after package download (default: 5s) |
+| `InstallFilesPattern`      | RegEx pattern for files to be patched. Default: ChocolateyInstall.ps, Data.ps |
+| `AdditionalPurgeOfFolders` | Second purging of folder to remove older abandoned versions, also to fix a potential duplicate folder problem (e.g. 1.0.2 <=> 1.0.2.0) |
   
 #### `download.txt` example 
 ```
