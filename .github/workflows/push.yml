@@ -7,6 +7,9 @@ on:
      - 'ChocolateStoreCore/**'
      - 'ChocolateStoreCoreTests/**'
 
+permissions:
+  contents: write
+
 jobs:
 
   build:
@@ -15,19 +18,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GIT_PAT }}
-      
-    - name: Checkout code for dependabot
-      if: ${{ github.actor == 'dependabot[bot]' }}
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+      uses: actions/checkout@v4
 
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
         
@@ -110,9 +104,8 @@ jobs:
         cd ${{ github.workspace }}
         git config --global user.name 'github-actions[bot]'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-        git remote add origin_https https://${{ secrets.GIT_PAT }}@github.com/robertZaufall/ChocolateStoreCore.git
 
-        git remote update
+        git fetch origin
         $Local  = $(git rev-parse '@')    ; echo "Local:  $Local"
         $Remote = $(git rev-parse '@{u}') ; echo "Remote: $Remote"
         
@@ -137,6 +130,4 @@ jobs:
         git add .coverage/History
         
         git commit -m "automated ci/cd task [skip actions]"
-        git push origin_https
-      env:
-        GIT_PAT: ${{ secrets.GIT_PAT }}
+        git push origin HEAD:${{ github.ref_name }}
