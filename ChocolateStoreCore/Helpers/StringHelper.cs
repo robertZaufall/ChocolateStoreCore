@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ChocolateStoreCore.Helpers
@@ -7,6 +7,8 @@ namespace ChocolateStoreCore.Helpers
     {
         private static readonly Regex RxFileTypePattern = new(@"(?<=filetype\s*=\s{1}['""])[\w{3}]*(?=['""])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         public static readonly Regex RxUrlPattern = new(@"(?<=['""])http[\S]*(?=['""])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RxPackageVersionExpression = new(@"^\s*\[version\]\(\[regex\]'(?<pattern>[^']+)'\)\.Match\(\$Env:chocolateyPackageVersion\)\.Value\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RxPackageSelector = new(@"^(?<id>[^\s:]+)(?:[\s:]+(?<version>.+))?$", RegexOptions.Compiled);
 
         public static string GetFileType(string content)
         {
@@ -16,18 +18,37 @@ namespace ChocolateStoreCore.Helpers
 
         public static string ReplaceTokens(string input, string id, string version)
         {
-            return input
-                   .Replace("$PackageVersion", version, StringComparison.OrdinalIgnoreCase)
-                   .Replace("$Version", version, StringComparison.OrdinalIgnoreCase)
-                   .Replace("$PackageName", id, StringComparison.OrdinalIgnoreCase)
-                   .Replace("${locale}", "en-US", StringComparison.OrdinalIgnoreCase)
-                   ;
+            var result = input;
+
+            if (!string.IsNullOrWhiteSpace(version))
+            {
+                result = result
+                    .Replace("$PackageVersion", version, StringComparison.OrdinalIgnoreCase)
+                    .Replace("$Version", version, StringComparison.OrdinalIgnoreCase)
+                    .Replace("$Env:chocolateyPackageVersion", version, StringComparison.OrdinalIgnoreCase)
+                    .Replace("$Env:ChocolateyPackageVersion", version, StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                result = result
+                    .Replace("$PackageName", id, StringComparison.OrdinalIgnoreCase)
+                    .Replace("$Env:chocolateyPackageName", id, StringComparison.OrdinalIgnoreCase)
+                    .Replace("$Env:ChocolateyPackageName", id, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return result.Replace("${locale}", "en-US", StringComparison.OrdinalIgnoreCase);
         }
 
         public static string ReplaceTokensByVariables(string input)
         {
+            return ReplaceTokensByVariables(input, string.Empty, string.Empty);
+        }
+
+        public static string ReplaceTokensByVariables(string input, string id, string version)
+        {
             StringBuilder updatedFileContent = new StringBuilder();
-            Dictionary<string, string> variables = new Dictionary<string, string>();
+            Dictionary<string, string> variables = new(StringComparer.OrdinalIgnoreCase);
             string varPattern = @"^\$(\w+)\s*=\s*(.*)$";
             string urlPattern = @"https?://\S+";
 
@@ -39,18 +60,14 @@ namespace ChocolateStoreCore.Helpers
                 if (varMatch.Success)
                 {
                     string variableName = varMatch.Groups[1].Value;
-                    string variableValue = varMatch.Groups[2].Value.Trim('\'', '"');
+                    string variableValue = varMatch.Groups[2].Value.Trim();
+                    string resolvedValue = ResolveVariableValue(variableValue, variables, id, version);
 
-                    variables[variableName] = variableValue;
+                    variables[variableName] = resolvedValue;
 
-                    if (Regex.IsMatch(variableValue, urlPattern))
+                    if (Regex.IsMatch(resolvedValue, urlPattern, RegexOptions.IgnoreCase))
                     {
-                         foreach (var kvp in variables)
-                        {
-                            variableValue = variableValue.Replace("$" + kvp.Key, kvp.Value);
-                        }
-
-                        updatedLine = $"${variableName} = \"{variableValue}\"";
+                        updatedLine = $"${variableName} = \"{resolvedValue}\"";
                     }
                 }
 
@@ -60,10 +77,35 @@ namespace ChocolateStoreCore.Helpers
             return updatedFileContent.ToString();
         }
 
+        private static string ResolveVariableValue(string variableValue, Dictionary<string, string> variables, string id, string version)
+        {
+            string resolvedValue = variableValue.Trim('"', '\'');
+
+            var versionExpressionMatch = RxPackageVersionExpression.Match(resolvedValue);
+            if (versionExpressionMatch.Success && !string.IsNullOrWhiteSpace(version))
+            {
+                var extractedVersion = Regex.Match(version, versionExpressionMatch.Groups["pattern"].Value).Value;
+                if (!string.IsNullOrWhiteSpace(extractedVersion))
+                {
+                    return extractedVersion;
+                }
+            }
+
+            resolvedValue = ReplaceTokens(resolvedValue, id, version);
+
+            foreach (var kvp in variables.OrderByDescending(x => x.Key.Length))
+            {
+                resolvedValue = new Regex($@"\${Regex.Escape(kvp.Key)}\b", RegexOptions.IgnoreCase)
+                    .Replace(resolvedValue, _ => kvp.Value);
+            }
+
+            return resolvedValue;
+        }
+
         public static List<string> GetOriginalUrls(string content, string id, string version, string notToReplaceUrl)
         {
             var downloads = new List<string>();
-            var uris = Regex.Replace(content, StringHelper.RxUrlPattern.ToString(), new MatchEvaluator(m =>
+            _ = Regex.Replace(content, StringHelper.RxUrlPattern.ToString(), new MatchEvaluator(m =>
             {
                 var url = ReplaceTokens(m.Value, id, version);
                 if (string.IsNullOrEmpty(notToReplaceUrl) || !url.StartsWith(notToReplaceUrl))
@@ -86,20 +128,26 @@ namespace ChocolateStoreCore.Helpers
 
         public static string GetPackageIdFromString(string packageId)
         {
-            if (packageId.Contains(' '))
+            if (string.IsNullOrWhiteSpace(packageId))
             {
-                return packageId.ToLowerInvariant().Substring(0, packageId.IndexOf(' '));
+                return string.Empty;
             }
-            return packageId;
+
+            var match = RxPackageSelector.Match(packageId.Trim());
+            return match.Success ? match.Groups["id"].Value : packageId.Trim();
         }
 
         public static string GetVersionFromString(string packageId)
         {
-            if (packageId.Contains(' '))
+            if (string.IsNullOrWhiteSpace(packageId))
             {
-                return packageId.ToLowerInvariant().Substring(packageId.IndexOf(' ') + 1, packageId.Length - packageId.IndexOf(' ') - 1);
+                return string.Empty;
             }
-            return String.Empty;
+
+            var match = RxPackageSelector.Match(packageId.Trim());
+            return match.Success ? match.Groups["version"].Value : string.Empty;
         }
     }
 }
+
+

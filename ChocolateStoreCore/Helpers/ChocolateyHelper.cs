@@ -1,4 +1,4 @@
-﻿using ChocolateStoreCore.Models;
+using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NuGet.Packaging;
@@ -44,7 +44,7 @@ namespace ChocolateStoreCore.Helpers
             var downloads = new List<Download>();
             var folderName = Path.GetFileName(folder);
 
-            var content = StringHelper.ReplaceTokensByVariables(contentOriginal);
+            var content = StringHelper.ReplaceTokensByVariables(contentOriginal, id, version);
 
             var fileType = StringHelper.GetFileType(content);
 
@@ -356,3 +356,4 @@ namespace ChocolateStoreCore.Helpers
         }
     }
 }
+
