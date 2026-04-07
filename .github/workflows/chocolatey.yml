@@ -36,7 +36,7 @@ jobs:
         pwsh -File ${{ github.workspace }}\package.ps1 -dir ${{ github.workspace }}\ChocolateStoreCore
 
     - name: Add artefacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Assets
         path: "${{ github.workspace }}/release/*.nupkg"

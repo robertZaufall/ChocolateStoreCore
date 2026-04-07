@@ -81,7 +81,7 @@ jobs:
 
     - name: Add artefacts
       if: ${{ github.actor != 'dependabot[bot]' }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Assets
         path: "${{ github.workspace }}/release/*"
