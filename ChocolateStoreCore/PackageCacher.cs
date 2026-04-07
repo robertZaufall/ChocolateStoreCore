@@ -1,4 +1,4 @@
-﻿using ChocolateStoreCore.Exceptions;
+using ChocolateStoreCore.Exceptions;
 using ChocolateStoreCore.Helpers;
 using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
@@ -178,7 +178,7 @@ namespace ChocolateStoreCore
                     _fileHelper.FileCopy(sourcePackagePath, targetPackagePath);
                 }
 
-                string folderName = $"{package.Id}{_settings.FolderDelimiter}{package.Version.Version}";
+                string folderName = $"{package.Id}{_settings.FolderDelimiter}{package?.Version?.Version}";
                 string folder = Path.Combine(targetPath ?? sourcePath, folderName);
 
                 try
@@ -190,7 +190,7 @@ namespace ChocolateStoreCore
                         var content = fileWithContent.Value;
                         if (!string.IsNullOrWhiteSpace(content))
                         {
-                            (var contentNew, var downloads, _) = _chocolateyHelper.ExtractAndRewriteUrls(content, folder, _settings.LocalRepoUrl, package.Id, package.Version.OriginalVersion);
+                            (var contentNew, var downloads, _) = _chocolateyHelper.ExtractAndRewriteUrls(content, folder, _settings.LocalRepoUrl, package.Id, package?.Version?.OriginalVersion ?? string.Empty);
 
                             if (!string.IsNullOrWhiteSpace(contentNew) && downloads.Count > 0 && !_fileHelper.DirectoryExists(folder))
                             {
@@ -216,7 +216,7 @@ namespace ChocolateStoreCore
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error while caching package {package_Id} {package_Version}", package.Id, package.Version.OriginalVersion);
+                    _logger.LogError(ex, "Error while caching package {package_Id} {package_Version}", package.Id, package?.Version?.OriginalVersion);
 
                     try
                     {
@@ -225,7 +225,7 @@ namespace ChocolateStoreCore
                     }
                     catch
                     {
-                        _logger.LogError(ex, "Error while cleaning failed package and folder for {package_Id} {package_Version}", package.Id, package.Version.OriginalVersion);
+                        _logger.LogError(ex, "Error while cleaning failed package and folder for {package_Id} {package_Version}", package.Id, package?.Version?.OriginalVersion);
                     }
 
                     return false;
@@ -241,7 +241,7 @@ namespace ChocolateStoreCore
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error caching package {package_Id}", package.Id);
+                _logger.LogError(ex, "Error caching package {package_Id}", package?.Id);
                 return false;
             }
         }

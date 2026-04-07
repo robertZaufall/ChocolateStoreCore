@@ -1,4 +1,4 @@
-﻿using ChocolateStoreCore.Models;
+using ChocolateStoreCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Net;
@@ -45,7 +45,7 @@ namespace ChocolateStoreCore.Helpers
             var version = StringHelper.GetVersionFromString(downloadItem);
 
             var url = new Uri(
-                new Uri(_settings.ApiUrl), 
+                new Uri(_settings.ApiUrl),
                 _settings.ApiPath + (version == "" ? GetPackageIdInfoTemplate(id) : GetPackageIdInfoTemplate(id, version))
             );
 
@@ -72,6 +72,12 @@ namespace ChocolateStoreCore.Helpers
 
         public string CheckUrl(string url)
         {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                _logger.LogError("Failed to check empty url");
+                return null;
+            }
+
             try
             {
                 using (var request = _httpClientFactory.CreateClient("chocolatey"))
@@ -100,6 +106,12 @@ namespace ChocolateStoreCore.Helpers
 
         public string DownloadFile(string url, string filePath)
         {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                _logger.LogError("Failed to download empty url to {filePath}", filePath);
+                return null;
+            }
+
             try
             {
                 using (var request = _httpClientFactory.CreateClient("chocolatey"))
